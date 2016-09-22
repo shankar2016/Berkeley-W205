@@ -46,4 +46,4 @@ hdfs dfs -put hospitals.csv /user/w205/hospitals_compare/.
 hdfs dfs -put effective_care.csv /user/w205/hospitals_compare/.
 hdfs dfs -put readmissions.csv /user/w205/hospitals_compare/.
 hdfs dfs -put Measures.csv /user/w205/hospitals_compare/.
-hdfs dfs -put surveys_responses.csv /user/w205/hospitals_compare/hospital
+hdfs dfs -put surveys_responses.csv /user/w205/hospitals_compare/.
