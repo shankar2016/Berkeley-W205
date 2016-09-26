@@ -1,0 +1,83 @@
+ON MY HOME MACHINE
+localhost:W205 NatarajanShankar$ cd Week3
+localhost:Week3 NatarajanShankar$ ls -l
+total 32
+drwxr-xr-x  55 NatarajanShankar  staff  1870 Sep 22 09:25 Hospital_Revised_Flatfiles
+-rw-rw-rw-   1 NatarajanShankar  staff  4103 Sep 22 23:07 hive_base_ddl.sql
+-rwxrwxrwx   1 NatarajanShankar  staff  1869 Sep 22 10:46 load_data_lake.sh
+-rw-r--r--   1 NatarajanShankar  staff  3463 Sep 20 13:59 load_data_lake.sh.orig
+drwxr-xr-x  61 NatarajanShankar  staff  2074 Sep 23 00:07 test
+localhost:Week3 NatarajanShankar$ su
+Password:
+sh-3.2# scp -i "/Users/NatarajanShankar/UC_Berkeley/Term2/W205/ucb5.pem" hive_base_ddl.sql root@ec2-54-227-71-81.compute-1.amazonaws.com:/home/w205/.
+hive_base_ddl.sql                                                                                                                       100% 4103     4.0KB/s   00:00    
+sh-3.2# 
+
+
+
+ON THE AWS MACHINE
+==================
+
+
+[root@ip-172-31-6-204 w205]# su - w205
+[w205@ip-172-31-6-204 ~]$ pwd
+/home/w205
+[w205@ip-172-31-6-204 ~]$ ls -l
+total 274584
+-rw-rw-r--  1 w205 w205       693 Sep 28  2015 derby.log
+-rw-r--r--  1 root root      4103 Sep 23 14:28 hive_base_ddl.sql
+-rwxr-xr-x  1 w205 root      1869 Sep 22 17:55 load_data_lake.sh
+drwxrwxr-x  5 w205 w205      4096 Sep 28  2015 metastore_db
+-rw-rw-r--  1 w205 w205 280869269 Sep  9  2015 spark-1.5.0-bin-hadoop2.6.tgz
+drwxr-xr-x 11 w205 w205      4096 Aug 31  2015 spark15
+[w205@ip-172-31-6-204 ~]$ hdfs dfs put hive_base_ddl.sql /user/w205
+put: Unknown command
+Did you mean -put?  This command begins with a dash.
+[w205@ip-172-31-6-204 ~]$ hdfs dfs -put hive_base_ddl.sql /user/w205
+[w205@ip-172-31-6-204 ~]$ cd /user/w205
+-bash: cd: /user/w205: No such file or directory
+[w205@ip-172-31-6-204 ~]$ pwd
+/home/w205
+[w205@ip-172-31-6-204 ~]$ hive -f ./hive_base_ddl.sql
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/w205/spark15/lib/spark-assembly-1.5.0-hadoop2.6.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/w205/spark15/lib/spark-assembly-1.5.0-hadoop2.6.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+
+Logging initialized using configuration in jar:file:/usr/lib/hive/lib/hive-common-1.1.0-cdh5.4.5.jar!/hive-log4j.properties
+OK
+Time taken: 0.463 seconds
+OK
+Time taken: 0.332 seconds
+OK
+Time taken: 0.01 seconds
+OK
+Time taken: 0.053 seconds
+OK
+Time taken: 0.009 seconds
+OK
+Time taken: 0.069 seconds
+OK
+Time taken: 0.012 seconds
+OK
+Time taken: 0.042 seconds
+OK
+Time taken: 0.009 seconds
+OK
+Time taken: 0.093 seconds
+[w205@ip-172-31-6-204 ~]$ ls -l
+total 274584
+-rw-rw-r--  1 w205 w205       693 Sep 28  2015 derby.log
+-rw-r--r--  1 root root      4103 Sep 23 14:28 hive_base_ddl.sql
+-rwxr-xr-x  1 w205 root      1869 Sep 22 17:55 load_data_lake.sh
+drwxrwxr-x  5 w205 w205      4096 Sep 28  2015 metastore_db
+-rw-rw-r--  1 w205 w205 280869269 Sep  9  2015 spark-1.5.0-bin-hadoop2.6.tgz
+drwxr-xr-x 11 w205 w205      4096 Aug 31  2015 spark15
+[w205@ip-172-31-6-204 ~]$ 
+
