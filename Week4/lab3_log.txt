@@ -1,0 +1,1096 @@
+The main two reasons stem from the fact that, usually, one does not run a single MapReduce job, but rather a set of jobs in sequence.
+
+1. One of the main limitations of MapReduce is that it persists the full dataset to HDFS after running each job.  This is very expensive, because it incurs both three times (for replication) the size of the dataset in disk I/O and a similar amount of network I/O.  Spark takes a more holistic view of a pipeline of operations.  When the output of an operation needs to be fed into another operation, Spark passes the data directly without writing to persistent storage.  This is an innovation over MapReduce that came from Microsoft's Dryad paper, and is not original to Spark.
+
+2. The main innovation of Spark was to introduce an in-memory caching abstraction.  This makes Spark ideal for workloads where multiple operations access the same input data.  Users can instruct Spark to cache input data sets in memory, so they don't need to be read from disk for each operation. 
+
+3. What about Spark jobs that would boil down to a single MapReduce job?  In many cases also these run faster on Spark than on MapReduce.  The primary advantage Spark has here is that it can launch tasks much faster.  MapReduce starts a new JVM for each task, which can take seconds with loading JARs, JITing, parsing configuration XML, etc.  Spark keeps an executor JVM running on each node, so launching a task is simply a matter of making an RPC to it and passing a Runnable to a thread pool, which takes in the single digits of milliseconds.
+
+Lastly, a common misconception probably worth mentioning is that Spark somehow runs entirely in memory while MapReduce does not.  This is simply not the case.  Spark's shuffle implementation works very similarly to MapReduce's: each record is serialized and written out to disk on the map side and then fetched and deserialized on the reduce side.
+
+
+
+
+
+
+
+
+
+Last login: Mon Sep 26 08:21:00 on console
+localhost:~ NatarajanShankar$ !ssh
+ssh -i "/Users/NatarajanShankar/UC_Berkeley/Term2/W205/ucb5.pem" root@ec2-54-227-71-81.compute-1.amazonaws.com
+Last login: Sat Sep 24 19:48:19 2016 from 73.223.185.251
+     ___   _        __   __   ____            __    
+    / _ \ (_)___ _ / /  / /_ / __/____ ___ _ / /___ 
+   / , _// // _ `// _ \/ __/_\ \ / __// _ `// // -_)
+  /_/|_|/_/ \_, //_//_/\__//___/ \__/ \_,_//_/ \__/ 
+           /___/                                                 
+                                              
+Welcome to a virtual machine image brought to you by RightScale!
+
+
+[root@ip-172-31-6-204 ~]# su - w205
+[w205@ip-172-31-6-204 ~]$ hive
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/w205/spark15/lib/spark-assembly-1.5.0-hadoop2.6.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/w205/spark15/lib/spark-assembly-1.5.0-hadoop2.6.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+
+Logging initialized using configuration in jar:file:/usr/lib/hive/lib/hive-common-1.1.0-cdh5.4.5.jar!/hive-log4j.properties
+WARNING: Hive CLI is deprecated and migration to Beeline is recommended.
+hive> select * FROM weblogs_flat LIMIT 10
+    > ;
+OK
+date	userid	sessionid	productid	refererurl
+2008-01-31 15:54:25	__RequestVerificationToken_Lw__=2ADB2	;+.ASPXAUTH=C31HDWD05KU00943S	/product/YJ29IOCVQ	http://www.abc.com
+2005-12-08 02:36:30	__RequestVerificationToken_Lw__=13233	;+.ASPXAUTH=H7HTS9Q9CC8ZXSERD	/product/MVI9HHP8A	http://www.ebay.com
+2015-06-07 23:27:58	__RequestVerificationToken_Lw__=B322B	;+.ASPXAUTH=58SZL3FPGFUS8KLNA	/search/P5XKO3AC9	http://www.abc.com
+2009-03-12 03:16:27	__RequestVerificationToken_Lw__=1A1C2	;+.ASPXAUTH=VBWZJJR6CG85YSOM3	/product/A13025WBT	http://www.shophealthy.com
+2014-07-23 08:36:03	__RequestVerificationToken_Lw__=2B1C2	;+.ASPXAUTH=VXBLEXUC177T4S7AA	/search/5PI9XD6LZ	http://www.facebook.com
+2002-12-30 08:42:09	__RequestVerificationToken_Lw__=B11A2	;+.ASPXAUTH=YABJBNQ7HQWYST1CV	/product/WS80XJFW2	http://www.xyz.com
+2004-11-03 20:29:10	__RequestVerificationToken_Lw__=11C2C	;+.ASPXAUTH=2F90NTSZM9LJH7IGU	/product/OJ201IBUN	http://www.homeshop18.com
+2012-01-26 12:39:57	__RequestVerificationToken_Lw__=DD1BC	;+.ASPXAUTH=SEWRRGGBHGP2G6H2J	/product/OA3QGXF1U	http://www.xyz.com
+2008-04-30 02:01:34	__RequestVerificationToken_Lw__=C3CDA	;+.ASPXAUTH=6OB103SJY0RGI3UXM	/search/K1IRBE1DU	http://www.abc.com
+Time taken: 0.897 seconds, Fetched: 10 row(s)
+hive> SELECT * FROM weblogs_flat WHERE weblog NOT LIKE '%data' LIMIT 10
+    > ;
+OK
+date	userid	sessionid	productid	refererurl
+2008-01-31 15:54:25	__RequestVerificationToken_Lw__=2ADB2	;+.ASPXAUTH=C31HDWD05KU00943S	/product/YJ29IOCVQ	http://www.abc.com
+2005-12-08 02:36:30	__RequestVerificationToken_Lw__=13233	;+.ASPXAUTH=H7HTS9Q9CC8ZXSERD	/product/MVI9HHP8A	http://www.ebay.com
+2015-06-07 23:27:58	__RequestVerificationToken_Lw__=B322B	;+.ASPXAUTH=58SZL3FPGFUS8KLNA	/search/P5XKO3AC9	http://www.abc.com
+2009-03-12 03:16:27	__RequestVerificationToken_Lw__=1A1C2	;+.ASPXAUTH=VBWZJJR6CG85YSOM3	/product/A13025WBT	http://www.shophealthy.com
+2014-07-23 08:36:03	__RequestVerificationToken_Lw__=2B1C2	;+.ASPXAUTH=VXBLEXUC177T4S7AA	/search/5PI9XD6LZ	http://www.facebook.com
+2002-12-30 08:42:09	__RequestVerificationToken_Lw__=B11A2	;+.ASPXAUTH=YABJBNQ7HQWYST1CV	/product/WS80XJFW2	http://www.xyz.com
+2004-11-03 20:29:10	__RequestVerificationToken_Lw__=11C2C	;+.ASPXAUTH=2F90NTSZM9LJH7IGU	/product/OJ201IBUN	http://www.homeshop18.com
+2012-01-26 12:39:57	__RequestVerificationToken_Lw__=DD1BC	;+.ASPXAUTH=SEWRRGGBHGP2G6H2J	/product/OA3QGXF1U	http://www.xyz.com
+2008-04-30 02:01:34	__RequestVerificationToken_Lw__=C3CDA	;+.ASPXAUTH=6OB103SJY0RGI3UXM	/search/K1IRBE1DU	http://www.abc.com
+Time taken: 0.127 seconds, Fetched: 10 row(s)
+hive> SELECT weblog FROM weblogs_flat WHERE weblog NOT LIKE '%data' LIMIT 10
+    > ;
+OK
+date	userid	sessionid	productid	refererurl
+2008-01-31 15:54:25	__RequestVerificationToken_Lw__=2ADB2	;+.ASPXAUTH=C31HDWD05KU00943S	/product/YJ29IOCVQ	http://www.abc.com
+2005-12-08 02:36:30	__RequestVerificationToken_Lw__=13233	;+.ASPXAUTH=H7HTS9Q9CC8ZXSERD	/product/MVI9HHP8A	http://www.ebay.com
+2015-06-07 23:27:58	__RequestVerificationToken_Lw__=B322B	;+.ASPXAUTH=58SZL3FPGFUS8KLNA	/search/P5XKO3AC9	http://www.abc.com
+2009-03-12 03:16:27	__RequestVerificationToken_Lw__=1A1C2	;+.ASPXAUTH=VBWZJJR6CG85YSOM3	/product/A13025WBT	http://www.shophealthy.com
+2014-07-23 08:36:03	__RequestVerificationToken_Lw__=2B1C2	;+.ASPXAUTH=VXBLEXUC177T4S7AA	/search/5PI9XD6LZ	http://www.facebook.com
+2002-12-30 08:42:09	__RequestVerificationToken_Lw__=B11A2	;+.ASPXAUTH=YABJBNQ7HQWYST1CV	/product/WS80XJFW2	http://www.xyz.com
+2004-11-03 20:29:10	__RequestVerificationToken_Lw__=11C2C	;+.ASPXAUTH=2F90NTSZM9LJH7IGU	/product/OJ201IBUN	http://www.homeshop18.com
+2012-01-26 12:39:57	__RequestVerificationToken_Lw__=DD1BC	;+.ASPXAUTH=SEWRRGGBHGP2G6H2J	/product/OA3QGXF1U	http://www.xyz.com
+2008-04-30 02:01:34	__RequestVerificationToken_Lw__=C3CDA	;+.ASPXAUTH=6OB103SJY0RGI3UXM	/search/K1IRBE1DU	http://www.abc.com
+Time taken: 0.07 seconds, Fetched: 10 row(s)
+hive> SELECT * FROM sys.columns ;
+FAILED: SemanticException [Error 10001]: Line 1:14 Table not found 'columns'
+hive> SHOW tables
+    > ;
+OK
+effective_care
+hospitals
+measures
+readmissions
+surveys_responses
+weblogs_flat
+Time taken: 0.045 seconds, Fetched: 6 row(s)
+hive> CREATE EXTERNAL TABLE IF NOT EXISTS weblogs_schema
+    > (datetime string, user_id string, session_id string, product_id string, referrer string) 
+    > ROW FORMAT DELIMITED
+    > FIELDS TERMINATED BY '\t'
+    > STORED AS TEXTFILE
+    > LOCATION '/user/w205/lab_3/weblog_data'
+    > ;
+OK
+Time taken: 0.105 seconds
+
+
+
+hive> SELECT user_id, COUNT(user_id) AS log_count
+    > FROM weblogs_schema
+    > GROUP BY user_id
+    > ORDER BY log_count DESC
+    > LIMIT 50;
+Query ID = w205_20160926172626_52578b16-cfe5-46b2-9d50-68ced52a630d
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1474746607185_0002, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1474746607185_0002/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1474746607185_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-09-26 17:26:53,630 Stage-1 map = 0%,  reduce = 0%
+2016-09-26 17:27:01,218 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.82 sec
+2016-09-26 17:27:09,805 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.14 sec
+MapReduce Total cumulative CPU time: 6 seconds 140 msec
+Ended Job = job_1474746607185_0002
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1474746607185_0003, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1474746607185_0003/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1474746607185_0003
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2016-09-26 17:27:18,749 Stage-2 map = 0%,  reduce = 0%
+2016-09-26 17:27:26,201 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.32 sec
+2016-09-26 17:27:32,671 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 4.37 sec
+MapReduce Total cumulative CPU time: 4 seconds 370 msec
+Ended Job = job_1474746607185_0003
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.14 sec   HDFS Read: 5199465 HDFS Write: 867513 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 4.37 sec   HDFS Read: 871961 HDFS Write: 2001 SUCCESS
+Total MapReduce CPU Time Spent: 10 seconds 510 msec
+OK
+__RequestVerificationToken_Lw__=2C2DB	10
+__RequestVerificationToken_Lw__=3DDC1	9
+__RequestVerificationToken_Lw__=A1BC3	9
+__RequestVerificationToken_Lw__=111AA	9
+__RequestVerificationToken_Lw__=233C3	9
+__RequestVerificationToken_Lw__=A223D	9
+__RequestVerificationToken_Lw__=B2CC1	9
+__RequestVerificationToken_Lw__=113B3	9
+__RequestVerificationToken_Lw__=2BDC3	9
+__RequestVerificationToken_Lw__=D13BD	9
+__RequestVerificationToken_Lw__=3BB1C	9
+__RequestVerificationToken_Lw__=32B2B	9
+__RequestVerificationToken_Lw__=21DCC	9
+__RequestVerificationToken_Lw__=A31AB	9
+__RequestVerificationToken_Lw__=DBBC1	8
+__RequestVerificationToken_Lw__=2A2C1	8
+__RequestVerificationToken_Lw__=B2B32	8
+__RequestVerificationToken_Lw__=B32C2	8
+__RequestVerificationToken_Lw__=BD11A	8
+__RequestVerificationToken_Lw__=33ABD	8
+__RequestVerificationToken_Lw__=CBCD3	8
+__RequestVerificationToken_Lw__=B13AB	8
+__RequestVerificationToken_Lw__=AAABA	8
+__RequestVerificationToken_Lw__=D1DBD	8
+__RequestVerificationToken_Lw__=DAD1D	8
+__RequestVerificationToken_Lw__=3AA3C	8
+__RequestVerificationToken_Lw__=A1D22	8
+__RequestVerificationToken_Lw__=CA22C	8
+__RequestVerificationToken_Lw__=AA1D3	8
+__RequestVerificationToken_Lw__=B232C	8
+__RequestVerificationToken_Lw__=DA1D2	8
+__RequestVerificationToken_Lw__=1133C	8
+__RequestVerificationToken_Lw__=2CD1D	8
+__RequestVerificationToken_Lw__=CB1BC	8
+__RequestVerificationToken_Lw__=2A231	8
+__RequestVerificationToken_Lw__=C2221	8
+__RequestVerificationToken_Lw__=1221A	8
+__RequestVerificationToken_Lw__=CA3DD	8
+__RequestVerificationToken_Lw__=1A2CA	8
+__RequestVerificationToken_Lw__=31A2B	8
+__RequestVerificationToken_Lw__=11B3B	8
+__RequestVerificationToken_Lw__=B2CCB	8
+__RequestVerificationToken_Lw__=11DBC	8
+__RequestVerificationToken_Lw__=B1ADC	8
+__RequestVerificationToken_Lw__=1A2C1	8
+__RequestVerificationToken_Lw__=A1ABB	8
+__RequestVerificationToken_Lw__=12CD1	8
+__RequestVerificationToken_Lw__=D3DA2	7
+__RequestVerificationToken_Lw__=DD2AB	7
+__RequestVerificationToken_Lw__=C22C2	7
+Time taken: 50.33 seconds, Fetched: 50 row(s)
+
+
+
+
+
+hive> CREATE EXTERNAL TABLE IF NOT EXISTS user_info
+    > (datetime string, user_id string, first_name string, last_name string, location string)
+    > ROW FORMAT DELIMITED
+    > FIELDS TERMINATED BY '\t'
+    > LOCATION '/user/w205/lab_3/user_data';
+OK
+Time taken: 0.04 seconds
+hive> exit;
+[w205@ip-172-31-6-204 ~]$ pwd
+
+
+
+
+
+
+
+
+
+
+
+/home/w205
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ SPARK SQL CLI
+-bash: SPARK: command not found
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ wget https://s3.awazonaws.com/ucbdatasciencew205/setup_spark.sh
+--2016-09-26 17:38:02--  https://s3.awazonaws.com/ucbdatasciencew205/setup_spark.sh
+Resolving s3.awazonaws.com... failed: Name or service not known.
+wget: unable to resolve host address `s3.awazonaws.com'
+[w205@ip-172-31-6-204 ~]$ wget https://s3.amazonaws.com/ucbdatasciencew205/setup_spark.sh
+--2016-09-26 17:38:31--  https://s3.amazonaws.com/ucbdatasciencew205/setup_spark.sh
+Resolving s3.amazonaws.com... 52.216.32.139
+Connecting to s3.amazonaws.com|52.216.32.139|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 3666 (3.6K) [application/x-sh]
+Saving to: `setup_spark.sh'
+
+100%[================================================================================================================================>] 3,666       --.-K/s   in 0s      
+
+2016-09-26 17:38:31 (87.9 MB/s) - `setup_spark.sh' saved [3666/3666]
+
+[w205@ip-172-31-6-204 ~]$ ls -la
+total 279872
+drwx------  4 w205 w205      4096 Sep 26 17:38 .
+drwxr-xr-x  7 root root      4096 Sep 22  2015 ..
+-rw-------  1 w205 w205      4044 Sep 25 04:59 .bash_history
+-rw-r--r--  1 w205 w205        18 Oct 16  2014 .bash_logout
+-rw-r--r--  1 w205 w205       176 Oct 16  2014 .bash_profile
+-rw-r--r--  1 w205 w205       124 Oct 16  2014 .bashrc
+-rw-r--r--  1 w205 w205       500 May  7  2013 .emacs
+-rw-------  1 w205 w205        16 Sep 28  2015 .psql_history
+-rw-rw-r--  1 w205 w205       693 Sep 28  2015 derby.log
+-rw-r--r--  1 root root      4103 Sep 23 14:28 hive_base_ddl.sql
+-rwxr-xr-x  1 w205 root      1869 Sep 22 17:55 load_data_lake.sh
+drwxrwxr-x  5 w205 w205      4096 Sep 28  2015 metastore_db
+-rw-rw-r--  1 w205 w205      3666 Jan 25  2016 setup_spark.sh
+-rw-rw-r--  1 w205 w205 280869269 Sep  9  2015 spark-1.5.0-bin-hadoop2.6.tgz
+drwxr-xr-x 11 w205 w205      4096 Aug 31  2015 spark15
+-rw-rw-r--  1 w205 w205    166205 Sep 17  2015 userdata_lab.csv
+-rw-rw-r--  1 w205 w205   5192992 Sep 17  2015 weblog_lab.csv
+[w205@ip-172-31-6-204 ~]$ vi setup_spark.sh
+[w205@ip-172-31-6-204 ~]$ bash ./setup_spark.sh
+[w205@ip-172-31-6-204 ~]$ !vi
+vi setup_spark.sh
+[w205@ip-172-31-6-204 ~]$ ls -l /data
+total 60
+drwxr-xr-x  3 hadoop   hadoop  4096 Sep 21 14:44 hadoop
+drwxr-xr-x  3 hdfs     hdfs    4096 Sep 21 14:39 hadoop-hdfs
+drwxr-xr-x  4 yarn     yarn    4096 Sep 21 14:39 hadoop-yarn
+drwx------  2 root     root   16384 Sep 21 14:38 lost+found
+drwxr-xr-x  4 postgres root    4096 Sep 21 14:43 pgsql
+-rw-r--r--  1 root     root     535 Sep 21 14:44 setup_hive_for_postgres.sql
+-rwxr-xr-x  1 root     root     732 Sep 21 14:44 setup_zeppelin.sh
+drwxr-xr-x 11 w205     w205    4096 Sep 26 17:42 spark15
+-rwxrwxr-x  1 w205     w205      27 Sep 26 17:42 start_metastore.sh
+-rwxr-xr-x  1 root     root      93 Sep 21 14:44 start_postgres.sh
+-rwxrwxr-x  1 w205     w205      94 Sep 26 17:42 stop_metastore.sh
+-rwxr-xr-x  1 root     root      92 Sep 21 14:44 stop_postgres.sh
+[w205@ip-172-31-6-204 ~]$ cat start_metastore.sh
+cat: start_metastore.sh: No such file or directory
+[w205@ip-172-31-6-204 ~]$ cat /data/start_metastore.sh
+hive --service metastore &
+[w205@ip-172-31-6-204 ~]$ /data/start_metastore.sh
+[w205@ip-172-31-6-204 ~]$ SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/w205/spark15/lib/spark-assembly-1.5.0-hadoop2.6.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Starting Hive Metastore Server
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/w205/spark15/lib/spark-assembly-1.5.0-hadoop2.6.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ 
+[w205@ip-172-31-6-204 ~]$ /data/spark15/bin/spark-sql
+16/09/26 17:53:05 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/26 17:53:06 WARN DomainSocketFactory: The short-circuit local reads feature cannot be used because libhadoop cannot be loaded.
+16/09/26 17:53:08 WARN MetricsSystem: Using default name DAGScheduler for source because spark.app.id is not set.
+SET hive.support.sql11.reserved.keywords=false
+16/09/26 17:53:11 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/26 17:53:12 WARN DomainSocketFactory: The short-circuit local reads feature cannot be used because libhadoop cannot be loaded.
+SET spark.sql.hive.version=1.2.1
+SET spark.sql.hive.version=1.2.1
+spark-sql> show tables;
+effective_care	false
+hospitals	false
+measures	false
+readmissions	false
+surveys_responses	false
+user_info	false
+weblogs_flat	false
+weblogs_schema	false
+Time taken: 1.388 seconds, Fetched 8 row(s)
+
+
+
+
+spark-sql> SELECT user_id, COUNT(user_id) as log_count
+         > FROM weblogs_schema GROUP BY user_id
+         > ORDER BY log_count DESC
+         > LIMIT 50;
+__RequestVerificationToken_Lw__=2C2DB   10                                      
+__RequestVerificationToken_Lw__=A223D	9
+__RequestVerificationToken_Lw__=A31AB	9
+__RequestVerificationToken_Lw__=B2CC1	9
+__RequestVerificationToken_Lw__=111AA	9
+__RequestVerificationToken_Lw__=21DCC	9
+__RequestVerificationToken_Lw__=3BB1C	9
+__RequestVerificationToken_Lw__=113B3	9
+__RequestVerificationToken_Lw__=D13BD	9
+__RequestVerificationToken_Lw__=2BDC3	9
+__RequestVerificationToken_Lw__=3DDC1	9
+__RequestVerificationToken_Lw__=233C3	9
+__RequestVerificationToken_Lw__=32B2B	9
+__RequestVerificationToken_Lw__=A1BC3	9
+__RequestVerificationToken_Lw__=2A231	8
+__RequestVerificationToken_Lw__=CA3DD	8
+__RequestVerificationToken_Lw__=1A2CA	8
+__RequestVerificationToken_Lw__=11DBC	8
+__RequestVerificationToken_Lw__=AAABA	8
+__RequestVerificationToken_Lw__=C2221	8
+__RequestVerificationToken_Lw__=12CD1	8
+__RequestVerificationToken_Lw__=AA1D3	8
+__RequestVerificationToken_Lw__=2A2C1	8
+__RequestVerificationToken_Lw__=B232C	8
+__RequestVerificationToken_Lw__=DAD1D	8
+__RequestVerificationToken_Lw__=2CD1D	8
+__RequestVerificationToken_Lw__=B2B32	8
+__RequestVerificationToken_Lw__=B2CCB	8
+__RequestVerificationToken_Lw__=33ABD	8
+__RequestVerificationToken_Lw__=B32C2	8
+__RequestVerificationToken_Lw__=1221A	8
+__RequestVerificationToken_Lw__=CB1BC	8
+__RequestVerificationToken_Lw__=CA22C	8
+__RequestVerificationToken_Lw__=1133C	8
+__RequestVerificationToken_Lw__=11B3B	8
+__RequestVerificationToken_Lw__=A1D22	8
+__RequestVerificationToken_Lw__=A1ABB	8
+__RequestVerificationToken_Lw__=D1DBD	8
+__RequestVerificationToken_Lw__=BD11A	8
+__RequestVerificationToken_Lw__=B13AB	8
+__RequestVerificationToken_Lw__=CBCD3	8
+__RequestVerificationToken_Lw__=31A2B	8
+__RequestVerificationToken_Lw__=DA1D2	8
+__RequestVerificationToken_Lw__=3AA3C	8
+__RequestVerificationToken_Lw__=DBBC1	8
+__RequestVerificationToken_Lw__=1A2C1	8
+__RequestVerificationToken_Lw__=B1ADC	8
+__RequestVerificationToken_Lw__=AC3DA	7
+__RequestVerificationToken_Lw__=AADDA	7
+__RequestVerificationToken_Lw__=13CCC	7
+Time taken: 11.067 seconds, Fetched 50 row(s)
+
+
+
+
+
+spark-sql> CREATE TABLE weblogs_parquet AS SELECT * FROM weblogs_schema
+         > ;
+Time taken: 2.85 seconds
+spark-sql> SELECT user_id, COUNT(user_id) as log_count
+         > FROM weblogs_parquet GROUP BY user_id
+         > ORDER BY log_count DESC
+         > LIMIT 50;
+__RequestVerificationToken_Lw__=2C2DB   10                                      
+__RequestVerificationToken_Lw__=32B2B	9
+__RequestVerificationToken_Lw__=A1BC3	9
+__RequestVerificationToken_Lw__=B2CC1	9
+__RequestVerificationToken_Lw__=3BB1C	9
+__RequestVerificationToken_Lw__=113B3	9
+__RequestVerificationToken_Lw__=111AA	9
+__RequestVerificationToken_Lw__=21DCC	9
+__RequestVerificationToken_Lw__=A223D	9
+__RequestVerificationToken_Lw__=D13BD	9
+__RequestVerificationToken_Lw__=2BDC3	9
+__RequestVerificationToken_Lw__=3DDC1	9
+__RequestVerificationToken_Lw__=233C3	9
+__RequestVerificationToken_Lw__=A31AB	9
+__RequestVerificationToken_Lw__=2A231	8
+__RequestVerificationToken_Lw__=B32C2	8
+__RequestVerificationToken_Lw__=1A2CA	8
+__RequestVerificationToken_Lw__=11B3B	8
+__RequestVerificationToken_Lw__=CBCD3	8
+__RequestVerificationToken_Lw__=3AA3C	8
+__RequestVerificationToken_Lw__=1221A	8
+__RequestVerificationToken_Lw__=AA1D3	8
+__RequestVerificationToken_Lw__=1133C	8
+__RequestVerificationToken_Lw__=A1D22	8
+__RequestVerificationToken_Lw__=BD11A	8
+__RequestVerificationToken_Lw__=2CD1D	8
+__RequestVerificationToken_Lw__=B2B32	8
+__RequestVerificationToken_Lw__=AAABA	8
+__RequestVerificationToken_Lw__=33ABD	8
+__RequestVerificationToken_Lw__=DA1D2	8
+__RequestVerificationToken_Lw__=C2221	8
+__RequestVerificationToken_Lw__=CA3DD	8
+__RequestVerificationToken_Lw__=CB1BC	8
+__RequestVerificationToken_Lw__=A1ABB	8
+__RequestVerificationToken_Lw__=B13AB	8
+__RequestVerificationToken_Lw__=11DBC	8
+__RequestVerificationToken_Lw__=B232C	8
+__RequestVerificationToken_Lw__=D1DBD	8
+__RequestVerificationToken_Lw__=DAD1D	8
+__RequestVerificationToken_Lw__=DBBC1	8
+__RequestVerificationToken_Lw__=B2CCB	8
+__RequestVerificationToken_Lw__=31A2B	8
+__RequestVerificationToken_Lw__=CA22C	8
+__RequestVerificationToken_Lw__=12CD1	8
+__RequestVerificationToken_Lw__=1A2C1	8
+__RequestVerificationToken_Lw__=2A2C1	8
+__RequestVerificationToken_Lw__=B1ADC	8
+__RequestVerificationToken_Lw__=C23DD	7
+__RequestVerificationToken_Lw__=D133C	7
+__RequestVerificationToken_Lw__=AC3DA	7
+Time taken: 2.882 seconds, Fetched 50 row(s)
+spark-sql> exit;
+[w205@ip-172-31-6-204 ~]$ 
+
+
+
+
+
+
+
+
+[w205@ip-172-31-6-204 ~]$ /data/spark15/bin/spark-sql
+16/09/26 18:09:10 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/26 18:09:11 WARN DomainSocketFactory: The short-circuit local reads feature cannot be used because libhadoop cannot be loaded.
+16/09/26 18:09:13 WARN MetricsSystem: Using default name DAGScheduler for source because spark.app.id is not set.
+SET hive.support.sql11.reserved.keywords=false
+16/09/26 18:09:16 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/09/26 18:09:17 WARN DomainSocketFactory: The short-circuit local reads feature cannot be used because libhadoop cannot be loaded.
+SET spark.sql.hive.version=1.2.1
+SET spark.sql.hive.version=1.2.1
+spark-sql> SHOW tables
+         > ;
+effective_care	false
+hospitals	false
+measures	false
+readmissions	false
+surveys_responses	false
+user_info	false
+weblogs_flat	false
+weblogs_parquet	false
+weblogs_schema	false
+Time taken: 1.334 seconds, Fetched 9 row(s)
+spark-sql> SELECT * FROM weblogs_parquet LIMIT 10;
+date	userid	sessionid	productid	refererurl
+2008-01-31 15:54:25	__RequestVerificationToken_Lw__=2ADB2	;+.ASPXAUTH=C31HDWD05KU00943S	/product/YJ29IOCVQ	http://www.abc.com
+2005-12-08 02:36:30	__RequestVerificationToken_Lw__=13233	;+.ASPXAUTH=H7HTS9Q9CC8ZXSERD	/product/MVI9HHP8A	http://www.ebay.com
+2015-06-07 23:27:58	__RequestVerificationToken_Lw__=B322B	;+.ASPXAUTH=58SZL3FPGFUS8KLNA	/search/P5XKO3AC9	http://www.abc.com
+2009-03-12 03:16:27	__RequestVerificationToken_Lw__=1A1C2	;+.ASPXAUTH=VBWZJJR6CG85YSOM3	/product/A13025WBT	http://www.shophealthy.com
+2014-07-23 08:36:03	__RequestVerificationToken_Lw__=2B1C2	;+.ASPXAUTH=VXBLEXUC177T4S7AA	/search/5PI9XD6LZ	http://www.facebook.com
+2002-12-30 08:42:09	__RequestVerificationToken_Lw__=B11A2	;+.ASPXAUTH=YABJBNQ7HQWYST1CV	/product/WS80XJFW2	http://www.xyz.com
+2004-11-03 20:29:10	__RequestVerificationToken_Lw__=11C2C	;+.ASPXAUTH=2F90NTSZM9LJH7IGU	/product/OJ201IBUN	http://www.homeshop18.com
+2012-01-26 12:39:57	__RequestVerificationToken_Lw__=DD1BC	;+.ASPXAUTH=SEWRRGGBHGP2G6H2J	/product/OA3QGXF1U	http://www.xyz.com
+2008-04-30 02:01:34	__RequestVerificationToken_Lw__=C3CDA	;+.ASPXAUTH=6OB103SJY0RGI3UXM	/search/K1IRBE1DU	http://www.abc.com
+Time taken: 1.733 seconds, Fetched 10 row(s)
+spark-sql> SELECT * FROM user_info LIMIT 10;
+date	userid	firstname	lastname	location
+2013-01-12 07:54:22	__RequestVerificationToken_Lw__=2B3CC	Channie	Kiflezghie	Tununak
+2001-07-30 04:29:20	__RequestVerificationToken_Lw__=A3AC2	Mattie	Eagen	Whittier
+2001-12-18 21:39:32	__RequestVerificationToken_Lw__=C2211	Ephraim	Winslett	Foley
+2011-02-15 18:28:39	__RequestVerificationToken_Lw__=3DCDB	Jinnie	Kimmell	Hamilton
+2012-09-20 05:34:17	__RequestVerificationToken_Lw__=3CADA	Cornell	Herley	Chelsea
+2011-05-11 21:14:44	__RequestVerificationToken_Lw__=DA23C	Mathilde	Mickelson	Coffeeville
+2002-06-15 21:55:48	__RequestVerificationToken_Lw__=DDA2C	Ephriam	Holding	Foley
+2010-07-22 08:29:09	__RequestVerificationToken_Lw__=BCAC2	Federico	Giebel	Cottonwood
+2006-01-10 12:43:36	__RequestVerificationToken_Lw__=B1CAD	Cornelia	Siebold	Tununak
+Time taken: 0.368 seconds, Fetched 10 row(s)
+spark-sql> SELECT COUNT(locations) AS lab_3_locations 
+         > FROM user_info FULL OUTER JOIN weblogs_parquet
+         > GROUP BY locations
+         > ORDER BY lab_3_locations DESC;
+16/09/26 18:18:20 ERROR SparkSQLDriver: Failed in [SELECT COUNT(locations) AS lab_3_locations 
+FROM user_info FULL OUTER JOIN weblogs_parquet
+GROUP BY locations
+ORDER BY lab_3_locations DESC]
+org.apache.spark.sql.AnalysisException: cannot resolve 'locations' given input columns last_name, location, product_id, first_name, datetime, datetime, user_id, user_id, referrer, session_id; line 3 pos 9
+	at org.apache.spark.sql.catalyst.analysis.package$AnalysisErrorAt.failAnalysis(package.scala:42)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1$$anonfun$apply$2.applyOrElse(CheckAnalysis.scala:56)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1$$anonfun$apply$2.applyOrElse(CheckAnalysis.scala:53)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$transformUp$1.apply(TreeNode.scala:293)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$transformUp$1.apply(TreeNode.scala:293)
+	at org.apache.spark.sql.catalyst.trees.CurrentOrigin$.withOrigin(TreeNode.scala:51)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.transformUp(TreeNode.scala:292)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan.transformExpressionUp$1(QueryPlan.scala:108)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan.org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$2(QueryPlan.scala:118)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$2$1.apply(QueryPlan.scala:122)
+	at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:244)
+	at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:244)
+	at scala.collection.immutable.List.foreach(List.scala:318)
+	at scala.collection.TraversableLike$class.map(TraversableLike.scala:244)
+	at scala.collection.AbstractTraversable.map(Traversable.scala:105)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan.org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$2(QueryPlan.scala:122)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$2.apply(QueryPlan.scala:126)
+	at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+	at scala.collection.Iterator$class.foreach(Iterator.scala:727)
+	at scala.collection.AbstractIterator.foreach(Iterator.scala:1157)
+	at scala.collection.generic.Growable$class.$plus$plus$eq(Growable.scala:48)
+	at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:103)
+	at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:47)
+	at scala.collection.TraversableOnce$class.to(TraversableOnce.scala:273)
+	at scala.collection.AbstractIterator.to(Iterator.scala:1157)
+	at scala.collection.TraversableOnce$class.toBuffer(TraversableOnce.scala:265)
+	at scala.collection.AbstractIterator.toBuffer(Iterator.scala:1157)
+	at scala.collection.TraversableOnce$class.toArray(TraversableOnce.scala:252)
+	at scala.collection.AbstractIterator.toArray(Iterator.scala:1157)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan.transformExpressionsUp(QueryPlan.scala:126)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1.apply(CheckAnalysis.scala:53)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1.apply(CheckAnalysis.scala:49)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:103)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$foreachUp$1.apply(TreeNode.scala:102)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$foreachUp$1.apply(TreeNode.scala:102)
+	at scala.collection.immutable.List.foreach(List.scala:318)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:102)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$class.checkAnalysis(CheckAnalysis.scala:49)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.checkAnalysis(Analyzer.scala:44)
+	at org.apache.spark.sql.SQLContext$QueryExecution.assertAnalyzed(SQLContext.scala:908)
+	at org.apache.spark.sql.DataFrame.<init>(DataFrame.scala:132)
+	at org.apache.spark.sql.DataFrame$.apply(DataFrame.scala:51)
+	at org.apache.spark.sql.SQLContext.sql(SQLContext.scala:719)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLDriver.run(SparkSQLDriver.scala:61)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.processCmd(SparkSQLCLIDriver.scala:305)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:376)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver$.main(SparkSQLCLIDriver.scala:224)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.main(SparkSQLCLIDriver.scala)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:672)
+	at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:180)
+	at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:205)
+	at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:120)
+	at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+org.apache.spark.sql.AnalysisException: cannot resolve 'locations' given input columns last_name, location, product_id, first_name, datetime, datetime, user_id, user_id, referrer, session_id; line 3 pos 9
+	at org.apache.spark.sql.catalyst.analysis.package$AnalysisErrorAt.failAnalysis(package.scala:42)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1$$anonfun$apply$2.applyOrElse(CheckAnalysis.scala:56)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1$$anonfun$apply$2.applyOrElse(CheckAnalysis.scala:53)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$transformUp$1.apply(TreeNode.scala:293)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$transformUp$1.apply(TreeNode.scala:293)
+	at org.apache.spark.sql.catalyst.trees.CurrentOrigin$.withOrigin(TreeNode.scala:51)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.transformUp(TreeNode.scala:292)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan.transformExpressionUp$1(QueryPlan.scala:108)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan.org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$2(QueryPlan.scala:118)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$2$1.apply(QueryPlan.scala:122)
+	at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:244)
+	at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:244)
+	at scala.collection.immutable.List.foreach(List.scala:318)
+	at scala.collection.TraversableLike$class.map(TraversableLike.scala:244)
+	at scala.collection.AbstractTraversable.map(Traversable.scala:105)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan.org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$2(QueryPlan.scala:122)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$2.apply(QueryPlan.scala:126)
+	at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+	at scala.collection.Iterator$class.foreach(Iterator.scala:727)
+	at scala.collection.AbstractIterator.foreach(Iterator.scala:1157)
+	at scala.collection.generic.Growable$class.$plus$plus$eq(Growable.scala:48)
+	at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:103)
+	at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:47)
+	at scala.collection.TraversableOnce$class.to(TraversableOnce.scala:273)
+	at scala.collection.AbstractIterator.to(Iterator.scala:1157)
+	at scala.collection.TraversableOnce$class.toBuffer(TraversableOnce.scala:265)
+	at scala.collection.AbstractIterator.toBuffer(Iterator.scala:1157)
+	at scala.collection.TraversableOnce$class.toArray(TraversableOnce.scala:252)
+	at scala.collection.AbstractIterator.toArray(Iterator.scala:1157)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan.transformExpressionsUp(QueryPlan.scala:126)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1.apply(CheckAnalysis.scala:53)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1.apply(CheckAnalysis.scala:49)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:103)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$foreachUp$1.apply(TreeNode.scala:102)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$foreachUp$1.apply(TreeNode.scala:102)
+	at scala.collection.immutable.List.foreach(List.scala:318)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:102)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$class.checkAnalysis(CheckAnalysis.scala:49)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.checkAnalysis(Analyzer.scala:44)
+	at org.apache.spark.sql.SQLContext$QueryExecution.assertAnalyzed(SQLContext.scala:908)
+	at org.apache.spark.sql.DataFrame.<init>(DataFrame.scala:132)
+	at org.apache.spark.sql.DataFrame$.apply(DataFrame.scala:51)
+	at org.apache.spark.sql.SQLContext.sql(SQLContext.scala:719)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLDriver.run(SparkSQLDriver.scala:61)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.processCmd(SparkSQLCLIDriver.scala:305)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:376)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver$.main(SparkSQLCLIDriver.scala:224)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.main(SparkSQLCLIDriver.scala)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:672)
+	at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:180)
+	at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:205)
+	at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:120)
+	at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+
+16/09/26 18:18:20 ERROR CliDriver: org.apache.spark.sql.AnalysisException: cannot resolve 'locations' given input columns last_name, location, product_id, first_name, datetime, datetime, user_id, user_id, referrer, session_id; line 3 pos 9
+	at org.apache.spark.sql.catalyst.analysis.package$AnalysisErrorAt.failAnalysis(package.scala:42)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1$$anonfun$apply$2.applyOrElse(CheckAnalysis.scala:56)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1$$anonfun$apply$2.applyOrElse(CheckAnalysis.scala:53)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$transformUp$1.apply(TreeNode.scala:293)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$transformUp$1.apply(TreeNode.scala:293)
+	at org.apache.spark.sql.catalyst.trees.CurrentOrigin$.withOrigin(TreeNode.scala:51)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.transformUp(TreeNode.scala:292)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan.transformExpressionUp$1(QueryPlan.scala:108)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan.org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$2(QueryPlan.scala:118)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$2$1.apply(QueryPlan.scala:122)
+	at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:244)
+	at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:244)
+	at scala.collection.immutable.List.foreach(List.scala:318)
+	at scala.collection.TraversableLike$class.map(TraversableLike.scala:244)
+	at scala.collection.AbstractTraversable.map(Traversable.scala:105)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan.org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$2(QueryPlan.scala:122)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$2.apply(QueryPlan.scala:126)
+	at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+	at scala.collection.Iterator$class.foreach(Iterator.scala:727)
+	at scala.collection.AbstractIterator.foreach(Iterator.scala:1157)
+	at scala.collection.generic.Growable$class.$plus$plus$eq(Growable.scala:48)
+	at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:103)
+	at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:47)
+	at scala.collection.TraversableOnce$class.to(TraversableOnce.scala:273)
+	at scala.collection.AbstractIterator.to(Iterator.scala:1157)
+	at scala.collection.TraversableOnce$class.toBuffer(TraversableOnce.scala:265)
+	at scala.collection.AbstractIterator.toBuffer(Iterator.scala:1157)
+	at scala.collection.TraversableOnce$class.toArray(TraversableOnce.scala:252)
+	at scala.collection.AbstractIterator.toArray(Iterator.scala:1157)
+	at org.apache.spark.sql.catalyst.plans.QueryPlan.transformExpressionsUp(QueryPlan.scala:126)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1.apply(CheckAnalysis.scala:53)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1.apply(CheckAnalysis.scala:49)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:103)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$foreachUp$1.apply(TreeNode.scala:102)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$foreachUp$1.apply(TreeNode.scala:102)
+	at scala.collection.immutable.List.foreach(List.scala:318)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:102)
+	at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$class.checkAnalysis(CheckAnalysis.scala:49)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.checkAnalysis(Analyzer.scala:44)
+	at org.apache.spark.sql.SQLContext$QueryExecution.assertAnalyzed(SQLContext.scala:908)
+	at org.apache.spark.sql.DataFrame.<init>(DataFrame.scala:132)
+	at org.apache.spark.sql.DataFrame$.apply(DataFrame.scala:51)
+	at org.apache.spark.sql.SQLContext.sql(SQLContext.scala:719)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLDriver.run(SparkSQLDriver.scala:61)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.processCmd(SparkSQLCLIDriver.scala:305)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:376)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver$.main(SparkSQLCLIDriver.scala:224)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.main(SparkSQLCLIDriver.scala)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:672)
+	at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:180)
+	at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:205)
+	at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:120)
+	at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+
+spark-sql> SELECT COUNT(location) AS lab_3_locations 
+         > FROM user_info FULL OUTER JOIN weblogs_parquet
+         > GROUP BY location
+         > ORDER BY lab_3_locations DESC;
+760038                                                                          
+720036
+680034
+680034
+680034
+640032
+640032
+640032
+640032
+640032
+640032
+640032
+640032
+600030
+600030
+600030
+600030
+600030
+600030
+600030
+600030
+600030
+560028
+560028
+560028
+560028
+560028
+560028
+560028
+560028
+560028
+560028
+560028
+560028
+560028
+560028
+560028
+560028
+520026
+520026
+520026
+520026
+520026
+520026
+520026
+520026
+520026
+520026
+520026
+520026
+520026
+520026
+520026
+520026
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+480024
+440022
+440022
+440022
+440022
+440022
+440022
+440022
+440022
+440022
+440022
+440022
+440022
+440022
+440022
+440022
+400020
+400020
+400020
+400020
+400020
+400020
+400020
+400020
+400020
+400020
+400020
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+360018
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+320016
+280014
+280014
+280014
+280014
+280014
+280014
+280014
+280014
+280014
+280014
+280014
+280014
+280014
+240012
+240012
+240012
+240012
+240012
+240012
+240012
+240012
+240012
+200010
+200010
+200010
+200010
+200010
+200010
+160008
+160008
+160008
+160008
+120006
+80004
+Time taken: 87.342 seconds, Fetched 193 row(s)
+spark-sql> SELECT location, COUNT(location) AS lab_3_locations 
+         > FROM user_info FULL OUTER JOIN weblogs_parquet
+         > GROUP BY location
+         > ORDER BY lab_3_locations DESC;
+Hamilton        760038                                                          
+Axis	720036
+La Fayette	680034
+Headland	680034
+Hazel Green	680034
+Hope Hull	640032
+Hayden	640032
+Leeds	640032
+Adger	640032
+Saint Paul Island	640032
+Albertville	640032
+Madison	640032
+Chapman	640032
+Whittier	600030
+Grand Bay	600030
+Mobile	600030
+Blountsville	600030
+Jefferson	600030
+Greensboro	600030
+Fairfield	600030
+Gadsden	600030
+Unalaska	600030
+Deatsville	560028
+Monroeville	560028
+Foley	560028
+Graysville	560028
+Butler	560028
+Locust Fork	560028
+Atqasuk	560028
+Jasper	560028
+Haleyville	560028
+Luverne	560028
+Atmore	560028
+Fulton	560028
+Arlington	560028
+Skagway	560028
+Daleville	560028
+Allgood	560028
+Bucks	520026
+Lincoln	520026
+Jacksonville	520026
+Birmingham	520026
+Dothan	520026
+Columbiana	520026
+Adamsville	520026
+Fairbanks	520026
+Evergreen	520026
+Columbia	520026
+Millry	520026
+Enterprise	520026
+Excel	520026
+Centreville	520026
+Chelsea	520026
+Laceys Spring	520026
+Lillian	480024
+Galena	480024
+Healy	480024
+Loxley	480024
+Grove Hill	480024
+Attalla	480024
+Petersburg	480024
+Elmendorf Air Force Base	480024
+Loachapoka	480024
+Leesburg	480024
+Auburn	480024
+Thorne Bay	480024
+McGrath	480024
+Barrow	480024
+Gustavus	480024
+Marion	480024
+Lanett	480024
+Fort Payne	480024
+Goodwater	480024
+Coffeeville	480024
+Bremen	480024
+Eagle River	440022
+Ashland	440022
+Ashford	440022
+Ashville	440022
+Dixons Mills	440022
+Jackson	440022
+Boaz	440022
+Greenville	440022
+Tanacross	440022
+Girdwood	440022
+Cordova	440022
+Angoon	440022
+Craig	440022
+Fort Rucker	440022
+Fayette	440022
+Berry	400020
+Tununak	400020
+Guin	400020
+Delta Junction	400020
+Crossville	400020
+Brookwood	400020
+Guntersville	400020
+Cottonwood	400020
+Elberta	400020
+Wasilla	400020
+Eight Mile	400020
+Alexander City	360018
+Eutaw	360018
+Homer	360018
+Kodiak	360018
+Eielson Air Force Base	360018
+Ketchikan	360018
+Clio	360018
+Killen	360018
+Cowarts	360018
+Glenwood	360018
+Gardendale	360018
+Glennallen	360018
+Autaugaville	360018
+Buhl	360018
+Eufaula	360018
+Creola	360018
+Clayton	360018
+Seward	360018
+Lineville	360018
+Cullman	360018
+Mathews	360018
+Mountain Village	360018
+Calera	360018
+Decatur	360018
+Fruitdale	360018
+Bessemer	360018
+Port Lions	360018
+Cottondale	360018
+Klawock	360018
+Alexandria	360018
+Nikiski	360018
+Palmer	360018
+Brewton	320016
+Hanceville	320016
+Centre	320016
+Soldotna	320016
+Tok	320016
+Alpine	320016
+Addison	320016
+Childersburg	320016
+Brownsboro	320016
+Valdez	320016
+North Pole	320016
+Alabaster	320016
+Carrollton	320016
+Hoonah	320016
+Heflin	320016
+Linden	320016
+Auburn University	320016
+Fort Deposit	320016
+Eastaboga	320016
+Andalusia	320016
+Metlakatla	320016
+Hayneville	320016
+Kellyton	320016
+Camden	320016
+Hatchechubbee	320016
+Anniston	320016
+Livingston	280014
+Eclectic	280014
+Millport	280014
+Jack	280014
+Athens	280014
+Bay Minette	280014
+Kotzebue	280014
+Calhoun County	280014
+Arab	280014
+Wrangell	280014
+Clanton	280014
+Ider	280014
+Dauphin Island	280014
+Clear	240012
+Helena	240012
+Hartselle	240012
+Demopolis	240012
+Gordo	240012
+Pelican	240012
+Kenai	240012
+Huntsville	240012
+Huxford	240012
+Daphne	200010
+Gulf Shores	200010
+Fultondale	200010
+Hodges	200010
+Abbeville	200010
+Elba	200010
+Fairhope	160008
+Geneva	160008
+Florence	160008
+Cherokee	160008
+Anderson	120006
+location	80004
+Time taken: 79.466 seconds, Fetched 193 row(s)
+spark-sql> 
+

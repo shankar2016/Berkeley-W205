@@ -1,0 +1,599 @@
+Last login: Wed Oct  5 07:55:20 on ttys003
+localhost:~ NatarajanShankar$ !ssh
+ssh -i "/Users/NatarajanShankar/UC_Berkeley/Term2/W205/ucb5.pem" root@ec2-107-20-151-185.compute-1.amazonaws.com
+Last login: Wed Oct  5 14:37:32 2016 from 73.223.185.251
+     ___   _        __   __   ____            __    
+    / _ \ (_)___ _ / /  / /_ / __/____ ___ _ / /___ 
+   / , _// // _ `// _ \/ __/_\ \ / __// _ `// // -_)
+  /_/|_|/_/ \_, //_//_/\__//___/ \__/ \_,_//_/ \__/ 
+           /___/                                                 
+                                              
+Welcome to a virtual machine image brought to you by RightScale!
+
+
+[root@ip-172-31-6-204 ~]# pwd
+/root
+[root@ip-172-31-6-204 ~]# sh - w205
+sh: w205: No such file or directory
+[root@ip-172-31-6-204 ~]# su - w205
+[w205@ip-172-31-6-204 ~]$ ls -l
+total 363356
+-rw-r--r--  1 root root     13146 Oct  5 01:00 Measures.csv
+-rw-rw-r--  1 w205 w205       693 Sep 28  2015 derby.log
+-rw-r--r--  1 root root  63280769 Oct  5 01:01 effective_care.csv
+-rw-r--r--  1 w205 w205      4391 Oct  5 04:14 hive_base_ddl.sql
+-rw-r--r--  1 root root    826758 Oct  5 01:01 hospitals.csv
+-rwxr-xr-x  1 w205 root      1869 Sep 22 17:55 load_data_lake.sh
+drwxrwxr-x  5 w205 w205      4096 Sep 28  2015 metastore_db
+-rw-r--r--  1 root root  19936145 Oct  5 01:01 readmissions.csv
+-rw-rw-r--  1 w205 w205      3666 Jan 25  2016 setup_spark.sh
+-rw-rw-r--  1 w205 w205 280869269 Sep  9  2015 spark-1.5.0-bin-hadoop2.6.tgz
+drwxr-xr-x 11 w205 w205      4096 Aug 31  2015 spark15
+-rw-r--r--  1 root root   1348499 Oct  5 01:01 surveys_responses.csv
+-rw-rw-r--  1 w205 w205    166205 Sep 17  2015 userdata_lab.csv
+-rw-rw-r--  1 w205 w205   5192992 Sep 17  2015 weblog_lab.csv
+[w205@ip-172-31-6-204 ~]$ hive
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/w205/spark15/lib/spark-assembly-1.5.0-hadoop2.6.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/w205/spark15/lib/spark-assembly-1.5.0-hadoop2.6.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+
+Logging initialized using configuration in jar:file:/usr/lib/hive/lib/hive-common-1.1.0-cdh5.4.5.jar!/hive-log4j.properties
+WARNING: Hive CLI is deprecated and migration to Beeline is recommended.
+hive> DROP TABLE IF EXISTS hospitals_schema;
+OK
+Time taken: 0.359 seconds
+hive> DROP TABLE IF EXISTS effective_care_schema;
+OK
+Time taken: 0.016 seconds
+hive> DROP TABLE IF EXISTS readmissions_schema;
+OK
+Time taken: 0.024 seconds
+hive> DROP TABLE IF EXISTS measures_schema;
+OK
+Time taken: 0.018 seconds
+hive> DROP TABLE IF EXISTS surveys_responses_schema;
+OK
+Time taken: 0.011 seconds
+hive> DROP TABLE IF EXISTS surveys_responses;
+OK
+Time taken: 0.011 seconds
+hive> DROP TABLE IF EXISTS measures;
+OK
+Time taken: 0.009 seconds
+hive> DROP TABLE IF EXISTS readmissions;
+OK
+Time taken: 0.012 seconds
+hive> DROP TABLE IF EXISTS effective_care;
+OK
+Time taken: 0.01 seconds
+hive> DROP TABLE IF EXISTS hospitals;
+OK
+Time taken: 0.01 seconds
+hive> CREATE EXTERNAL TABLE   hospitals_schema(
+    >                 Provider_ID             string,
+    >                 Name                    string,
+    >                 Address                 string,
+    >                 City                    string,
+    >                 State                   string,
+    >                 ZIP_CODE                string,
+    >                 County                  string,
+    >                 Phone_Number            string,
+    >                 Hospital_Type           string,
+    >                 Ownership               string,
+    >                 Emergency_Services      string
+    > )
+    > ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+    > WITH SERDEPROPERTIES(
+    >                 "separatorChar" = ',',
+    >                 "quoteChar" = '"',
+    >                 "escapeChar" = '\\'
+    > )
+    > STORED AS TEXTFILE
+    > LOCATION '/user/w205/hospital_compare/';
+OK
+Time taken: 0.231 seconds
+hive> 
+    > 
+    > CREATE EXTERNAL TABLE effective_care_schema(
+    >                 Provider_ID             string,
+    >                 Name                    string,
+    >                 Address                 string,
+    >                 City                    string,
+    >                 State                   string,
+    >                 ZIP_CODE                string,
+    >                 County                  string,
+    >                 Phone_Number            string,
+    >                 Measure_ID              string,
+    >                 Measure_Name            string,
+    >                 Score                   int,
+    >                 Sample                  int,
+    >                 Footnote                string,
+    >                 Start_Date              date,
+    >                 End_Date                date
+    > )
+    > ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+    > WITH SERDEPROPERTIES(
+    >                 "separatorChar" = ',',
+    >                 "quoteChar" = '"',
+    >                 "escapeChar" = '\\'
+    > )
+    > STORED AS TEXTFILE
+    > LOCATION '/user/w205/hospital_compare/';
+OK
+Time taken: 0.063 seconds
+hive> CREATE EXTERNAL TABLE readmissions_schema(
+    >                 Provider_ID             string,
+    >                 Name                    string,
+    >                 Address                 string,
+    >                 City                    string,
+    >                 State                   string,
+    >                 ZIP_CODE                string,
+    >                 County                  string,
+    >                 Phone_Number            string,
+    >                 Measure_ID              string,
+    >                 Measure_Name            string,
+    >                 Compared_to_National    string,
+    >                 Denominator             string,
+    >                 Score                   int,
+    >                 Lower_Estimate          int,
+    >                 Higher_Estimate         int,
+    >                 Footnote                string,
+    >                 Start_Date              date,
+    >                 End_Date                date
+    > )
+    > ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+    > WITH SERDEPROPERTIES(
+    >                 "separatorChar" = ',',
+    >                 "quoteChar" = '"',
+    >                 "escapeChar" = '\\' )
+    > STORED AS TEXTFILE
+    > LOCATION '/user/w205/hospital_compare/';
+OK
+Time taken: 0.059 seconds
+hive> CREATE EXTERNAL TABLE measures_schema(
+    >                 Measure_Name            string,
+    >                 Measure_ID              string,
+    >                 Measure_StartQuarter    string,
+    >                 Measure_Start_Date      timestamp,
+    >                 Measure_End_Quarter     string,
+    >                 Measure_End_Date        timestamp
+    > )
+    > ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+    > WITH SERDEPROPERTIES(
+    >                 "separatorChar" = ',',
+    >                 "quoteChar" = '"',
+    >                 "escapeChar" = '\\'
+    > )
+    > STORED AS TEXTFILE
+    > LOCATION '/user/w205/hospital_compare/';
+OK
+Time taken: 0.047 seconds
+hive> CREATE EXTERNAL TABLE surveys_responses_schema(
+    >                 Provider_ID             string,
+    >                 Name                    string,
+    >                 Address                 string,
+    >                 City                    string,
+    >                 State                   string,
+    >                 ZIP_CODE                string,
+    >                 County                  string,
+    >                 Communication_with_Nurses_Achievement_Points    string,
+    >                 Communication_with_Nurses_Improvement_Points    string,
+    >                 Communication_with_Nurses_Dimension_Score       string,
+    >                 Communication_with_Doctors_Achievement_Points   string,
+    >                 Communication_with_Doctors_Improvement_Points   string,
+    >                 Communication_with_Doctors_Dimension_Score      string,
+    >                 Responsiveness_of_Hospital_Staff_Achievement_Points     string,
+    >                 Responsiveness_of_Hospital_Staff_Improvement_Points     string,
+    >                 Responsiveness_of_Hospital_Staff_Dimension_Score        string,
+    >                 Pain_Management_Achievement_Points              string,
+    >                 Pain_Management_Improvement_Points              string,
+    >                 Pain_Management_Dimension_Score                 string,
+    >                 Communication_about_Medicines_Achievement_Points        string,
+    >                 Communication_about_Medicines_Improvement_Points        string,
+    >                 Communication_about_Medicines_Dimension_Score           string,
+    >                 Cleanliness_and_Quietness_of_Hospital_Environment_Achievement_Points    string,
+    >                 Cleanliness_and_Quietness_of_Hospital_Environment_Improvement_Points    string,
+    >                 Cleanliness_and_Quietness_of_Hospital_Environment_Dimension_Score       string,
+    >                 Discharge_Information_Achievement_Points        string,
+    >                 Discharge_Information_Improvement_Points        string,
+    >                 Discharge_Information_Dimension_Score           string,
+    >                 Overall_Rating_of_Hospital_Achievement_Points   string,
+    >                 Overall_Rating_of_Hospital_Improvement_Points   string,
+    >                 Overall_Rating_of_Hospital_Dimension_Score      string,
+    >                 HCAHPS_Base_Score                               INT,
+    >                 HCAHPS_Consistency_Score                        INT
+    > )
+    > STORED AS TEXTFILE
+    > LOCATION '/user/w205/hospital_compare/';
+OK
+Time taken: 0.11 seconds
+hive> CREATE TABLE hospitals_parquet AS SELECT * FROM hospitals_schema
+    > ;
+Query ID = w205_20161005164040_dfa72833-1a41-4d24-9955-46825c491b5e
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1475607266406_0004, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1475607266406_0004/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1475607266406_0004
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-10-05 16:40:49,542 Stage-1 map = 0%,  reduce = 0%
+2016-10-05 16:41:01,489 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 8.93 sec
+MapReduce Total cumulative CPU time: 8 seconds 930 msec
+Ended Job = job_1475607266406_0004
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/.hive-staging_hive_2016-10-05_16-40-40_202_6318626763042987016-1/-ext-10001
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/hospitals_parquet
+Table default.hospitals_parquet stats: [numFiles=1, numRows=334813, totalSize=57436770, rawDataSize=57101957]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 8.93 sec   HDFS Read: 90769453 HDFS Write: 57436861 SUCCESS
+Total MapReduce CPU Time Spent: 8 seconds 930 msec
+OK
+Time taken: 23.674 seconds
+hive> CREATE TABLE effective_care_parquet AS SELECT * FROM effective_care_schema;
+Query ID = w205_20161005164141_beae2686-d353-4cd8-80e2-37449cc3c5b0
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1475607266406_0005, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1475607266406_0005/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1475607266406_0005
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-10-05 16:41:56,371 Stage-1 map = 0%,  reduce = 0%
+2016-10-05 16:42:07,156 Stage-1 map = 71%,  reduce = 0%, Cumulative CPU 7.96 sec
+2016-10-05 16:42:08,201 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 8.95 sec
+MapReduce Total cumulative CPU time: 8 seconds 950 msec
+Ended Job = job_1475607266406_0005
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/.hive-staging_hive_2016-10-05_16-41-48_310_2503429326892366428-1/-ext-10001
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/effective_care_parquet
+Table default.effective_care_parquet stats: [numFiles=1, numRows=334813, totalSize=76716053, rawDataSize=76381240]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 8.95 sec   HDFS Read: 90770024 HDFS Write: 76716149 SUCCESS
+Total MapReduce CPU Time Spent: 8 seconds 950 msec
+OK
+Time taken: 21.106 seconds
+hive> CREATE TABLE readmissions_parquet AS SELECT * FROM readmissions_schema;
+Query ID = w205_20161005164242_d5f58a53-d13b-462b-b299-841f7962aea3
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1475607266406_0006, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1475607266406_0006/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1475607266406_0006
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-10-05 16:42:48,461 Stage-1 map = 0%,  reduce = 0%
+2016-10-05 16:42:59,039 Stage-1 map = 71%,  reduce = 0%, Cumulative CPU 7.82 sec
+2016-10-05 16:43:00,078 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 8.57 sec
+MapReduce Total cumulative CPU time: 8 seconds 570 msec
+Ended Job = job_1475607266406_0006
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/.hive-staging_hive_2016-10-05_16-42-40_601_6197113822229084896-1/-ext-10001
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/readmissions_parquet
+Table default.readmissions_parquet stats: [numFiles=1, numRows=334813, totalSize=83802938, rawDataSize=83468125]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 8.57 sec   HDFS Read: 90770706 HDFS Write: 83803032 SUCCESS
+Total MapReduce CPU Time Spent: 8 seconds 570 msec
+OK
+Time taken: 20.687 seconds
+hive> CREATE TABLE measures_parquet AS SELECT * FROM measures_schema;
+Query ID = w205_20161005164343_f4222ac3-9ac6-4baa-888a-1b789911b7b2
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1475607266406_0007, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1475607266406_0007/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1475607266406_0007
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-10-05 16:43:28,558 Stage-1 map = 0%,  reduce = 0%
+2016-10-05 16:43:40,131 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 7.96 sec
+MapReduce Total cumulative CPU time: 7 seconds 960 msec
+Ended Job = job_1475607266406_0007
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/.hive-staging_hive_2016-10-05_16-43-21_472_7426737333563970264-1/-ext-10001
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/measures_parquet
+Table default.measures_parquet stats: [numFiles=1, numRows=334813, totalSize=27953831, rawDataSize=27619018]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 7.96 sec   HDFS Read: 90768938 HDFS Write: 27953921 SUCCESS
+Total MapReduce CPU Time Spent: 7 seconds 960 msec
+OK
+Time taken: 19.853 seconds
+hive> CREATE TABLE surveys_responses_parquet AS SELECT * FROM surveys_responses_schema;
+Query ID = w205_20161005164444_30cd6edc-8b25-43b5-a44c-178e3c43ad91
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1475607266406_0008, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1475607266406_0008/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1475607266406_0008
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-10-05 16:44:16,728 Stage-1 map = 0%,  reduce = 0%
+2016-10-05 16:44:26,302 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 6.12 sec
+MapReduce Total cumulative CPU time: 6 seconds 120 msec
+Ended Job = job_1475607266406_0008
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/.hive-staging_hive_2016-10-05_16-44-09_596_2014504630830351661-1/-ext-10001
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/surveys_responses_parquet
+Table default.surveys_responses_parquet stats: [numFiles=1, numRows=334813, totalSize=122571749, rawDataSize=122236936]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 6.12 sec   HDFS Read: 90778161 HDFS Write: 122571849 SUCCESS
+Total MapReduce CPU Time Spent: 6 seconds 120 msec
+OK
+Time taken: 17.967 seconds
+hive> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================
+CREATE needed subdirectories
+============================
+
+
+
+
+Last login: Wed Oct  5 09:30:57 on ttys002
+localhost:~ NatarajanShankar$ cd UC_Berkeley//Term2/
+localhost:Term2 NatarajanShankar$ ls -l
+total 8
+drwxr-xr-x  21 NatarajanShankar  staff   714 Oct  4 21:07 W205
+drwxr-xr-x   4 NatarajanShankar  staff   136 Sep 24 20:45 W205_HW
+drwxr-xr-x   4 NatarajanShankar  staff   136 Sep 24 11:34 W205_Uri
+drwxr-xr-x   9 NatarajanShankar  staff   306 Sep  9 19:39 W207
+-r--------@  1 NatarajanShankar  staff  1692 Sep  6 09:02 ucb3.pem.latest
+localhost:Term2 NatarajanShankar$ cd W205_HW
+localhost:W205_HW NatarajanShankar$ ls -l
+total 0
+drwxr-xr-x  6 NatarajanShankar  staff  204 Sep 24 20:45 MIDS-W205_A1
+localhost:W205_HW NatarajanShankar$ cd MIDS-W205_A1/
+localhost:MIDS-W205_A1 NatarajanShankar$ ls -l
+total 8
+-rw-r--r--  1 NatarajanShankar  staff   54 Sep 24 20:22 README.md
+drwxr-xr-x  5 NatarajanShankar  staff  170 Oct  3 14:18 exercise_1
+localhost:MIDS-W205_A1 NatarajanShankar$ cd exercise_1
+localhost:exercise_1 NatarajanShankar$ ls -l
+total 0
+drwxr-xr-x  6 NatarajanShankar  staff  204 Sep 24 20:45 loading_and_modelling
+drwxr-xr-x  2 NatarajanShankar  staff   68 Oct  3 14:18 transforming
+localhost:exercise_1 NatarajanShankar$ mkdir investigations
+localhost:exercise_1 NatarajanShankar$ ls -l
+total 0
+drwxr-xr-x  2 NatarajanShankar  staff   68 Oct  5 09:48 investigations
+drwxr-xr-x  6 NatarajanShankar  staff  204 Sep 24 20:45 loading_and_modelling
+drwxr-xr-x  2 NatarajanShankar  staff   68 Oct  3 14:18 transforming
+localhost:exercise_1 NatarajanShankar$ cd transforming
+localhost:transforming NatarajanShankar$ mkdir best_hospitals
+localhost:transforming NatarajanShankar$ mkdir best_states
+localhost:transforming NatarajanShankar$ mkdir hospital_variability
+localhost:transforming NatarajanShankar$ mkdir hospitals_and_patients
+localhost:transforming NatarajanShankar$ 
+
+
+
+
+
+
+
+***************
+SUCCESSFUL RUN
+***************
+
+[w205@ip-172-31-6-204 ~]$ pwd
+/home/w205
+[w205@ip-172-31-6-204 ~]$ ls -l
+total 363356
+-rw-r--r--  1 root root     13146 Oct  5 01:00 Measures.csv
+-rw-rw-r--  1 w205 w205       693 Sep 28  2015 derby.log
+-rw-r--r--  1 root root  63280769 Oct  5 01:01 effective_care.csv
+-rw-r--r--  1 w205 w205      4930 Oct  5 16:56 hive_base_ddl.sql
+-rw-r--r--  1 root root    826758 Oct  5 01:01 hospitals.csv
+-rwxr-xr-x  1 w205 root      1869 Sep 22 17:55 load_data_lake.sh
+drwxrwxr-x  5 w205 w205      4096 Sep 28  2015 metastore_db
+-rw-r--r--  1 root root  19936145 Oct  5 01:01 readmissions.csv
+-rw-rw-r--  1 w205 w205      3666 Jan 25  2016 setup_spark.sh
+-rw-rw-r--  1 w205 w205 280869269 Sep  9  2015 spark-1.5.0-bin-hadoop2.6.tgz
+drwxr-xr-x 11 w205 w205      4096 Aug 31  2015 spark15
+-rw-r--r--  1 root root   1348499 Oct  5 01:01 surveys_responses.csv
+-rw-rw-r--  1 w205 w205    166205 Sep 17  2015 userdata_lab.csv
+-rw-rw-r--  1 w205 w205   5192992 Sep 17  2015 weblog_lab.csv
+[w205@ip-172-31-6-204 ~]$
+
+
+
+[w205@ip-172-31-6-204 ~]$ hive -f hive_base_ddl.sql
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/w205/spark15/lib/spark-assembly-1.5.0-hadoop2.6.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/w205/spark15/lib/spark-assembly-1.5.0-hadoop2.6.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+
+Logging initialized using configuration in jar:file:/usr/lib/hive/lib/hive-common-1.1.0-cdh5.4.5.jar!/hive-log4j.properties
+OK
+Time taken: 0.504 seconds
+OK
+Time taken: 0.01 seconds
+OK
+Time taken: 0.009 seconds
+OK
+Time taken: 0.008 seconds
+OK
+Time taken: 0.01 seconds
+OK
+Time taken: 0.505 seconds
+OK
+Time taken: 0.11 seconds
+OK
+Time taken: 0.134 seconds
+OK
+Time taken: 0.085 seconds
+OK
+Time taken: 0.137 seconds
+OK
+Time taken: 0.111 seconds
+OK
+Time taken: 0.106 seconds
+OK
+Time taken: 0.099 seconds
+OK
+Time taken: 0.077 seconds
+OK
+Time taken: 0.117 seconds
+OK
+Time taken: 0.015 seconds
+OK
+Time taken: 0.241 seconds
+OK
+Time taken: 0.012 seconds
+OK
+Time taken: 0.076 seconds
+OK
+Time taken: 0.023 seconds
+OK
+Time taken: 0.085 seconds
+OK
+Time taken: 0.008 seconds
+OK
+Time taken: 0.037 seconds
+OK
+Time taken: 0.011 seconds
+OK
+Time taken: 0.167 seconds
+Query ID = w205_20161005171414_fa074045-24a4-4233-95a0-44bf5d11b282
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1475607266406_0009, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1475607266406_0009/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1475607266406_0009
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-10-05 17:14:29,539 Stage-1 map = 0%,  reduce = 0%
+2016-10-05 17:14:41,373 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 8.37 sec
+MapReduce Total cumulative CPU time: 8 seconds 370 msec
+Ended Job = job_1475607266406_0009
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/.hive-staging_hive_2016-10-05_17-14-20_420_8523379677859877837-1/-ext-10001
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/hospitals_parquet
+Table default.hospitals_parquet stats: [numFiles=1, numRows=334813, totalSize=57436770, rawDataSize=57101957]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 8.37 sec   HDFS Read: 90769453 HDFS Write: 57436861 SUCCESS
+Total MapReduce CPU Time Spent: 8 seconds 370 msec
+OK
+Time taken: 22.273 seconds
+Query ID = w205_20161005171414_4ae52bc6-51f9-44ec-80ab-856cd12b7908
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1475607266406_0010, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1475607266406_0010/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1475607266406_0010
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-10-05 17:14:50,078 Stage-1 map = 0%,  reduce = 0%
+2016-10-05 17:15:01,776 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 9.23 sec
+MapReduce Total cumulative CPU time: 9 seconds 230 msec
+Ended Job = job_1475607266406_0010
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/.hive-staging_hive_2016-10-05_17-14-42_696_3560356219071545147-1/-ext-10001
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/effective_care_parquet
+Table default.effective_care_parquet stats: [numFiles=1, numRows=334813, totalSize=76716053, rawDataSize=76381240]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 9.23 sec   HDFS Read: 90770024 HDFS Write: 76716149 SUCCESS
+Total MapReduce CPU Time Spent: 9 seconds 230 msec
+OK
+Time taken: 21.33 seconds
+Query ID = w205_20161005171515_36518359-2a39-4331-abd4-22d7629d7565
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1475607266406_0011, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1475607266406_0011/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1475607266406_0011
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-10-05 17:15:10,981 Stage-1 map = 0%,  reduce = 0%
+2016-10-05 17:15:22,691 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 8.74 sec
+MapReduce Total cumulative CPU time: 8 seconds 740 msec
+Ended Job = job_1475607266406_0011
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/.hive-staging_hive_2016-10-05_17-15-04_029_5228822186560813030-1/-ext-10001
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/readmissions_parquet
+Table default.readmissions_parquet stats: [numFiles=1, numRows=334813, totalSize=83802938, rawDataSize=83468125]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 8.74 sec   HDFS Read: 90770716 HDFS Write: 83803032 SUCCESS
+Total MapReduce CPU Time Spent: 8 seconds 740 msec
+OK
+Time taken: 20.96 seconds
+Query ID = w205_20161005171515_daa37b86-cda4-4492-9586-dca78c90613b
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1475607266406_0012, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1475607266406_0012/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1475607266406_0012
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-10-05 17:15:31,941 Stage-1 map = 0%,  reduce = 0%
+2016-10-05 17:15:42,612 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 7.73 sec
+MapReduce Total cumulative CPU time: 7 seconds 730 msec
+Ended Job = job_1475607266406_0012
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/.hive-staging_hive_2016-10-05_17-15-24_993_4033234738065978135-1/-ext-10001
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/measures_parquet
+Table default.measures_parquet stats: [numFiles=1, numRows=334813, totalSize=27953831, rawDataSize=27619018]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 7.73 sec   HDFS Read: 90768948 HDFS Write: 27953921 SUCCESS
+Total MapReduce CPU Time Spent: 7 seconds 730 msec
+OK
+Time taken: 19.821 seconds
+Query ID = w205_20161005171515_39ffe6fe-1930-4645-83e7-c585aa680c45
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1475607266406_0013, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1475607266406_0013/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1475607266406_0013
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-10-05 17:15:51,750 Stage-1 map = 0%,  reduce = 0%
+2016-10-05 17:16:01,311 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 6.04 sec
+MapReduce Total cumulative CPU time: 6 seconds 40 msec
+Ended Job = job_1475607266406_0013
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/.hive-staging_hive_2016-10-05_17-15-44_817_49647260818668705-1/-ext-10001
+Moving data to: hdfs://localhost:8020/user/hive/warehouse/surveys_responses_parquet
+Table default.surveys_responses_parquet stats: [numFiles=1, numRows=334813, totalSize=122571749, rawDataSize=122236936]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 6.04 sec   HDFS Read: 90778167 HDFS Write: 122571849 SUCCESS
+Total MapReduce CPU Time Spent: 6 seconds 40 msec
+OK
+Time taken: 17.708 seconds
+[w205@ip-172-31-6-204 ~]$ 
+
