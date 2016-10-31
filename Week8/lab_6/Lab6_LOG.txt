@@ -1901,3 +1901,61 @@ Traceback (most recent call last):
     raise exception
 KeyboardInterrupt
 [root@ip-172-31-0-96 tweetcount]# 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Just to show the 2 threads for Tweets (4175, 4173) and one for Count (4174)
+
+
+
+20256 [Thread-29] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4175, name:tweet-bolt [[u'She'], [u'advised'], [u'him'], [u'to'], [u'take'], [u'a'], [u'long'], [u'holiday'], [u'so'], [u'he'], [u'immediately'], [u'quit'], [u'work'], [u'and'], [u'took'], [u'a'], [u'trip'], [u'around'], [u'the'], [u'world']]
+20260 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt She: 1
+20292 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt advised: 1
+20303 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt him: 1
+20305 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt to: 1
+20318 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt take: 1
+20322 [Thread-31] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4173, name:tweet-bolt [[u'He'], [u'will'], [u'be'], [u'here'], [u'in'], [u'half'], [u'an'], [u'hour']]
+20337 [Thread-31] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4173, name:tweet-bolt [[u'She'], [u'saw'], [u'him'], [u'eating'], [u'a'], [u'sandwich']]
+20352 [Thread-31] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4173, name:tweet-bolt [[u'She'], [u'saw'], [u'him'], [u'eating'], [u'a'], [u'sandwich']]
+20373 [Thread-29] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4175, name:tweet-bolt [[u'She'], [u'advised'], [u'him'], [u'to'], [u'take'], [u'a'], [u'long'], [u'holiday'], [u'so'], [u'he'], [u'immediately'], [u'quit'], [u'work'], [u'and'], [u'took'], [u'a'], [u'trip'], [u'around'], [u'the'], [u'world']]
+20407 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt He: 1
+20408 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt will: 1
+20409 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt be: 1
+20419 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt here: 1
+20426 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt in: 1
+20438 [Thread-31] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4173, name:tweet-bolt [[u'She'], [u'advised'], [u'him'], [u'to'], [u'take'], [u'a'], [u'long'], [u'holiday'], [u'so'], [u'he'], [u'immediately'], [u'quit'], [u'work'], [u'and'], [u'took'], [u'a'], [u'trip'], [u'around'], [u'the'], [u'world']]
+20473 [Thread-31] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4173, name:tweet-bolt [[u'She'], [u'advised'], [u'him'], [u'to'], [u'take'], [u'a'], [u'long'], [u'holiday'], [u'so'], [u'he'], [u'immediately'], [u'quit'], [u'work'], [u'and'], [u'took'], [u'a'], [u'trip'], [u'around'], [u'the'], [u'world']]
+20517 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt half: 1
+20555 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt an: 1
+20555 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt hour: 1
+20583 [Thread-31] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4173, name:tweet-bolt [[u'She'], [u'saw'], [u'him'], [u'eating'], [u'a'], [u'sandwich']]
+20619 [Thread-29] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4175, name:tweet-bolt [[u'He'], [u'will'], [u'be'], [u'here'], [u'in'], [u'half'], [u'an'], [u'hour']]
+20633 [Thread-29] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4175, name:tweet-bolt [[u'He'], [u'will'], [u'be'], [u'here'], [u'in'], [u'half'], [u'an'], [u'hour']]
+20646 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt She: 2
+20647 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt saw: 1
+20650 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt him: 2
+20664 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt eating: 1
+20665 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt a: 1
+20681 [Thread-31] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4173, name:tweet-bolt [[u'He'], [u'will'], [u'be'], [u'here'], [u'in'], [u'half'], [u'an'], [u'hour']]
+20683 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt sandwich: 1
+20682 [Thread-29] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4175, name:tweet-bolt [[u'She'], [u'saw'], [u'him'], [u'eating'], [u'a'], [u'sandwich']]
+20747 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt a: 2
+20750 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt long: 1
+20760 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt She: 3
+20761 [Thread-29] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4175, name:tweet-bolt [[u'He'], [u'will'], [u'be'], [u'here'], [u'in'], [u'half'], [u'an'], [u'hour']]
+20781 [Thread-29] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4175, name:tweet-bolt [[u'She'], [u'advised'], [u'him'], [u'to'], [u'take'], [u'a'], [u'long'], [u'holiday'], [u'so'], [u'he'], [u'immediately'], [u'quit'], [u'work'], [u'and'], [u'took'], [u'a'], [u'trip'], [u'around'], [u'the'], [u'world']]
+20823 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt saw: 2
+20824 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:4174, name:word-bolt him: 3
+

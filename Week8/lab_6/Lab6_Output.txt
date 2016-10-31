@@ -1,0 +1,178 @@
+;; Natarajan Shankar : Lab 6, W205, Fall 2016
+(ns tweetcount
+  (:use     [streamparse.specs])
+  (:gen-class))
+
+(defn tweetcount [options]
+   [
+    ;; spout configuration
+    {"tweet-spout" (python-spout-spec
+          options
+          "spouts.tweets.TweetSpout"
+          ["tweet"]
+          )
+    }
+    ;; First layer of bolts, spawn 2 instances to process tweets and output Words
+    {"tweet-bolt" (python-bolt-spec
+          options
+          {"tweet-spout" :shuffle}
+          "bolts.tweetparser.TweetParser"
+          ["words"]
+          :p 2
+          )
+    ;; Second layer of bolts,  one instance to Count words
+    "word-bolt" (python-bolt-spec
+          options
+          {"tweet-bolt" :shuffle}
+          "bolts.wordcount.WordCounter"
+          ["word" "count"]
+          :p 1
+          )
+    }
+  ]
+)
+
+
+
+
+18927 [Thread-14-tweet-bolt] INFO  backtype.storm.task.ShellBolt - Start checking heartbeat...
+18927 [Thread-14-tweet-bolt] INFO  backtype.storm.daemon.executor - Prepared bolt tweet-bolt:(4)
+18989 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt She: 1
+19007 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt advised: 1
+19010 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt him: 1
+19011 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt to: 1
+19038 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt take: 1
+19048 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 1
+19049 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt long: 1
+19051 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt holiday: 1
+19069 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt so: 1
+19073 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt he: 1
+19087 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt immediately: 1
+19087 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt quit: 1
+19114 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt work: 1
+19115 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt and: 1
+19124 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt took: 1
+19216 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt He: 1
+19217 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt will: 1
+19410 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt be: 1
+19412 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt here: 1
+19413 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt in: 1
+19431 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt half: 1
+19434 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt an: 1
+19435 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt hour: 1
+19436 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt She: 2
+19437 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt saw: 1
+19449 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt him: 2
+19534 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt eating: 1
+19535 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 2
+19550 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt trip: 1
+19551 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt around: 1
+19555 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt the: 1
+19556 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt world: 1
+19664 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt She: 3
+19890 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt advised: 2
+19914 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt him: 3
+19964 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt to: 2
+19968 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt take: 2
+19971 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 3
+19996 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 4
+20013 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt sandwich: 1
+20015 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt He: 2
+20018 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt will: 2
+20053 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt long: 2
+20053 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt holiday: 2
+20054 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt so: 2
+20072 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt he: 2
+20073 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt immediately: 2
+20074 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt quit: 2
+20075 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt work: 2
+20089 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt and: 2
+20090 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt took: 2
+20091 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 5
+20091 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt trip: 2
+20092 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt around: 2
+20093 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt the: 2
+20111 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt world: 2
+20111 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt She: 4
+20112 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt saw: 2
+20113 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt him: 4
+20116 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt eating: 2
+20116 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 6
+20225 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt sandwich: 2
+20226 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt She: 5
+20227 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt be: 2
+20230 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt here: 2
+20231 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt in: 2
+20231 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt half: 2
+20232 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt an: 2
+20250 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt hour: 2
+20251 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt He: 3
+20251 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt will: 3
+20252 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt advised: 3
+20253 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt be: 3
+20273 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt here: 3
+20274 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt in: 3
+20274 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt him: 5
+20275 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt to: 3
+20276 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt take: 3
+20302 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 7
+20303 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt long: 3
+20421 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt holiday: 3
+20588 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt so: 3
+20608 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt he: 3
+20609 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt immediately: 3
+20609 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt quit: 3
+20610 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt work: 3
+20611 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt and: 3
+20611 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt took: 3
+20612 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 8
+20613 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt trip: 3
+20628 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt around: 3
+20628 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt half: 3
+20629 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt an: 3
+20645 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt hour: 3
+20648 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt She: 6
+20649 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt saw: 3
+20660 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt him: 6
+20662 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt eating: 3
+20663 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 9
+20664 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt sandwich: 3
+20770 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt She: 7
+20866 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt saw: 4
+20868 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt him: 7
+20868 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt eating: 4
+20869 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 10
+20870 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt sandwich: 4
+20879 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt She: 8
+20951 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt advised: 4
+21263 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt him: 8
+21329 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt to: 4
+21330 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt take: 4
+21330 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt the: 3
+21331 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt world: 3
+21332 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt She: 9
+21350 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt advised: 5
+21351 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 11
+21352 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt long: 4
+21371 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt holiday: 4
+21372 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt so: 4
+21373 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt he: 4
+21373 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt immediately: 4
+21374 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt quit: 4
+21392 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt work: 4
+21449 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt and: 4
+21473 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt took: 4
+21485 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 12
+21498 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt trip: 4
+21500 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt around: 4
+21503 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt the: 4
+21505 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt world: 4
+21508 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt She: 10
+21523 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt advised: 6
+21525 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt him: 9
+21526 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt to: 5
+21528 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt take: 5
+21544 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt a: 13
+21545 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt long: 5
+21546 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:14907, name:word-bolt holiday: 5
+
