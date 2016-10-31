@@ -1,0 +1,3727 @@
+localhost:~ NatarajanShankar$ ssh -i "/Users/NatarajanShankar/UC_Berkeley/W205/ucb5.pem" root@ec2-54-227-187-16.compute-1.amazonaws.com
+Warning: Identity file /Users/NatarajanShankar/UC_Berkeley/W205/ucb5.pem not accessible: No such file or directory.
+The authenticity of host 'ec2-54-227-187-16.compute-1.amazonaws.com (54.227.187.16)' can't be established.
+RSA key fingerprint is a8:5d:e8:8d:35:d6:cf:9c:d5:64:45:cd:8b:53:c0:a8.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'ec2-54-227-187-16.compute-1.amazonaws.com,54.227.187.16' (RSA) to the list of known hosts.
+Permission denied (publickey).
+localhost:~ NatarajanShankar$ cd /Users/NatarajanShankar/UC_Berkeley/W205/
+-bash: cd: /Users/NatarajanShankar/UC_Berkeley/W205/: No such file or directory
+localhost:~ NatarajanShankar$ ssh -i "/Users/NatarajanShankar/UC_Berkeley/Term2/W205/ucb5.pem" root@ec2-54-227-187-16.compute-1.amazonaws.com
+Last login: Mon Oct 10 05:08:24 2016 from 73.223.185.251
+     ___   _        __   __   ____            __    
+    / _ \ (_)___ _ / /  / /_ / __/____ ___ _ / /___ 
+   / , _// // _ `// _ \/ __/_\ \ / __// _ `// // -_)
+  /_/|_|/_/ \_, //_//_/\__//___/ \__/ \_,_//_/ \__/ 
+           /___/                                                 
+                                              
+Welcome to a virtual machine image brought to you by RightScale!
+
+
+[root@ip-172-31-6-204 ~]# su - w205
+[w205@ip-172-31-6-204 ~]$ pwd
+/home/w205
+[w205@ip-172-31-6-204 ~]$ ls -l
+total 363368
+-rw-r--r--  1 root root     13146 Oct  5 01:00 Measures.csv
+-rw-rw-r--  1 w205 w205       693 Sep 28  2015 derby.log
+-rw-r--r--  1 root root  63280769 Oct  5 01:01 effective_care.csv
+-rw-r--r--  1 w205 w205      7020 Oct  9 15:42 hive_base_ddl.sql
+-rw-rw-r--  1 w205 w205      5203 Oct  6 05:14 hive_base_ddl2.sql
+-rw-r--r--  1 root root    826758 Oct  5 01:01 hospitals.csv
+-rwxr-xr-x  1 w205 root      1869 Sep 22 17:55 load_data_lake.sh
+drwxrwxr-x  5 w205 w205      4096 Sep 28  2015 metastore_db
+-rw-r--r--  1 root root  19936145 Oct  5 01:01 readmissions.csv
+-rw-rw-r--  1 w205 w205      3666 Jan 25  2016 setup_spark.sh
+-rw-rw-r--  1 w205 w205      3666 Jan 25  2016 setup_spark.sh.1
+-rw-rw-r--  1 w205 w205 280869269 Sep  9  2015 spark-1.5.0-bin-hadoop2.6.tgz
+drwxr-xr-x 11 w205 w205      4096 Aug 31  2015 spark15
+-rw-r--r--  1 root root   1348499 Oct  5 01:01 surveys_responses.csv
+-rw-rw-r--  1 w205 w205    166205 Sep 17  2015 userdata_lab.csv
+-rw-rw-r--  1 w205 w205   5192992 Sep 17  2015 weblog_lab.csv
+[w205@ip-172-31-6-204 ~]$ ps auxwww | grep postgres
+w205      3140  0.0  0.0   6388   660 pts/0    R+   14:23   0:00 grep postgres
+[w205@ip-172-31-6-204 ~]$ cd /data
+[w205@ip-172-31-6-204 data]$ /data/start_postgres.sh
+-bash: /data/start_postgres.sh: No such file or directory
+[w205@ip-172-31-6-204 data]$ ls -l
+total 8
+drwxr-xr-x 3 hdfs hdfs 4096 Oct  4 18:47 hadoop-hdfs
+drwxr-xr-x 4 yarn yarn 4096 Sep 21 14:35 hadoop-yarn
+[w205@ip-172-31-6-204 data]$ cd ~
+[w205@ip-172-31-6-204 ~]$ ls /
+bin  boot  data  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  proc  root  sbin  selinux  srv  sys  tmp  usr  var
+[w205@ip-172-31-6-204 ~]$ chmod a+rwx /data
+chmod: changing permissions of `/data': Operation not permitted
+[w205@ip-172-31-6-204 ~]$ exit
+logout
+[root@ip-172-31-6-204 ~]# ls /
+bin  boot  data  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  proc  root  sbin  selinux  srv  sys  tmp  usr  var
+[root@ip-172-31-6-204 ~]# chmod a+rwx /data
+[root@ip-172-31-6-204 ~]# ls -l
+total 52
+-rw-------  1 root root  287 Sep 22  2015 dans_bash_history.txt
+-rw-rw-r--  1 root mail  135 Sep 21 16:31 dead.letter
+-rw-r--r--  1 root root  633 Oct  4 18:52 derby.log
+drwxr-xr-x 11 root root 4096 May  4  2015 ipython
+drwxr-xr-x  5 root root 4096 Oct  4 18:52 metastore_db
+drwxr-xr-x  5 root root 4096 May  4  2015 pgxl-deployment-tools
+-rwxr-xr-x  1 root root 5716 Oct 10  2015 setup_ucb_complete_plus_postgres.sh
+-rwxr-xr-x  1 root root  221 Sep 22  2015 start-hadoop.sh
+-rwxr-xr-x  1 root root  252 Sep 22  2015 start-hadoop.sh~
+-rwxr-xr-x  1 root root  209 Sep 22  2015 stop-hadoop.sh
+-rwxr-xr-x  1 root root  222 Sep 22  2015 stop-hadoop.sh~
+drwxr-xr-x 11 root root 4096 May  4  2015 streamparse
+[root@ip-172-31-6-204 ~]# ./setup_ucb_complete_plus_postgres.sh /dev/xvdp
+umount: /data: not mounted
+using drive  /dev/xvdp
+WARNING!! This will format the drive at /dev/xvdp
+Press any key to continue or control-C to quit...
+mke2fs 1.41.12 (17-May-2010)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=0 blocks, Stripe width=0 blocks
+6553600 inodes, 26214400 blocks
+1310720 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=4294967296
+800 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000, 7962624, 11239424, 20480000, 23887872
+
+Writing inode tables: done                            
+Creating journal (32768 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+This filesystem will be automatically checked every 36 mounts or
+180 days, whichever comes first.  Use tune2fs -c or -i to override.
+16/10/15 14:29:22 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = ip-172-31-6-204.ec2.internal/172.31.6.204
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 2.6.0-cdh5.4.5
+STARTUP_MSG:   classpath = /etc/hadoop/conf:/usr/lib/hadoop/lib/apacheds-i18n-2.0.0-M15.jar:/usr/lib/hadoop/lib/asm-3.2.jar:/usr/lib/hadoop/lib/jersey-core-1.9.jar:/usr/lib/hadoop/lib/mockito-all-1.8.5.jar:/usr/lib/hadoop/lib/api-asn1-api-1.0.0-M20.jar:/usr/lib/hadoop/lib/curator-framework-2.7.1.jar:/usr/lib/hadoop/lib/slf4j-log4j12.jar:/usr/lib/hadoop/lib/jersey-json-1.9.jar:/usr/lib/hadoop/lib/aws-java-sdk-1.7.14.jar:/usr/lib/hadoop/lib/java-xmlbuilder-0.4.jar:/usr/lib/hadoop/lib/guava-11.0.2.jar:/usr/lib/hadoop/lib/xz-1.0.jar:/usr/lib/hadoop/lib/jaxb-impl-2.2.3-1.jar:/usr/lib/hadoop/lib/jackson-mapper-asl-1.8.8.jar:/usr/lib/hadoop/lib/commons-configuration-1.6.jar:/usr/lib/hadoop/lib/curator-client-2.7.1.jar:/usr/lib/hadoop/lib/xmlenc-0.52.jar:/usr/lib/hadoop/lib/commons-compress-1.4.1.jar:/usr/lib/hadoop/lib/hamcrest-core-1.3.jar:/usr/lib/hadoop/lib/htrace-core-3.0.4.jar:/usr/lib/hadoop/lib/jasper-compiler-5.5.23.jar:/usr/lib/hadoop/lib/avro.jar:/usr/lib/hadoop/lib/jsr305-3.0.0.jar:/usr/lib/hadoop/lib/commons-el-1.0.jar:/usr/lib/hadoop/lib/stax-api-1.0-2.jar:/usr/lib/hadoop/lib/jsch-0.1.42.jar:/usr/lib/hadoop/lib/commons-net-3.1.jar:/usr/lib/hadoop/lib/snappy-java-1.0.4.1.jar:/usr/lib/hadoop/lib/zookeeper.jar:/usr/lib/hadoop/lib/jackson-jaxrs-1.8.8.jar:/usr/lib/hadoop/lib/commons-io-2.4.jar:/usr/lib/hadoop/lib/paranamer-2.3.jar:/usr/lib/hadoop/lib/commons-digester-1.8.jar:/usr/lib/hadoop/lib/commons-codec-1.4.jar:/usr/lib/hadoop/lib/servlet-api-2.5.jar:/usr/lib/hadoop/lib/commons-lang-2.6.jar:/usr/lib/hadoop/lib/netty-3.6.2.Final.jar:/usr/lib/hadoop/lib/jettison-1.1.jar:/usr/lib/hadoop/lib/commons-cli-1.2.jar:/usr/lib/hadoop/lib/commons-collections-3.2.1.jar:/usr/lib/hadoop/lib/slf4j-api-1.7.5.jar:/usr/lib/hadoop/lib/apacheds-kerberos-codec-2.0.0-M15.jar:/usr/lib/hadoop/lib/jasper-runtime-5.5.23.jar:/usr/lib/hadoop/lib/jersey-server-1.9.jar:/usr/lib/hadoop/lib/api-util-1.0.0-M20.jar:/usr/lib/hadoop/lib/curator-recipes-2.7.1.jar:/usr/lib/hadoop/lib/activation-1.1.jar:/usr/lib/hadoop/lib/jackson-core-asl-1.8.8.jar:/usr/lib/hadoop/lib/jetty-6.1.26.cloudera.4.jar:/usr/lib/hadoop/lib/logredactor-1.0.3.jar:/usr/lib/hadoop/lib/commons-beanutils-core-1.8.0.jar:/usr/lib/hadoop/lib/jaxb-api-2.2.2.jar:/usr/lib/hadoop/lib/commons-math3-3.1.1.jar:/usr/lib/hadoop/lib/log4j-1.2.17.jar:/usr/lib/hadoop/lib/jets3t-0.9.0.jar:/usr/lib/hadoop/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop/lib/commons-beanutils-1.7.0.jar:/usr/lib/hadoop/lib/commons-httpclient-3.1.jar:/usr/lib/hadoop/lib/jackson-xc-1.8.8.jar:/usr/lib/hadoop/lib/commons-logging-1.1.3.jar:/usr/lib/hadoop/lib/jsp-api-2.1.jar:/usr/lib/hadoop/lib/httpclient-4.2.5.jar:/usr/lib/hadoop/lib/httpcore-4.2.5.jar:/usr/lib/hadoop/lib/gson-2.2.4.jar:/usr/lib/hadoop/lib/junit-4.11.jar:/usr/lib/hadoop/lib/jetty-util-6.1.26.cloudera.4.jar:/usr/lib/hadoop/.//hadoop-common-tests.jar:/usr/lib/hadoop/.//hadoop-aws.jar:/usr/lib/hadoop/.//parquet-generator.jar:/usr/lib/hadoop/.//parquet-encoding.jar:/usr/lib/hadoop/.//hadoop-common-2.6.0-cdh5.4.5-tests.jar:/usr/lib/hadoop/.//parquet-thrift.jar:/usr/lib/hadoop/.//parquet-pig-bundle.jar:/usr/lib/hadoop/.//parquet-format-javadoc.jar:/usr/lib/hadoop/.//parquet-format.jar:/usr/lib/hadoop/.//parquet-column.jar:/usr/lib/hadoop/.//parquet-format-sources.jar:/usr/lib/hadoop/.//parquet-pig.jar:/usr/lib/hadoop/.//parquet-avro.jar:/usr/lib/hadoop/.//parquet-hadoop-bundle.jar:/usr/lib/hadoop/.//parquet-common.jar:/usr/lib/hadoop/.//hadoop-annotations-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop/.//hadoop-auth-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop/.//hadoop-common.jar:/usr/lib/hadoop/.//hadoop-aws-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop/.//hadoop-nfs.jar:/usr/lib/hadoop/.//parquet-jackson.jar:/usr/lib/hadoop/.//parquet-hadoop.jar:/usr/lib/hadoop/.//parquet-cascading.jar:/usr/lib/hadoop/.//parquet-scrooge_2.10.jar:/usr/lib/hadoop/.//hadoop-auth.jar:/usr/lib/hadoop/.//hadoop-nfs-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop/.//hadoop-common-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop/.//parquet-test-hadoop2.jar:/usr/lib/hadoop/.//parquet-protobuf.jar:/usr/lib/hadoop/.//parquet-scala_2.10.jar:/usr/lib/hadoop/.//hadoop-annotations.jar:/usr/lib/hadoop/.//parquet-tools.jar:/usr/lib/hadoop-hdfs/./:/usr/lib/hadoop-hdfs/lib/asm-3.2.jar:/usr/lib/hadoop-hdfs/lib/jersey-core-1.9.jar:/usr/lib/hadoop-hdfs/lib/guava-11.0.2.jar:/usr/lib/hadoop-hdfs/lib/jackson-mapper-asl-1.8.8.jar:/usr/lib/hadoop-hdfs/lib/xmlenc-0.52.jar:/usr/lib/hadoop-hdfs/lib/htrace-core-3.0.4.jar:/usr/lib/hadoop-hdfs/lib/jsr305-3.0.0.jar:/usr/lib/hadoop-hdfs/lib/commons-el-1.0.jar:/usr/lib/hadoop-hdfs/lib/commons-io-2.4.jar:/usr/lib/hadoop-hdfs/lib/commons-codec-1.4.jar:/usr/lib/hadoop-hdfs/lib/servlet-api-2.5.jar:/usr/lib/hadoop-hdfs/lib/commons-lang-2.6.jar:/usr/lib/hadoop-hdfs/lib/netty-3.6.2.Final.jar:/usr/lib/hadoop-hdfs/lib/commons-cli-1.2.jar:/usr/lib/hadoop-hdfs/lib/jasper-runtime-5.5.23.jar:/usr/lib/hadoop-hdfs/lib/jersey-server-1.9.jar:/usr/lib/hadoop-hdfs/lib/jackson-core-asl-1.8.8.jar:/usr/lib/hadoop-hdfs/lib/jetty-6.1.26.cloudera.4.jar:/usr/lib/hadoop-hdfs/lib/log4j-1.2.17.jar:/usr/lib/hadoop-hdfs/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop-hdfs/lib/commons-daemon-1.0.13.jar:/usr/lib/hadoop-hdfs/lib/commons-logging-1.1.3.jar:/usr/lib/hadoop-hdfs/lib/jsp-api-2.1.jar:/usr/lib/hadoop-hdfs/lib/leveldbjni-all-1.8.jar:/usr/lib/hadoop-hdfs/lib/jetty-util-6.1.26.cloudera.4.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-nfs-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-tests.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-2.6.0-cdh5.4.5-tests.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-nfs.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/lib/asm-3.2.jar:/usr/lib/hadoop-yarn/lib/jersey-core-1.9.jar:/usr/lib/hadoop-yarn/lib/jersey-json-1.9.jar:/usr/lib/hadoop-yarn/lib/guava-11.0.2.jar:/usr/lib/hadoop-yarn/lib/xz-1.0.jar:/usr/lib/hadoop-yarn/lib/jaxb-impl-2.2.3-1.jar:/usr/lib/hadoop-yarn/lib/jackson-mapper-asl-1.8.8.jar:/usr/lib/hadoop-yarn/lib/jersey-guice-1.9.jar:/usr/lib/hadoop-yarn/lib/commons-compress-1.4.1.jar:/usr/lib/hadoop-yarn/lib/aopalliance-1.0.jar:/usr/lib/hadoop-yarn/lib/jsr305-3.0.0.jar:/usr/lib/hadoop-yarn/lib/javax.inject-1.jar:/usr/lib/hadoop-yarn/lib/jersey-client-1.9.jar:/usr/lib/hadoop-yarn/lib/stax-api-1.0-2.jar:/usr/lib/hadoop-yarn/lib/zookeeper.jar:/usr/lib/hadoop-yarn/lib/guice-servlet-3.0.jar:/usr/lib/hadoop-yarn/lib/jackson-jaxrs-1.8.8.jar:/usr/lib/hadoop-yarn/lib/commons-io-2.4.jar:/usr/lib/hadoop-yarn/lib/commons-codec-1.4.jar:/usr/lib/hadoop-yarn/lib/jline-2.11.jar:/usr/lib/hadoop-yarn/lib/servlet-api-2.5.jar:/usr/lib/hadoop-yarn/lib/commons-lang-2.6.jar:/usr/lib/hadoop-yarn/lib/jettison-1.1.jar:/usr/lib/hadoop-yarn/lib/guice-3.0.jar:/usr/lib/hadoop-yarn/lib/commons-cli-1.2.jar:/usr/lib/hadoop-yarn/lib/commons-collections-3.2.1.jar:/usr/lib/hadoop-yarn/lib/jersey-server-1.9.jar:/usr/lib/hadoop-yarn/lib/activation-1.1.jar:/usr/lib/hadoop-yarn/lib/jackson-core-asl-1.8.8.jar:/usr/lib/hadoop-yarn/lib/jetty-6.1.26.cloudera.4.jar:/usr/lib/hadoop-yarn/lib/jaxb-api-2.2.2.jar:/usr/lib/hadoop-yarn/lib/log4j-1.2.17.jar:/usr/lib/hadoop-yarn/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop-yarn/lib/commons-httpclient-3.1.jar:/usr/lib/hadoop-yarn/lib/jackson-xc-1.8.8.jar:/usr/lib/hadoop-yarn/lib/commons-logging-1.1.3.jar:/usr/lib/hadoop-yarn/lib/leveldbjni-all-1.8.jar:/usr/lib/hadoop-yarn/lib/jetty-util-6.1.26.cloudera.4.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-common-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-common.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-distributedshell.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-tests-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-tests.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-distributedshell-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-api.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-common.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-nodemanager.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-applicationhistoryservice.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-unmanaged-am-launcher.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-client-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-resourcemanager.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-nodemanager-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-resourcemanager-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-web-proxy-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-registry.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-web-proxy.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-common-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-client.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-applicationhistoryservice-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-registry-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-api-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-unmanaged-am-launcher-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/lib/asm-3.2.jar:/usr/lib/hadoop-mapreduce/lib/jersey-core-1.9.jar:/usr/lib/hadoop-mapreduce/lib/xz-1.0.jar:/usr/lib/hadoop-mapreduce/lib/jackson-mapper-asl-1.8.8.jar:/usr/lib/hadoop-mapreduce/lib/jersey-guice-1.9.jar:/usr/lib/hadoop-mapreduce/lib/commons-compress-1.4.1.jar:/usr/lib/hadoop-mapreduce/lib/aopalliance-1.0.jar:/usr/lib/hadoop-mapreduce/lib/hamcrest-core-1.3.jar:/usr/lib/hadoop-mapreduce/lib/avro.jar:/usr/lib/hadoop-mapreduce/lib/javax.inject-1.jar:/usr/lib/hadoop-mapreduce/lib/snappy-java-1.0.4.1.jar:/usr/lib/hadoop-mapreduce/lib/guice-servlet-3.0.jar:/usr/lib/hadoop-mapreduce/lib/commons-io-2.4.jar:/usr/lib/hadoop-mapreduce/lib/paranamer-2.3.jar:/usr/lib/hadoop-mapreduce/lib/netty-3.6.2.Final.jar:/usr/lib/hadoop-mapreduce/lib/guice-3.0.jar:/usr/lib/hadoop-mapreduce/lib/jersey-server-1.9.jar:/usr/lib/hadoop-mapreduce/lib/jackson-core-asl-1.8.8.jar:/usr/lib/hadoop-mapreduce/lib/log4j-1.2.17.jar:/usr/lib/hadoop-mapreduce/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop-mapreduce/lib/junit-4.11.jar:/usr/lib/hadoop-mapreduce/lib/leveldbjni-all-1.8.jar:/usr/lib/hadoop-mapreduce/.//apacheds-i18n-2.0.0-M15.jar:/usr/lib/hadoop-mapreduce/.//asm-3.2.jar:/usr/lib/hadoop-mapreduce/.//jersey-core-1.9.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-examples.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-common.jar:/usr/lib/hadoop-mapreduce/.//hadoop-ant.jar:/usr/lib/hadoop-mapreduce/.//mockito-all-1.8.5.jar:/usr/lib/hadoop-mapreduce/.//api-asn1-api-1.0.0-M20.jar:/usr/lib/hadoop-mapreduce/.//hadoop-rumen.jar:/usr/lib/hadoop-mapreduce/.//hadoop-azure-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-sls-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//curator-framework-2.7.1.jar:/usr/lib/hadoop-mapreduce/.//jersey-json-1.9.jar:/usr/lib/hadoop-mapreduce/.//microsoft-windowsazure-storage-sdk-0.6.0.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-nativetask.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-shuffle-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//jackson-databind-2.2.3.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-shuffle.jar:/usr/lib/hadoop-mapreduce/.//java-xmlbuilder-0.4.jar:/usr/lib/hadoop-mapreduce/.//guava-11.0.2.jar:/usr/lib/hadoop-mapreduce/.//xz-1.0.jar:/usr/lib/hadoop-mapreduce/.//jaxb-impl-2.2.3-1.jar:/usr/lib/hadoop-mapreduce/.//jackson-mapper-asl-1.8.8.jar:/usr/lib/hadoop-mapreduce/.//commons-configuration-1.6.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-core-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs.jar:/usr/lib/hadoop-mapreduce/.//hadoop-sls.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs-plugins.jar:/usr/lib/hadoop-mapreduce/.//curator-client-2.7.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-extras-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-examples-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//xmlenc-0.52.jar:/usr/lib/hadoop-mapreduce/.//commons-compress-1.4.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-gridmix.jar:/usr/lib/hadoop-mapreduce/.//hadoop-gridmix-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hamcrest-core-1.3.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-common-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//htrace-core-3.0.4.jar:/usr/lib/hadoop-mapreduce/.//jasper-compiler-5.5.23.jar:/usr/lib/hadoop-mapreduce/.//avro.jar:/usr/lib/hadoop-mapreduce/.//jsr305-3.0.0.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-nativetask-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient-2.6.0-cdh5.4.5-tests.jar:/usr/lib/hadoop-mapreduce/.//hadoop-distcp.jar:/usr/lib/hadoop-mapreduce/.//commons-el-1.0.jar:/usr/lib/hadoop-mapreduce/.//stax-api-1.0-2.jar:/usr/lib/hadoop-mapreduce/.//jsch-0.1.42.jar:/usr/lib/hadoop-mapreduce/.//commons-net-3.1.jar:/usr/lib/hadoop-mapreduce/.//snappy-java-1.0.4.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-azure.jar:/usr/lib/hadoop-mapreduce/.//zookeeper.jar:/usr/lib/hadoop-mapreduce/.//hadoop-auth-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-app.jar:/usr/lib/hadoop-mapreduce/.//jackson-jaxrs-1.8.8.jar:/usr/lib/hadoop-mapreduce/.//commons-io-2.4.jar:/usr/lib/hadoop-mapreduce/.//paranamer-2.3.jar:/usr/lib/hadoop-mapreduce/.//hadoop-extras.jar:/usr/lib/hadoop-mapreduce/.//commons-digester-1.8.jar:/usr/lib/hadoop-mapreduce/.//hadoop-streaming.jar:/usr/lib/hadoop-mapreduce/.//commons-codec-1.4.jar:/usr/lib/hadoop-mapreduce/.//hadoop-archives.jar:/usr/lib/hadoop-mapreduce/.//servlet-api-2.5.jar:/usr/lib/hadoop-mapreduce/.//commons-lang-2.6.jar:/usr/lib/hadoop-mapreduce/.//jackson-annotations-2.2.3.jar:/usr/lib/hadoop-mapreduce/.//jettison-1.1.jar:/usr/lib/hadoop-mapreduce/.//commons-cli-1.2.jar:/usr/lib/hadoop-mapreduce/.//commons-collections-3.2.1.jar:/usr/lib/hadoop-mapreduce/.//apacheds-kerberos-codec-2.0.0-M15.jar:/usr/lib/hadoop-mapreduce/.//hadoop-datajoin.jar:/usr/lib/hadoop-mapreduce/.//hadoop-datajoin-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//jasper-runtime-5.5.23.jar:/usr/lib/hadoop-mapreduce/.//jersey-server-1.9.jar:/usr/lib/hadoop-mapreduce/.//api-util-1.0.0-M20.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-app-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-streaming-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//curator-recipes-2.7.1.jar:/usr/lib/hadoop-mapreduce/.//metrics-core-3.0.1.jar:/usr/lib/hadoop-mapreduce/.//activation-1.1.jar:/usr/lib/hadoop-mapreduce/.//jackson-core-asl-1.8.8.jar:/usr/lib/hadoop-mapreduce/.//jetty-6.1.26.cloudera.4.jar:/usr/lib/hadoop-mapreduce/.//commons-beanutils-core-1.8.0.jar:/usr/lib/hadoop-mapreduce/.//jaxb-api-2.2.2.jar:/usr/lib/hadoop-mapreduce/.//commons-math3-3.1.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient.jar:/usr/lib/hadoop-mapreduce/.//hadoop-ant-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//log4j-1.2.17.jar:/usr/lib/hadoop-mapreduce/.//jets3t-0.9.0.jar:/usr/lib/hadoop-mapreduce/.//hadoop-archives-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//protobuf-java-2.5.0.jar:/usr/lib/hadoop-mapreduce/.//commons-beanutils-1.7.0.jar:/usr/lib/hadoop-mapreduce/.//commons-httpclient-3.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-auth.jar:/usr/lib/hadoop-mapreduce/.//jackson-xc-1.8.8.jar:/usr/lib/hadoop-mapreduce/.//hadoop-distcp-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//commons-logging-1.1.3.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient-tests.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-core.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs-plugins-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//jsp-api-2.1.jar:/usr/lib/hadoop-mapreduce/.//httpclient-4.2.5.jar:/usr/lib/hadoop-mapreduce/.//jackson-core-2.2.3.jar:/usr/lib/hadoop-mapreduce/.//httpcore-4.2.5.jar:/usr/lib/hadoop-mapreduce/.//gson-2.2.4.jar:/usr/lib/hadoop-mapreduce/.//hadoop-rumen-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//junit-4.11.jar:/usr/lib/hadoop-mapreduce/.//jetty-util-6.1.26.cloudera.4.jar:/usr/lib/sentry/lib/plugins/*.jar
+STARTUP_MSG:   build = http://github.com/cloudera/hadoop -r ab14c89fe25e9fb3f9de4fb852c21365b7c5608b; compiled by 'jenkins' on 2015-08-12T21:12Z
+STARTUP_MSG:   java = 1.8.0_45
+************************************************************/
+16/10/15 14:29:22 INFO namenode.NameNode: registered UNIX signal handlers for [TERM, HUP, INT]
+16/10/15 14:29:22 INFO namenode.NameNode: createNameNode [-format]
+Formatting using clusterid: CID-f2711e3a-8fcb-464f-b23d-9a7ef6f6edd5
+16/10/15 14:29:23 INFO namenode.FSNamesystem: No KeyProvider found.
+16/10/15 14:29:23 INFO namenode.FSNamesystem: fsLock is fair:true
+16/10/15 14:29:23 INFO blockmanagement.DatanodeManager: dfs.block.invalidate.limit=1000
+16/10/15 14:29:23 INFO blockmanagement.DatanodeManager: dfs.namenode.datanode.registration.ip-hostname-check=true
+16/10/15 14:29:23 INFO blockmanagement.BlockManager: dfs.namenode.startup.delay.block.deletion.sec is set to 000:00:00:00.000
+16/10/15 14:29:23 INFO blockmanagement.BlockManager: The block deletion will start around 2016 Oct 15 14:29:23
+16/10/15 14:29:23 INFO util.GSet: Computing capacity for map BlocksMap
+16/10/15 14:29:23 INFO util.GSet: VM type       = 64-bit
+16/10/15 14:29:23 INFO util.GSet: 2.0% max memory 889 MB = 17.8 MB
+16/10/15 14:29:23 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+16/10/15 14:29:23 INFO blockmanagement.BlockManager: dfs.block.access.token.enable=false
+16/10/15 14:29:23 INFO blockmanagement.BlockManager: defaultReplication         = 1
+16/10/15 14:29:23 INFO blockmanagement.BlockManager: maxReplication             = 512
+16/10/15 14:29:23 INFO blockmanagement.BlockManager: minReplication             = 1
+16/10/15 14:29:23 INFO blockmanagement.BlockManager: maxReplicationStreams      = 2
+16/10/15 14:29:23 INFO blockmanagement.BlockManager: shouldCheckForEnoughRacks  = false
+16/10/15 14:29:23 INFO blockmanagement.BlockManager: replicationRecheckInterval = 3000
+16/10/15 14:29:23 INFO blockmanagement.BlockManager: encryptDataTransfer        = false
+16/10/15 14:29:23 INFO blockmanagement.BlockManager: maxNumBlocksToLog          = 1000
+16/10/15 14:29:23 INFO namenode.FSNamesystem: fsOwner             = hdfs (auth:SIMPLE)
+16/10/15 14:29:23 INFO namenode.FSNamesystem: supergroup          = supergroup
+16/10/15 14:29:23 INFO namenode.FSNamesystem: isPermissionEnabled = true
+16/10/15 14:29:23 INFO namenode.FSNamesystem: HA Enabled: false
+16/10/15 14:29:23 INFO namenode.FSNamesystem: Append Enabled: true
+16/10/15 14:29:24 INFO util.GSet: Computing capacity for map INodeMap
+16/10/15 14:29:24 INFO util.GSet: VM type       = 64-bit
+16/10/15 14:29:24 INFO util.GSet: 1.0% max memory 889 MB = 8.9 MB
+16/10/15 14:29:24 INFO util.GSet: capacity      = 2^20 = 1048576 entries
+16/10/15 14:29:24 INFO namenode.NameNode: Caching file names occuring more than 10 times
+16/10/15 14:29:24 INFO util.GSet: Computing capacity for map cachedBlocks
+16/10/15 14:29:24 INFO util.GSet: VM type       = 64-bit
+16/10/15 14:29:24 INFO util.GSet: 0.25% max memory 889 MB = 2.2 MB
+16/10/15 14:29:24 INFO util.GSet: capacity      = 2^18 = 262144 entries
+16/10/15 14:29:24 INFO namenode.FSNamesystem: dfs.namenode.safemode.threshold-pct = 0.9990000128746033
+16/10/15 14:29:24 INFO namenode.FSNamesystem: dfs.namenode.safemode.min.datanodes = 0
+16/10/15 14:29:24 INFO namenode.FSNamesystem: dfs.namenode.safemode.extension     = 0
+16/10/15 14:29:24 INFO metrics.TopMetrics: NNTop conf: dfs.namenode.top.window.num.buckets = 10
+16/10/15 14:29:24 INFO metrics.TopMetrics: NNTop conf: dfs.namenode.top.num.users = 10
+16/10/15 14:29:24 INFO metrics.TopMetrics: NNTop conf: dfs.namenode.top.windows.minutes = 1,5,25
+16/10/15 14:29:24 INFO namenode.FSNamesystem: Retry cache on namenode is enabled
+16/10/15 14:29:24 INFO namenode.FSNamesystem: Retry cache will use 0.03 of total heap and retry cache entry expiry time is 600000 millis
+16/10/15 14:29:24 INFO util.GSet: Computing capacity for map NameNodeRetryCache
+16/10/15 14:29:24 INFO util.GSet: VM type       = 64-bit
+16/10/15 14:29:24 INFO util.GSet: 0.029999999329447746% max memory 889 MB = 273.1 KB
+16/10/15 14:29:24 INFO util.GSet: capacity      = 2^15 = 32768 entries
+16/10/15 14:29:24 INFO namenode.NNConf: ACLs enabled? false
+16/10/15 14:29:24 INFO namenode.NNConf: XAttrs enabled? true
+16/10/15 14:29:24 INFO namenode.NNConf: Maximum size of an xattr: 16384
+16/10/15 14:29:24 INFO namenode.FSImage: Allocated new BlockPoolId: BP-1599512854-172.31.6.204-1476541764080
+16/10/15 14:29:24 INFO common.Storage: Storage directory /data/hadoop-hdfs/cache/hdfs/dfs/name has been successfully formatted.
+16/10/15 14:29:24 INFO namenode.NNStorageRetentionManager: Going to retain 1 images with txid >= 0
+16/10/15 14:29:24 INFO util.ExitUtil: Exiting with status 0
+16/10/15 14:29:24 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at ip-172-31-6-204.ec2.internal/172.31.6.204
+************************************************************/
+stopping datanode
+Stopped Hadoop datanode:                                   [  OK  ]
+starting datanode, logging to /var/log/hadoop-hdfs/hadoop-hdfs-datanode-ip-172-31-6-204.out
+Started Hadoop datanode (hadoop-hdfs-datanode):            [  OK  ]
+no namenode to stop
+Stopped Hadoop namenode:                                   [  OK  ]
+starting namenode, logging to /var/log/hadoop-hdfs/hadoop-hdfs-namenode-ip-172-31-6-204.out
+Started Hadoop namenode:                                   [  OK  ]
+stopping secondarynamenode
+Stopped Hadoop secondarynamenode:                          [  OK  ]
+starting secondarynamenode, logging to /var/log/hadoop-hdfs/hadoop-hdfs-secondarynamenode-ip-172-31-6-204.out
+Started Hadoop secondarynamenode:                          [  OK  ]
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /tmp'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chmod -R 1777 /tmp'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /var'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /var/log'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chmod -R 1775 /var/log'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown yarn:mapred /var/log'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /tmp/hadoop-yarn'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown -R mapred:mapred /tmp/hadoop-yarn'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /tmp/hadoop-yarn/staging/history/done_intermediate'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown -R mapred:mapred /tmp/hadoop-yarn/staging'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chmod -R 1777 /tmp'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /var/log/hadoop-yarn/apps'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chmod -R 1777 /var/log/hadoop-yarn/apps'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown yarn:mapred /var/log/hadoop-yarn/apps'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /hbase'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown hbase /hbase'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /benchmarks'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chmod -R 777 /benchmarks'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/history'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown mapred /user/history'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/jenkins'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chmod -R 777 /user/jenkins'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown jenkins /user/jenkins'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/hive'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chmod -R 777 /user/hive'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown hive /user/hive'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/root'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chmod -R 777 /user/root'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown root /user/root'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/hue'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chmod -R 777 /user/hue'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown hue /user/hue'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/oozie'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/oozie/share'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/oozie/share/lib'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/oozie/share/lib/hive'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/oozie/share/lib/mapreduce-streaming'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/oozie/share/lib/distcp'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/oozie/share/lib/pig'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/oozie/share/lib/sqoop'
++ ls /usr/lib/hive/lib/accumulo-core-1.6.0.jar /usr/lib/hive/lib/accumulo-fate-1.6.0.jar /usr/lib/hive/lib/accumulo-start-1.6.0.jar /usr/lib/hive/lib/accumulo-trace-1.6.0.jar /usr/lib/hive/lib/activation-1.1.jar /usr/lib/hive/lib/ant-1.9.1.jar /usr/lib/hive/lib/ant-launcher-1.9.1.jar /usr/lib/hive/lib/antlr-2.7.7.jar /usr/lib/hive/lib/antlr-runtime-3.4.jar /usr/lib/hive/lib/apache-log4j-extras-1.2.17.jar /usr/lib/hive/lib/asm-3.2.jar /usr/lib/hive/lib/asm-commons-3.1.jar /usr/lib/hive/lib/asm-tree-3.1.jar /usr/lib/hive/lib/avro.jar /usr/lib/hive/lib/bonecp-0.8.0.RELEASE.jar /usr/lib/hive/lib/calcite-avatica-1.0.0-incubating.jar /usr/lib/hive/lib/calcite-core-1.0.0-incubating.jar /usr/lib/hive/lib/calcite-linq4j-1.0.0-incubating.jar /usr/lib/hive/lib/commons-beanutils-1.7.0.jar /usr/lib/hive/lib/commons-beanutils-core-1.8.0.jar /usr/lib/hive/lib/commons-cli-1.2.jar /usr/lib/hive/lib/commons-codec-1.4.jar /usr/lib/hive/lib/commons-collections-3.2.1.jar /usr/lib/hive/lib/commons-compiler-2.7.6.jar /usr/lib/hive/lib/commons-compress-1.4.1.jar /usr/lib/hive/lib/commons-configuration-1.6.jar /usr/lib/hive/lib/commons-dbcp-1.4.jar /usr/lib/hive/lib/commons-digester-1.8.jar /usr/lib/hive/lib/commons-httpclient-3.0.1.jar /usr/lib/hive/lib/commons-io-2.4.jar /usr/lib/hive/lib/commons-lang-2.6.jar /usr/lib/hive/lib/commons-logging-1.1.3.jar /usr/lib/hive/lib/commons-math-2.1.jar /usr/lib/hive/lib/commons-pool-1.5.4.jar /usr/lib/hive/lib/commons-vfs2-2.0.jar /usr/lib/hive/lib/curator-client-2.6.0.jar /usr/lib/hive/lib/curator-framework-2.6.0.jar /usr/lib/hive/lib/datanucleus-api-jdo-3.2.6.jar /usr/lib/hive/lib/datanucleus-core-3.2.10.jar /usr/lib/hive/lib/datanucleus-rdbms-3.2.9.jar /usr/lib/hive/lib/derby-10.11.1.1.jar /usr/lib/hive/lib/eigenbase-properties-1.1.4.jar /usr/lib/hive/lib/geronimo-annotation_1.0_spec-1.1.1.jar /usr/lib/hive/lib/geronimo-jaspic_1.0_spec-1.0.jar /usr/lib/hive/lib/geronimo-jta_1.1_spec-1.1.1.jar /usr/lib/hive/lib/groovy-all-2.1.6.jar /usr/lib/hive/lib/guava-14.0.1.jar /usr/lib/hive/lib/hamcrest-core-1.1.jar /usr/lib/hive/lib/high-scale-lib-1.1.1.jar /usr/lib/hive/lib/hive-accumulo-handler-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-accumulo-handler.jar /usr/lib/hive/lib/hive-ant-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-ant.jar /usr/lib/hive/lib/hive-beeline-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-beeline.jar /usr/lib/hive/lib/hive-cli-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-cli.jar /usr/lib/hive/lib/hive-common-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-common.jar /usr/lib/hive/lib/hive-contrib-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-contrib.jar /usr/lib/hive/lib/hive-exec-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-exec.jar /usr/lib/hive/lib/hive-hbase-handler-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-hbase-handler.jar /usr/lib/hive/lib/hive-hwi-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-hwi.jar /usr/lib/hive/lib/hive-jdbc-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-jdbc-1.1.0-cdh5.4.5-standalone.jar /usr/lib/hive/lib/hive-jdbc.jar /usr/lib/hive/lib/hive-jdbc-standalone.jar /usr/lib/hive/lib/hive-metastore-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-metastore.jar /usr/lib/hive/lib/hive-serde-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-serde.jar /usr/lib/hive/lib/hive-service-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-service.jar /usr/lib/hive/lib/hive-shims-0.23-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-shims-0.23.jar /usr/lib/hive/lib/hive-shims-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-shims-common-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-shims-common.jar /usr/lib/hive/lib/hive-shims.jar /usr/lib/hive/lib/hive-shims-scheduler-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-shims-scheduler.jar /usr/lib/hive/lib/hive-testutils-1.1.0-cdh5.4.5.jar /usr/lib/hive/lib/hive-testutils.jar /usr/lib/hive/lib/httpclient-4.2.5.jar /usr/lib/hive/lib/httpcore-4.2.5.jar /usr/lib/hive/lib/jackson-jaxrs-1.9.2.jar /usr/lib/hive/lib/jackson-xc-1.9.2.jar /usr/lib/hive/lib/janino-2.7.6.jar /usr/lib/hive/lib/jcommander-1.32.jar /usr/lib/hive/lib/jdo-api-3.0.1.jar /usr/lib/hive/lib/jersey-server-1.14.jar /usr/lib/hive/lib/jersey-servlet-1.14.jar /usr/lib/hive/lib/jetty-all-7.6.0.v20120127.jar /usr/lib/hive/lib/jetty-all-server-7.6.0.v20120127.jar /usr/lib/hive/lib/jline-2.12.jar /usr/lib/hive/lib/jpam-1.1.jar /usr/lib/hive/lib/jsr305-3.0.0.jar /usr/lib/hive/lib/jta-1.1.jar /usr/lib/hive/lib/junit-4.11.jar /usr/lib/hive/lib/libfb303-0.9.2.jar /usr/lib/hive/lib/libthrift-0.9.2.jar /usr/lib/hive/lib/log4j-1.2.16.jar /usr/lib/hive/lib/logredactor-1.0.3.jar /usr/lib/hive/lib/mail-1.4.1.jar /usr/lib/hive/lib/maven-scm-api-1.4.jar /usr/lib/hive/lib/maven-scm-provider-svn-commons-1.4.jar /usr/lib/hive/lib/maven-scm-provider-svnexe-1.4.jar /usr/lib/hive/lib/opencsv-2.3.jar /usr/lib/hive/lib/oro-2.0.8.jar /usr/lib/hive/lib/paranamer-2.3.jar /usr/lib/hive/lib/parquet-hadoop-bundle.jar /usr/lib/hive/lib/pentaho-aggdesigner-algorithm-5.1.5-jhyde.jar /usr/lib/hive/lib/plexus-utils-1.5.6.jar /usr/lib/hive/lib/postgresql-jdbc.jar /usr/lib/hive/lib/regexp-1.3.jar /usr/lib/hive/lib/servlet-api-2.5.jar /usr/lib/hive/lib/snappy-java-1.0.4.1.jar /usr/lib/hive/lib/ST4-4.0.4.jar /usr/lib/hive/lib/stax-api-1.0.1.jar /usr/lib/hive/lib/stringtemplate-3.2.1.jar /usr/lib/hive/lib/super-csv-2.2.0.jar /usr/lib/hive/lib/tempus-fugit-1.1.jar /usr/lib/hive/lib/velocity-1.5.jar /usr/lib/hive/lib/xz-1.0.jar /usr/lib/hive/lib/zookeeper.jar
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -put /usr/lib/hive/lib/*.jar /user/oozie/share/lib/hive'
++ ls /usr/lib/hadoop-mapreduce/hadoop-streaming-2.6.0-cdh5.4.5.jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -put /usr/lib/hadoop-mapreduce/hadoop-streaming*.jar /user/oozie/share/lib/mapreduce-streaming'
++ ls /usr/lib/hadoop-mapreduce/hadoop-distcp-2.6.0-cdh5.4.5.jar /usr/lib/hadoop-mapreduce/hadoop-distcp.jar
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -put /usr/lib/hadoop-mapreduce/hadoop-distcp*.jar /user/oozie/share/lib/distcp'
++ ls '/usr/lib/pig/lib/*.jar' '/usr/lib/pig/*.jar'
++ ls '/usr/lib/sqoop/lib/*.jar' '/usr/lib/sqoop/*.jar'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chmod -R 777 /user/oozie'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown -R oozie /user/oozie'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /var/lib/hadoop-hdfs/cache/mapred/mapred/staging'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chmod 1777 /var/lib/hadoop-hdfs/cache/mapred/mapred/staging'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown -R mapred /var/lib/hadoop-hdfs/cache/mapred'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -mkdir -p /user/spark/applicationHistory'
++ su -s /bin/bash hdfs -c '/usr/bin/hadoop fs -chown spark /user/spark/applicationHistory'
+stopping resourcemanager
+Stopped Hadoop resourcemanager:                            [  OK  ]
+starting resourcemanager, logging to /var/log/hadoop-yarn/yarn-yarn-resourcemanager-ip-172-31-6-204.out
+Started Hadoop resourcemanager:                            [  OK  ]
+stopping nodemanager
+Stopped Hadoop nodemanager:                                [  OK  ]
+starting nodemanager, logging to /var/log/hadoop-yarn/yarn-yarn-nodemanager-ip-172-31-6-204.out
+Started Hadoop nodemanager:                                [  OK  ]
+no historyserver to stop
+Stopped Hadoop historyserver:                              [  OK  ]
+starting historyserver, logging to /var/log/hadoop-mapreduce/mapred-mapred-historyserver-ip-172-31-6-204.out
+16/10/15 14:33:16 INFO hs.JobHistoryServer: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting JobHistoryServer
+STARTUP_MSG:   host = ip-172-31-6-204.ec2.internal/172.31.6.204
+STARTUP_MSG:   args = []
+STARTUP_MSG:   version = 2.6.0-cdh5.4.5
+STARTUP_MSG:   classpath = /etc/hadoop/conf:/usr/lib/hadoop/lib/apacheds-i18n-2.0.0-M15.jar:/usr/lib/hadoop/lib/asm-3.2.jar:/usr/lib/hadoop/lib/jersey-core-1.9.jar:/usr/lib/hadoop/lib/mockito-all-1.8.5.jar:/usr/lib/hadoop/lib/api-asn1-api-1.0.0-M20.jar:/usr/lib/hadoop/lib/curator-framework-2.7.1.jar:/usr/lib/hadoop/lib/slf4j-log4j12.jar:/usr/lib/hadoop/lib/jersey-json-1.9.jar:/usr/lib/hadoop/lib/aws-java-sdk-1.7.14.jar:/usr/lib/hadoop/lib/java-xmlbuilder-0.4.jar:/usr/lib/hadoop/lib/guava-11.0.2.jar:/usr/lib/hadoop/lib/xz-1.0.jar:/usr/lib/hadoop/lib/jaxb-impl-2.2.3-1.jar:/usr/lib/hadoop/lib/jackson-mapper-asl-1.8.8.jar:/usr/lib/hadoop/lib/commons-configuration-1.6.jar:/usr/lib/hadoop/lib/curator-client-2.7.1.jar:/usr/lib/hadoop/lib/xmlenc-0.52.jar:/usr/lib/hadoop/lib/commons-compress-1.4.1.jar:/usr/lib/hadoop/lib/hamcrest-core-1.3.jar:/usr/lib/hadoop/lib/htrace-core-3.0.4.jar:/usr/lib/hadoop/lib/jasper-compiler-5.5.23.jar:/usr/lib/hadoop/lib/avro.jar:/usr/lib/hadoop/lib/jsr305-3.0.0.jar:/usr/lib/hadoop/lib/commons-el-1.0.jar:/usr/lib/hadoop/lib/stax-api-1.0-2.jar:/usr/lib/hadoop/lib/jsch-0.1.42.jar:/usr/lib/hadoop/lib/commons-net-3.1.jar:/usr/lib/hadoop/lib/snappy-java-1.0.4.1.jar:/usr/lib/hadoop/lib/zookeeper.jar:/usr/lib/hadoop/lib/jackson-jaxrs-1.8.8.jar:/usr/lib/hadoop/lib/commons-io-2.4.jar:/usr/lib/hadoop/lib/paranamer-2.3.jar:/usr/lib/hadoop/lib/commons-digester-1.8.jar:/usr/lib/hadoop/lib/commons-codec-1.4.jar:/usr/lib/hadoop/lib/servlet-api-2.5.jar:/usr/lib/hadoop/lib/commons-lang-2.6.jar:/usr/lib/hadoop/lib/netty-3.6.2.Final.jar:/usr/lib/hadoop/lib/jettison-1.1.jar:/usr/lib/hadoop/lib/commons-cli-1.2.jar:/usr/lib/hadoop/lib/commons-collections-3.2.1.jar:/usr/lib/hadoop/lib/slf4j-api-1.7.5.jar:/usr/lib/hadoop/lib/apacheds-kerberos-codec-2.0.0-M15.jar:/usr/lib/hadoop/lib/jasper-runtime-5.5.23.jar:/usr/lib/hadoop/lib/jersey-server-1.9.jar:/usr/lib/hadoop/lib/api-util-1.0.0-M20.jar:/usr/lib/hadoop/lib/curator-recipes-2.7.1.jar:/usr/lib/hadoop/lib/activation-1.1.jar:/usr/lib/hadoop/lib/jackson-core-asl-1.8.8.jar:/usr/lib/hadoop/lib/jetty-6.1.26.cloudera.4.jar:/usr/lib/hadoop/lib/logredactor-1.0.3.jar:/usr/lib/hadoop/lib/commons-beanutils-core-1.8.0.jar:/usr/lib/hadoop/lib/jaxb-api-2.2.2.jar:/usr/lib/hadoop/lib/commons-math3-3.1.1.jar:/usr/lib/hadoop/lib/log4j-1.2.17.jar:/usr/lib/hadoop/lib/jets3t-0.9.0.jar:/usr/lib/hadoop/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop/lib/commons-beanutils-1.7.0.jar:/usr/lib/hadoop/lib/commons-httpclient-3.1.jar:/usr/lib/hadoop/lib/jackson-xc-1.8.8.jar:/usr/lib/hadoop/lib/commons-logging-1.1.3.jar:/usr/lib/hadoop/lib/jsp-api-2.1.jar:/usr/lib/hadoop/lib/httpclient-4.2.5.jar:/usr/lib/hadoop/lib/httpcore-4.2.5.jar:/usr/lib/hadoop/lib/gson-2.2.4.jar:/usr/lib/hadoop/lib/junit-4.11.jar:/usr/lib/hadoop/lib/jetty-util-6.1.26.cloudera.4.jar:/usr/lib/hadoop/.//hadoop-common-tests.jar:/usr/lib/hadoop/.//hadoop-aws.jar:/usr/lib/hadoop/.//parquet-generator.jar:/usr/lib/hadoop/.//parquet-encoding.jar:/usr/lib/hadoop/.//hadoop-common-2.6.0-cdh5.4.5-tests.jar:/usr/lib/hadoop/.//parquet-thrift.jar:/usr/lib/hadoop/.//parquet-pig-bundle.jar:/usr/lib/hadoop/.//parquet-format-javadoc.jar:/usr/lib/hadoop/.//parquet-format.jar:/usr/lib/hadoop/.//parquet-column.jar:/usr/lib/hadoop/.//parquet-format-sources.jar:/usr/lib/hadoop/.//parquet-pig.jar:/usr/lib/hadoop/.//parquet-avro.jar:/usr/lib/hadoop/.//parquet-hadoop-bundle.jar:/usr/lib/hadoop/.//parquet-common.jar:/usr/lib/hadoop/.//hadoop-annotations-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop/.//hadoop-auth-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop/.//hadoop-common.jar:/usr/lib/hadoop/.//hadoop-aws-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop/.//hadoop-nfs.jar:/usr/lib/hadoop/.//parquet-jackson.jar:/usr/lib/hadoop/.//parquet-hadoop.jar:/usr/lib/hadoop/.//parquet-cascading.jar:/usr/lib/hadoop/.//parquet-scrooge_2.10.jar:/usr/lib/hadoop/.//hadoop-auth.jar:/usr/lib/hadoop/.//hadoop-nfs-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop/.//hadoop-common-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop/.//parquet-test-hadoop2.jar:/usr/lib/hadoop/.//parquet-protobuf.jar:/usr/lib/hadoop/.//parquet-scala_2.10.jar:/usr/lib/hadoop/.//hadoop-annotations.jar:/usr/lib/hadoop/.//parquet-tools.jar:/usr/lib/hadoop-hdfs/./:/usr/lib/hadoop-hdfs/lib/asm-3.2.jar:/usr/lib/hadoop-hdfs/lib/jersey-core-1.9.jar:/usr/lib/hadoop-hdfs/lib/guava-11.0.2.jar:/usr/lib/hadoop-hdfs/lib/jackson-mapper-asl-1.8.8.jar:/usr/lib/hadoop-hdfs/lib/xmlenc-0.52.jar:/usr/lib/hadoop-hdfs/lib/htrace-core-3.0.4.jar:/usr/lib/hadoop-hdfs/lib/jsr305-3.0.0.jar:/usr/lib/hadoop-hdfs/lib/commons-el-1.0.jar:/usr/lib/hadoop-hdfs/lib/commons-io-2.4.jar:/usr/lib/hadoop-hdfs/lib/commons-codec-1.4.jar:/usr/lib/hadoop-hdfs/lib/servlet-api-2.5.jar:/usr/lib/hadoop-hdfs/lib/commons-lang-2.6.jar:/usr/lib/hadoop-hdfs/lib/netty-3.6.2.Final.jar:/usr/lib/hadoop-hdfs/lib/commons-cli-1.2.jar:/usr/lib/hadoop-hdfs/lib/jasper-runtime-5.5.23.jar:/usr/lib/hadoop-hdfs/lib/jersey-server-1.9.jar:/usr/lib/hadoop-hdfs/lib/jackson-core-asl-1.8.8.jar:/usr/lib/hadoop-hdfs/lib/jetty-6.1.26.cloudera.4.jar:/usr/lib/hadoop-hdfs/lib/log4j-1.2.17.jar:/usr/lib/hadoop-hdfs/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop-hdfs/lib/commons-daemon-1.0.13.jar:/usr/lib/hadoop-hdfs/lib/commons-logging-1.1.3.jar:/usr/lib/hadoop-hdfs/lib/jsp-api-2.1.jar:/usr/lib/hadoop-hdfs/lib/leveldbjni-all-1.8.jar:/usr/lib/hadoop-hdfs/lib/jetty-util-6.1.26.cloudera.4.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-nfs-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-tests.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-2.6.0-cdh5.4.5-tests.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-nfs.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/lib/asm-3.2.jar:/usr/lib/hadoop-yarn/lib/jersey-core-1.9.jar:/usr/lib/hadoop-yarn/lib/jersey-json-1.9.jar:/usr/lib/hadoop-yarn/lib/guava-11.0.2.jar:/usr/lib/hadoop-yarn/lib/xz-1.0.jar:/usr/lib/hadoop-yarn/lib/jaxb-impl-2.2.3-1.jar:/usr/lib/hadoop-yarn/lib/jackson-mapper-asl-1.8.8.jar:/usr/lib/hadoop-yarn/lib/jersey-guice-1.9.jar:/usr/lib/hadoop-yarn/lib/commons-compress-1.4.1.jar:/usr/lib/hadoop-yarn/lib/aopalliance-1.0.jar:/usr/lib/hadoop-yarn/lib/jsr305-3.0.0.jar:/usr/lib/hadoop-yarn/lib/javax.inject-1.jar:/usr/lib/hadoop-yarn/lib/jersey-client-1.9.jar:/usr/lib/hadoop-yarn/lib/stax-api-1.0-2.jar:/usr/lib/hadoop-yarn/lib/zookeeper.jar:/usr/lib/hadoop-yarn/lib/guice-servlet-3.0.jar:/usr/lib/hadoop-yarn/lib/jackson-jaxrs-1.8.8.jar:/usr/lib/hadoop-yarn/lib/commons-io-2.4.jar:/usr/lib/hadoop-yarn/lib/commons-codec-1.4.jar:/usr/lib/hadoop-yarn/lib/jline-2.11.jar:/usr/lib/hadoop-yarn/lib/servlet-api-2.5.jar:/usr/lib/hadoop-yarn/lib/commons-lang-2.6.jar:/usr/lib/hadoop-yarn/lib/jettison-1.1.jar:/usr/lib/hadoop-yarn/lib/guice-3.0.jar:/usr/lib/hadoop-yarn/lib/commons-cli-1.2.jar:/usr/lib/hadoop-yarn/lib/commons-collections-3.2.1.jar:/usr/lib/hadoop-yarn/lib/jersey-server-1.9.jar:/usr/lib/hadoop-yarn/lib/activation-1.1.jar:/usr/lib/hadoop-yarn/lib/jackson-core-asl-1.8.8.jar:/usr/lib/hadoop-yarn/lib/jetty-6.1.26.cloudera.4.jar:/usr/lib/hadoop-yarn/lib/jaxb-api-2.2.2.jar:/usr/lib/hadoop-yarn/lib/log4j-1.2.17.jar:/usr/lib/hadoop-yarn/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop-yarn/lib/commons-httpclient-3.1.jar:/usr/lib/hadoop-yarn/lib/jackson-xc-1.8.8.jar:/usr/lib/hadoop-yarn/lib/commons-logging-1.1.3.jar:/usr/lib/hadoop-yarn/lib/leveldbjni-all-1.8.jar:/usr/lib/hadoop-yarn/lib/jetty-util-6.1.26.cloudera.4.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-common-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-common.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-distributedshell.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-tests-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-tests.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-distributedshell-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-api.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-common.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-nodemanager.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-applicationhistoryservice.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-unmanaged-am-launcher.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-client-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-resourcemanager.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-nodemanager-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-resourcemanager-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-web-proxy-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-registry.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-web-proxy.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-common-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-client.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-applicationhistoryservice-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-registry-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-api-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-unmanaged-am-launcher-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/lib/asm-3.2.jar:/usr/lib/hadoop-mapreduce/lib/jersey-core-1.9.jar:/usr/lib/hadoop-mapreduce/lib/xz-1.0.jar:/usr/lib/hadoop-mapreduce/lib/jackson-mapper-asl-1.8.8.jar:/usr/lib/hadoop-mapreduce/lib/jersey-guice-1.9.jar:/usr/lib/hadoop-mapreduce/lib/commons-compress-1.4.1.jar:/usr/lib/hadoop-mapreduce/lib/aopalliance-1.0.jar:/usr/lib/hadoop-mapreduce/lib/hamcrest-core-1.3.jar:/usr/lib/hadoop-mapreduce/lib/avro.jar:/usr/lib/hadoop-mapreduce/lib/javax.inject-1.jar:/usr/lib/hadoop-mapreduce/lib/snappy-java-1.0.4.1.jar:/usr/lib/hadoop-mapreduce/lib/guice-servlet-3.0.jar:/usr/lib/hadoop-mapreduce/lib/commons-io-2.4.jar:/usr/lib/hadoop-mapreduce/lib/paranamer-2.3.jar:/usr/lib/hadoop-mapreduce/lib/netty-3.6.2.Final.jar:/usr/lib/hadoop-mapreduce/lib/guice-3.0.jar:/usr/lib/hadoop-mapreduce/lib/jersey-server-1.9.jar:/usr/lib/hadoop-mapreduce/lib/jackson-core-asl-1.8.8.jar:/usr/lib/hadoop-mapreduce/lib/log4j-1.2.17.jar:/usr/lib/hadoop-mapreduce/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop-mapreduce/lib/junit-4.11.jar:/usr/lib/hadoop-mapreduce/lib/leveldbjni-all-1.8.jar:/usr/lib/hadoop-mapreduce/.//apacheds-i18n-2.0.0-M15.jar:/usr/lib/hadoop-mapreduce/.//asm-3.2.jar:/usr/lib/hadoop-mapreduce/.//jersey-core-1.9.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-examples.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-common.jar:/usr/lib/hadoop-mapreduce/.//hadoop-ant.jar:/usr/lib/hadoop-mapreduce/.//mockito-all-1.8.5.jar:/usr/lib/hadoop-mapreduce/.//api-asn1-api-1.0.0-M20.jar:/usr/lib/hadoop-mapreduce/.//hadoop-rumen.jar:/usr/lib/hadoop-mapreduce/.//hadoop-azure-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-sls-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//curator-framework-2.7.1.jar:/usr/lib/hadoop-mapreduce/.//jersey-json-1.9.jar:/usr/lib/hadoop-mapreduce/.//microsoft-windowsazure-storage-sdk-0.6.0.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-nativetask.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-shuffle-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//jackson-databind-2.2.3.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-shuffle.jar:/usr/lib/hadoop-mapreduce/.//java-xmlbuilder-0.4.jar:/usr/lib/hadoop-mapreduce/.//guava-11.0.2.jar:/usr/lib/hadoop-mapreduce/.//xz-1.0.jar:/usr/lib/hadoop-mapreduce/.//jaxb-impl-2.2.3-1.jar:/usr/lib/hadoop-mapreduce/.//jackson-mapper-asl-1.8.8.jar:/usr/lib/hadoop-mapreduce/.//commons-configuration-1.6.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-core-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs.jar:/usr/lib/hadoop-mapreduce/.//hadoop-sls.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs-plugins.jar:/usr/lib/hadoop-mapreduce/.//curator-client-2.7.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-extras-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-examples-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//xmlenc-0.52.jar:/usr/lib/hadoop-mapreduce/.//commons-compress-1.4.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-gridmix.jar:/usr/lib/hadoop-mapreduce/.//hadoop-gridmix-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hamcrest-core-1.3.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-common-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//htrace-core-3.0.4.jar:/usr/lib/hadoop-mapreduce/.//jasper-compiler-5.5.23.jar:/usr/lib/hadoop-mapreduce/.//avro.jar:/usr/lib/hadoop-mapreduce/.//jsr305-3.0.0.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-nativetask-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient-2.6.0-cdh5.4.5-tests.jar:/usr/lib/hadoop-mapreduce/.//hadoop-distcp.jar:/usr/lib/hadoop-mapreduce/.//commons-el-1.0.jar:/usr/lib/hadoop-mapreduce/.//stax-api-1.0-2.jar:/usr/lib/hadoop-mapreduce/.//jsch-0.1.42.jar:/usr/lib/hadoop-mapreduce/.//commons-net-3.1.jar:/usr/lib/hadoop-mapreduce/.//snappy-java-1.0.4.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-azure.jar:/usr/lib/hadoop-mapreduce/.//zookeeper.jar:/usr/lib/hadoop-mapreduce/.//hadoop-auth-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-app.jar:/usr/lib/hadoop-mapreduce/.//jackson-jaxrs-1.8.8.jar:/usr/lib/hadoop-mapreduce/.//commons-io-2.4.jar:/usr/lib/hadoop-mapreduce/.//paranamer-2.3.jar:/usr/lib/hadoop-mapreduce/.//hadoop-extras.jar:/usr/lib/hadoop-mapreduce/.//commons-digester-1.8.jar:/usr/lib/hadoop-mapreduce/.//hadoop-streaming.jar:/usr/lib/hadoop-mapreduce/.//commons-codec-1.4.jar:/usr/lib/hadoop-mapreduce/.//hadoop-archives.jar:/usr/lib/hadoop-mapreduce/.//servlet-api-2.5.jar:/usr/lib/hadoop-mapreduce/.//commons-lang-2.6.jar:/usr/lib/hadoop-mapreduce/.//jackson-annotations-2.2.3.jar:/usr/lib/hadoop-mapreduce/.//jettison-1.1.jar:/usr/lib/hadoop-mapreduce/.//commons-cli-1.2.jar:/usr/lib/hadoop-mapreduce/.//commons-collections-3.2.1.jar:/usr/lib/hadoop-mapreduce/.//apacheds-kerberos-codec-2.0.0-M15.jar:/usr/lib/hadoop-mapreduce/.//hadoop-datajoin.jar:/usr/lib/hadoop-mapreduce/.//hadoop-datajoin-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//jasper-runtime-5.5.23.jar:/usr/lib/hadoop-mapreduce/.//jersey-server-1.9.jar:/usr/lib/hadoop-mapreduce/.//api-util-1.0.0-M20.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-app-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-streaming-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//curator-recipes-2.7.1.jar:/usr/lib/hadoop-mapreduce/.//metrics-core-3.0.1.jar:/usr/lib/hadoop-mapreduce/.//activation-1.1.jar:/usr/lib/hadoop-mapreduce/.//jackson-core-asl-1.8.8.jar:/usr/lib/hadoop-mapreduce/.//jetty-6.1.26.cloudera.4.jar:/usr/lib/hadoop-mapreduce/.//commons-beanutils-core-1.8.0.jar:/usr/lib/hadoop-mapreduce/.//jaxb-api-2.2.2.jar:/usr/lib/hadoop-mapreduce/.//commons-math3-3.1.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient.jar:/usr/lib/hadoop-mapreduce/.//hadoop-ant-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//log4j-1.2.17.jar:/usr/lib/hadoop-mapreduce/.//jets3t-0.9.0.jar:/usr/lib/hadoop-mapreduce/.//hadoop-archives-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//protobuf-java-2.5.0.jar:/usr/lib/hadoop-mapreduce/.//commons-beanutils-1.7.0.jar:/usr/lib/hadoop-mapreduce/.//commons-httpclient-3.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-auth.jar:/usr/lib/hadoop-mapreduce/.//jackson-xc-1.8.8.jar:/usr/lib/hadoop-mapreduce/.//hadoop-distcp-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//commons-logging-1.1.3.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient-tests.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-core.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs-plugins-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//jsp-api-2.1.jar:/usr/lib/hadoop-mapreduce/.//httpclient-4.2.5.jar:/usr/lib/hadoop-mapreduce/.//jackson-core-2.2.3.jar:/usr/lib/hadoop-mapreduce/.//httpcore-4.2.5.jar:/usr/lib/hadoop-mapreduce/.//gson-2.2.4.jar:/usr/lib/hadoop-mapreduce/.//hadoop-rumen-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//junit-4.11.jar:/usr/lib/hadoop-mapreduce/.//jetty-util-6.1.26.cloudera.4.jar:/usr/lib/hadoop-mapreduce/.//activation-1.1.jar:/usr/lib/hadoop-mapreduce/.//apacheds-i18n-2.0.0-M15.jar:/usr/lib/hadoop-mapreduce/.//apacheds-kerberos-codec-2.0.0-M15.jar:/usr/lib/hadoop-mapreduce/.//api-asn1-api-1.0.0-M20.jar:/usr/lib/hadoop-mapreduce/.//api-util-1.0.0-M20.jar:/usr/lib/hadoop-mapreduce/.//asm-3.2.jar:/usr/lib/hadoop-mapreduce/.//avro.jar:/usr/lib/hadoop-mapreduce/.//commons-beanutils-1.7.0.jar:/usr/lib/hadoop-mapreduce/.//commons-beanutils-core-1.8.0.jar:/usr/lib/hadoop-mapreduce/.//commons-cli-1.2.jar:/usr/lib/hadoop-mapreduce/.//commons-codec-1.4.jar:/usr/lib/hadoop-mapreduce/.//commons-collections-3.2.1.jar:/usr/lib/hadoop-mapreduce/.//commons-compress-1.4.1.jar:/usr/lib/hadoop-mapreduce/.//commons-configuration-1.6.jar:/usr/lib/hadoop-mapreduce/.//commons-digester-1.8.jar:/usr/lib/hadoop-mapreduce/.//commons-el-1.0.jar:/usr/lib/hadoop-mapreduce/.//commons-httpclient-3.1.jar:/usr/lib/hadoop-mapreduce/.//commons-io-2.4.jar:/usr/lib/hadoop-mapreduce/.//commons-lang-2.6.jar:/usr/lib/hadoop-mapreduce/.//commons-logging-1.1.3.jar:/usr/lib/hadoop-mapreduce/.//commons-math3-3.1.1.jar:/usr/lib/hadoop-mapreduce/.//commons-net-3.1.jar:/usr/lib/hadoop-mapreduce/.//curator-client-2.7.1.jar:/usr/lib/hadoop-mapreduce/.//curator-framework-2.7.1.jar:/usr/lib/hadoop-mapreduce/.//curator-recipes-2.7.1.jar:/usr/lib/hadoop-mapreduce/.//gson-2.2.4.jar:/usr/lib/hadoop-mapreduce/.//guava-11.0.2.jar:/usr/lib/hadoop-mapreduce/.//hadoop-ant-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-ant.jar:/usr/lib/hadoop-mapreduce/.//hadoop-archives-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-archives.jar:/usr/lib/hadoop-mapreduce/.//hadoop-auth-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-auth.jar:/usr/lib/hadoop-mapreduce/.//hadoop-azure-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-azure.jar:/usr/lib/hadoop-mapreduce/.//hadoop-datajoin-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-datajoin.jar:/usr/lib/hadoop-mapreduce/.//hadoop-distcp-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-distcp.jar:/usr/lib/hadoop-mapreduce/.//hadoop-extras-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-extras.jar:/usr/lib/hadoop-mapreduce/.//hadoop-gridmix-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-gridmix.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-app-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-app.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-common-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-common.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-core-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-core.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs-plugins-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs-plugins.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient-2.6.0-cdh5.4.5-tests.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient-tests.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-nativetask-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-nativetask.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-shuffle-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-shuffle.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-examples-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-examples.jar:/usr/lib/hadoop-mapreduce/.//hadoop-rumen-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-rumen.jar:/usr/lib/hadoop-mapreduce/.//hadoop-sls-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-sls.jar:/usr/lib/hadoop-mapreduce/.//hadoop-streaming-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-streaming.jar:/usr/lib/hadoop-mapreduce/.//hamcrest-core-1.3.jar:/usr/lib/hadoop-mapreduce/.//htrace-core-3.0.4.jar:/usr/lib/hadoop-mapreduce/.//httpclient-4.2.5.jar:/usr/lib/hadoop-mapreduce/.//httpcore-4.2.5.jar:/usr/lib/hadoop-mapreduce/.//jackson-annotations-2.2.3.jar:/usr/lib/hadoop-mapreduce/.//jackson-core-2.2.3.jar:/usr/lib/hadoop-mapreduce/.//jackson-core-asl-1.8.8.jar:/usr/lib/hadoop-mapreduce/.//jackson-databind-2.2.3.jar:/usr/lib/hadoop-mapreduce/.//jackson-jaxrs-1.8.8.jar:/usr/lib/hadoop-mapreduce/.//jackson-mapper-asl-1.8.8.jar:/usr/lib/hadoop-mapreduce/.//jackson-xc-1.8.8.jar:/usr/lib/hadoop-mapreduce/.//jasper-compiler-5.5.23.jar:/usr/lib/hadoop-mapreduce/.//jasper-runtime-5.5.23.jar:/usr/lib/hadoop-mapreduce/.//java-xmlbuilder-0.4.jar:/usr/lib/hadoop-mapreduce/.//jaxb-api-2.2.2.jar:/usr/lib/hadoop-mapreduce/.//jaxb-impl-2.2.3-1.jar:/usr/lib/hadoop-mapreduce/.//jersey-core-1.9.jar:/usr/lib/hadoop-mapreduce/.//jersey-json-1.9.jar:/usr/lib/hadoop-mapreduce/.//jersey-server-1.9.jar:/usr/lib/hadoop-mapreduce/.//jets3t-0.9.0.jar:/usr/lib/hadoop-mapreduce/.//jettison-1.1.jar:/usr/lib/hadoop-mapreduce/.//jetty-6.1.26.cloudera.4.jar:/usr/lib/hadoop-mapreduce/.//jetty-util-6.1.26.cloudera.4.jar:/usr/lib/hadoop-mapreduce/.//jsch-0.1.42.jar:/usr/lib/hadoop-mapreduce/.//jsp-api-2.1.jar:/usr/lib/hadoop-mapreduce/.//jsr305-3.0.0.jar:/usr/lib/hadoop-mapreduce/.//junit-4.11.jar:/usr/lib/hadoop-mapreduce/.//log4j-1.2.17.jar:/usr/lib/hadoop-mapreduce/.//metrics-core-3.0.1.jar:/usr/lib/hadoop-mapreduce/.//microsoft-windowsazure-storage-sdk-0.6.0.jar:/usr/lib/hadoop-mapreduce/.//mockito-all-1.8.5.jar:/usr/lib/hadoop-mapreduce/.//paranamer-2.3.jar:/usr/lib/hadoop-mapreduce/.//protobuf-java-2.5.0.jar:/usr/lib/hadoop-mapreduce/.//servlet-api-2.5.jar:/usr/lib/hadoop-mapreduce/.//snappy-java-1.0.4.1.jar:/usr/lib/hadoop-mapreduce/.//stax-api-1.0-2.jar:/usr/lib/hadoop-mapreduce/.//xmlenc-0.52.jar:/usr/lib/hadoop-mapreduce/.//xz-1.0.jar:/usr/lib/hadoop-mapreduce/.//zookeeper.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-api-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-api.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-distributedshell-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-distributedshell.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-unmanaged-am-launcher-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-unmanaged-am-launcher.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-client-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-client.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-common-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-common.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-registry-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-registry.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-applicationhistoryservice-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-applicationhistoryservice.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-common-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-common.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-nodemanager-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-nodemanager.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-resourcemanager-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-resourcemanager.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-tests-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-tests.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-web-proxy-2.6.0-cdh5.4.5.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-web-proxy.jar:/usr/lib/hadoop-mapreduce/lib/aopalliance-1.0.jar:/usr/lib/hadoop-mapreduce/lib/asm-3.2.jar:/usr/lib/hadoop-mapreduce/lib/avro.jar:/usr/lib/hadoop-mapreduce/lib/commons-compress-1.4.1.jar:/usr/lib/hadoop-mapreduce/lib/commons-io-2.4.jar:/usr/lib/hadoop-mapreduce/lib/guice-3.0.jar:/usr/lib/hadoop-mapreduce/lib/guice-servlet-3.0.jar:/usr/lib/hadoop-mapreduce/lib/hamcrest-core-1.3.jar:/usr/lib/hadoop-mapreduce/lib/jackson-core-asl-1.8.8.jar:/usr/lib/hadoop-mapreduce/lib/jackson-mapper-asl-1.8.8.jar:/usr/lib/hadoop-mapreduce/lib/javax.inject-1.jar:/usr/lib/hadoop-mapreduce/lib/jersey-core-1.9.jar:/usr/lib/hadoop-mapreduce/lib/jersey-guice-1.9.jar:/usr/lib/hadoop-mapreduce/lib/jersey-server-1.9.jar:/usr/lib/hadoop-mapreduce/lib/junit-4.11.jar:/usr/lib/hadoop-mapreduce/lib/leveldbjni-all-1.8.jar:/usr/lib/hadoop-mapreduce/lib/log4j-1.2.17.jar:/usr/lib/hadoop-mapreduce/lib/netty-3.6.2.Final.jar:/usr/lib/hadoop-mapreduce/lib/paranamer-2.3.jar:/usr/lib/hadoop-mapreduce/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop-mapreduce/lib/snappy-java-1.0.4.1.jar:/usr/lib/hadoop-mapreduce/lib/xz-1.0.jar:/usr/lib/hadoop-mapreduce/modules/*.jar
+STARTUP_MSG:   build = http://github.com/cloudera/hadoop -r ab14c89fe25e9fb3f9de4fb852c21365b7c5608b; compiled by 'jenkins' on 2015-08-12T21:12Z
+STARTUP_MSG:   java = 1.8.0_45
+************************************************************/
+Started Hadoop historyserver:                              [  OK  ]
+could not change directory to "/root"
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale en_US.UTF-8.
+The default database encoding has accordingly been set to UTF8.
+The default text search configuration will be set to "english".
+
+fixing permissions on existing directory /data/pgsql/data ... ok
+creating subdirectories ... ok
+selecting default max_connections ... 100
+selecting default shared_buffers ... 32MB
+creating configuration files ... ok
+creating template1 database in /data/pgsql/data/base/1 ... ok
+initializing pg_authid ... ok
+initializing dependencies ... ok
+creating system views ... ok
+loading system objects' descriptions ... ok
+creating conversions ... ok
+creating dictionaries ... ok
+setting privileges on built-in objects ... ok
+creating information schema ... ok
+vacuuming database template1 ... ok
+copying template1 to template0 ... ok
+copying template1 to postgres ... ok
+
+WARNING: enabling "trust" authentication for local connections
+You can change this by editing pg_hba.conf or using the -A option the
+next time you run initdb.
+
+Success. You can now start the database server using:
+
+    postgres -D /data/pgsql/data
+or
+    pg_ctl -D /data/pgsql/data -l logfile start
+
+server starting
+CREATE ROLE
+CREATE DATABASE
+psql (8.4.20)
+You are now connected to database "metastore".
+SET
+SET
+SET
+SET
+SET
+SET
+SET
+SET
+SET
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+REVOKE
+GRANT
+psql:/usr/lib/hive/scripts/metastore/upgrade/postgres/hive-schema-1.1.0.postgres.sql:1488: hive-txn-schema-0.13.0.postgres.sql: No such file or directory
+INSERT 0 1
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+INSERT 0 1
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+INSERT 0 1
+CREATE TABLE
+CREATE TABLE
+INSERT 0 1
+psql (8.4.20)
+You are now connected to database "metastore".
+Showing only tuples.
+Tuples only is off.
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+[root@ip-172-31-6-204 ~]# su - w205
+[w205@ip-172-31-6-204 ~]$ hdfs dfs -ls /user
+Found 8 items
+drwxr-xr-x   - mapred  supergroup          0 2016-10-15 14:31 /user/history
+drwxrwxrwx   - hive    supergroup          0 2016-10-15 14:31 /user/hive
+drwxrwxrwx   - hue     supergroup          0 2016-10-15 14:31 /user/hue
+drwxrwxrwx   - jenkins supergroup          0 2016-10-15 14:31 /user/jenkins
+drwxrwxrwx   - oozie   supergroup          0 2016-10-15 14:31 /user/oozie
+drwxrwxrwx   - root    supergroup          0 2016-10-15 14:31 /user/root
+drwxr-xr-x   - hdfs    supergroup          0 2016-10-15 14:32 /user/spark
+drwxr-xr-x   - w205    supergroup          0 2016-10-15 14:32 /user/w205
+[w205@ip-172-31-6-204 ~]$ hdfs dfs -ls /user/w205
+[w205@ip-172-31-6-204 ~]$ ls -l
+total 363368
+-rw-r--r--  1 root root     13146 Oct  5 01:00 Measures.csv
+-rw-rw-r--  1 w205 w205       693 Sep 28  2015 derby.log
+-rw-r--r--  1 root root  63280769 Oct  5 01:01 effective_care.csv
+-rw-r--r--  1 w205 w205      7020 Oct  9 15:42 hive_base_ddl.sql
+-rw-rw-r--  1 w205 w205      5203 Oct  6 05:14 hive_base_ddl2.sql
+-rw-r--r--  1 root root    826758 Oct  5 01:01 hospitals.csv
+-rwxr-xr-x  1 w205 root      1869 Sep 22 17:55 load_data_lake.sh
+drwxrwxr-x  5 w205 w205      4096 Sep 28  2015 metastore_db
+-rw-r--r--  1 root root  19936145 Oct  5 01:01 readmissions.csv
+-rw-rw-r--  1 w205 w205      3666 Jan 25  2016 setup_spark.sh
+-rw-rw-r--  1 w205 w205      3666 Jan 25  2016 setup_spark.sh.1
+-rw-rw-r--  1 w205 w205 280869269 Sep  9  2015 spark-1.5.0-bin-hadoop2.6.tgz
+drwxr-xr-x 11 w205 w205      4096 Aug 31  2015 spark15
+-rw-r--r--  1 root root   1348499 Oct  5 01:01 surveys_responses.csv
+-rw-rw-r--  1 w205 w205    166205 Sep 17  2015 userdata_lab.csv
+-rw-rw-r--  1 w205 w205   5192992 Sep 17  2015 weblog_lab.csv
+[w205@ip-172-31-6-204 ~]$ hdfs dfs -put derby.log /user/w205
+[w205@ip-172-31-6-204 ~]$ hdfs dfs -ls /user/w205
+Found 1 items
+-rw-r--r--   1 w205 supergroup        693 2016-10-15 14:35 /user/w205/derby.log
+[w205@ip-172-31-6-204 ~]$ ps auxwww | grep postgres
+postgres  6901  0.3  0.0 215968  5096 pts/0    S    14:33   0:00 /usr/bin/postgres -D /data/pgsql/data
+postgres  6903  0.0  0.0 178980  1084 ?        Ss   14:33   0:00 postgres: logger process             
+postgres  6905  0.0  0.0 216084  1852 ?        Ss   14:33   0:00 postgres: writer process             
+postgres  6906  0.0  0.0 215968  1336 ?        Ss   14:33   0:00 postgres: wal writer process         
+postgres  6907  0.0  0.0 216236  1576 ?        Ss   14:33   0:00 postgres: autovacuum launcher process   
+postgres  6908  0.0  0.0 179108  1288 ?        Ss   14:33   0:00 postgres: stats collector process    
+w205      7100  0.0  0.0   6388   664 pts/0    S+   14:36   0:00 grep postgres
+[w205@ip-172-31-6-204 ~]$ cd /data
+[w205@ip-172-31-6-204 data]$ ls -l
+total 48
+drwxr-xr-x 3 hadoop   hadoop  4096 Oct 15 14:33 hadoop
+drwxr-xr-x 3 hdfs     hdfs    4096 Oct 15 14:29 hadoop-hdfs
+drwxr-xr-x 4 yarn     yarn    4096 Oct 15 14:30 hadoop-yarn
+drwx------ 2 root     root   16384 Oct 15 14:29 lost+found
+drwxr-xr-x 4 postgres root    4096 Oct 15 14:33 pgsql
+-rw-r--r-- 1 root     root     535 Oct 15 14:33 setup_hive_for_postgres.sql
+-rwxr-xr-x 1 root     root     732 Oct 15 14:33 setup_zeppelin.sh
+-rwxr-xr-x 1 root     root      93 Oct 15 14:33 start_postgres.sh
+-rwxr-xr-x 1 root     root      92 Oct 15 14:33 stop_postgres.sh
+[w205@ip-172-31-6-204 data]$ wget -o pagila.zip http://pgfoundry.org/frs/download.php/1719/pagila-0.10.1.zip
+[w205@ip-172-31-6-204 data]$ ls -l
+total 672
+drwxr-xr-x 3 hadoop   hadoop   4096 Oct 15 14:33 hadoop
+drwxr-xr-x 3 hdfs     hdfs     4096 Oct 15 14:29 hadoop-hdfs
+drwxr-xr-x 4 yarn     yarn     4096 Oct 15 14:30 hadoop-yarn
+drwx------ 2 root     root    16384 Oct 15 14:29 lost+found
+-rw-rw-r-- 1 w205     w205   633143 Oct 15 14:37 pagila-0.10.1.zip
+-rw-rw-r-- 1 w205     w205     1378 Oct 15 14:37 pagila.zip
+drwxr-xr-x 4 postgres root     4096 Oct 15 14:33 pgsql
+-rw-r--r-- 1 root     root      535 Oct 15 14:33 setup_hive_for_postgres.sql
+-rwxr-xr-x 1 root     root      732 Oct 15 14:33 setup_zeppelin.sh
+-rwxr-xr-x 1 root     root       93 Oct 15 14:33 start_postgres.sh
+-rwxr-xr-x 1 root     root       92 Oct 15 14:33 stop_postgres.sh
+[w205@ip-172-31-6-204 data]$ unzip pagila.zip
+Archive:  pagila.zip
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+unzip:  cannot find zipfile directory in one of pagila.zip or
+        pagila.zip.zip, and cannot find pagila.zip.ZIP, period.
+[w205@ip-172-31-6-204 data]$ unzip pagila-0.10.1.zip
+Archive:  pagila-0.10.1.zip
+   creating: pagila-0.10.1/
+  inflating: pagila-0.10.1/pagila-data.sql  
+  inflating: pagila-0.10.1/pagila-insert-data.sql  
+  inflating: pagila-0.10.1/pagila-schema.sql  
+  inflating: pagila-0.10.1/README    
+[w205@ip-172-31-6-204 data]$ psql -U postgres
+psql (8.4.20)
+Type "help" for help.
+
+postgres=# create database dvdrental;
+CREATE DATABASE
+postgres=# \c dvdrental
+psql (8.4.20)
+You are now connected to database "dvdrental".
+dvdrental=# \i pagila-0.10.1/pagila-schema.sql
+SET
+SET
+SET
+SET
+SET
+COMMENT
+CREATE LANGUAGE
+ALTER LANGUAGE
+SET
+CREATE SEQUENCE
+ALTER TABLE
+SET
+SET
+CREATE TABLE
+ALTER TABLE
+CREATE TYPE
+ALTER TYPE
+CREATE DOMAIN
+ALTER DOMAIN
+CREATE FUNCTION
+ALTER FUNCTION
+CREATE AGGREGATE
+ALTER AGGREGATE
+CREATE SEQUENCE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE SEQUENCE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE VIEW
+ALTER TABLE
+CREATE SEQUENCE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE SEQUENCE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE SEQUENCE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE SEQUENCE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE VIEW
+ALTER TABLE
+CREATE VIEW
+ALTER TABLE
+CREATE SEQUENCE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE SEQUENCE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE VIEW
+ALTER TABLE
+CREATE SEQUENCE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE SEQUENCE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE VIEW
+ALTER TABLE
+CREATE SEQUENCE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE SEQUENCE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE VIEW
+ALTER TABLE
+CREATE VIEW
+ALTER TABLE
+CREATE FUNCTION
+ALTER FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+CREATE FUNCTION
+ALTER FUNCTION
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE RULE
+CREATE RULE
+CREATE RULE
+CREATE RULE
+CREATE RULE
+CREATE RULE
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+REVOKE
+GRANT
+GRANT
+dvdrental=# \i pagila-0.10.1/pagila-insert_data.sql
+pagila-0.10.1/pagila-insert_data.sql: No such file or directory
+dvdrental=# \i pagila-0.10.1/pagila-insert-data.sql
+SET
+SET
+SET
+SET
+SET
+SET
+ setval 
+--------
+    200
+(1 row)
+
+ setval 
+--------
+     16
+(1 row)
+
+ setval 
+--------
+   1000
+(1 row)
+
+ setval 
+--------
+    605
+(1 row)
+
+ setval 
+--------
+    600
+(1 row)
+
+ setval 
+--------
+    109
+(1 row)
+
+ setval 
+--------
+    599
+(1 row)
+
+ setval 
+--------
+   4581
+(1 row)
+
+ setval 
+--------
+      6
+(1 row)
+
+ setval 
+--------
+  32098
+(1 row)
+
+ setval 
+--------
+  16049
+(1 row)
+
+ setval 
+--------
+      2
+(1 row)
+
+ setval 
+--------
+      2
+(1 row)
+
+ALTER TABLE
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+dvdrental=# \i pagila-0.10.1/pagila-data.sql
+SET
+SET
+SET
+SET
+SET
+SET
+ setval 
+--------
+    200
+(1 row)
+
+ setval 
+--------
+     16
+(1 row)
+
+ setval 
+--------
+   1000
+(1 row)
+
+ setval 
+--------
+    605
+(1 row)
+
+ setval 
+--------
+    600
+(1 row)
+
+ setval 
+--------
+    109
+(1 row)
+
+ setval 
+--------
+    599
+(1 row)
+
+ setval 
+--------
+   4581
+(1 row)
+
+ setval 
+--------
+      6
+(1 row)
+
+ setval 
+--------
+  32098
+(1 row)
+
+ setval 
+--------
+  16049
+(1 row)
+
+ setval 
+--------
+      2
+(1 row)
+
+ setval 
+--------
+      2
+(1 row)
+
+ALTER TABLE
+psql:pagila-0.10.1/pagila-data.sql:311: ERROR:  duplicate key value violates unique constraint "actor_pkey"
+CONTEXT:  COPY actor, line 1: "1	PENELOPE	GUINESS	2006-02-15 09:34:33"
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+psql:pagila-0.10.1/pagila-data.sql:954: ERROR:  duplicate key value violates unique constraint "category_pkey"
+CONTEXT:  COPY category, line 1: "1	Action	2006-02-15 09:46:27"
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+psql:pagila-0.10.1/pagila-data.sql:1687: ERROR:  duplicate key value violates unique constraint "country_pkey"
+CONTEXT:  COPY country, line 1: "1	Afghanistan	2006-02-15 09:44:00"
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+dvdrental=# \dt
+              List of relations
+ Schema |       Name       | Type  |  Owner   
+--------+------------------+-------+----------
+ public | actor            | table | postgres
+ public | address          | table | postgres
+ public | category         | table | postgres
+ public | city             | table | postgres
+ public | country          | table | postgres
+ public | customer         | table | postgres
+ public | film             | table | postgres
+ public | film_actor       | table | postgres
+ public | film_category    | table | postgres
+ public | inventory        | table | postgres
+ public | language         | table | postgres
+ public | payment          | table | postgres
+ public | payment_p2007_01 | table | postgres
+ public | payment_p2007_02 | table | postgres
+ public | payment_p2007_03 | table | postgres
+ public | payment_p2007_04 | table | postgres
+ public | payment_p2007_05 | table | postgres
+ public | payment_p2007_06 | table | postgres
+ public | rental           | table | postgres
+ public | staff            | table | postgres
+ public | store            | table | postgres
+(21 rows)
+
+dvdrental=# \d dvdrental
+Did not find any relation named "dvdrental".
+dvdrental=# \dt customer
+          List of relations
+ Schema |   Name   | Type  |  Owner   
+--------+----------+-------+----------
+ public | customer | table | postgres
+(1 row)
+
+dvdrental=# \d actor
+                                         Table "public.actor"
+   Column    |            Type             |                        Modifiers                         
+-------------+-----------------------------+----------------------------------------------------------
+ actor_id    | integer                     | not null default nextval('actor_actor_id_seq'::regclass)
+ first_name  | character varying(45)       | not null
+ last_name   | character varying(45)       | not null
+ last_update | timestamp without time zone | not null default now()
+Indexes:
+    "actor_pkey" PRIMARY KEY, btree (actor_id)
+    "idx_actor_last_name" btree (last_name)
+Referenced by:
+    TABLE "film_actor" CONSTRAINT "film_actor_actor_id_fkey" FOREIGN KEY (actor_id) REFERENCES actor(actor_id) ON UPDATE CASCADE ON DELETE RESTRICT
+Triggers:
+    last_updated BEFORE UPDATE ON actor FOR EACH ROW EXECUTE PROCEDURE last_updated()
+
+dvdrental=# \d address
+                                          Table "public.address"
+   Column    |            Type             |                          Modifiers                           
+-------------+-----------------------------+--------------------------------------------------------------
+ address_id  | integer                     | not null default nextval('address_address_id_seq'::regclass)
+ address     | character varying(50)       | not null
+ address2    | character varying(50)       | 
+ district    | character varying(20)       | not null
+ city_id     | smallint                    | not null
+ postal_code | character varying(10)       | 
+ phone       | character varying(20)       | not null
+ last_update | timestamp without time zone | not null default now()
+Indexes:
+    "address_pkey" PRIMARY KEY, btree (address_id)
+    "idx_fk_city_id" btree (city_id)
+Foreign-key constraints:
+    "address_city_id_fkey" FOREIGN KEY (city_id) REFERENCES city(city_id) ON UPDATE CASCADE ON DELETE RESTRICT
+Referenced by:
+    TABLE "customer" CONSTRAINT "customer_address_id_fkey" FOREIGN KEY (address_id) REFERENCES address(address_id) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "staff" CONSTRAINT "staff_address_id_fkey" FOREIGN KEY (address_id) REFERENCES address(address_id) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "store" CONSTRAINT "store_address_id_fkey" FOREIGN KEY (address_id) REFERENCES address(address_id) ON UPDATE CASCADE ON DELETE RESTRICT
+Triggers:
+    last_updated BEFORE UPDATE ON address FOR EACH ROW EXECUTE PROCEDURE last_updated()
+
+dvdrental=# \d customer
+                                          Table "public.customer"
+   Column    |            Type             |                           Modifiers                            
+-------------+-----------------------------+----------------------------------------------------------------
+ customer_id | integer                     | not null default nextval('customer_customer_id_seq'::regclass)
+ store_id    | smallint                    | not null
+ first_name  | character varying(45)       | not null
+ last_name   | character varying(45)       | not null
+ email       | character varying(50)       | 
+ address_id  | smallint                    | not null
+ activebool  | boolean                     | not null default true
+ create_date | date                        | not null default ('now'::text)::date
+ last_update | timestamp without time zone | default now()
+ active      | integer                     | 
+Indexes:
+    "customer_pkey" PRIMARY KEY, btree (customer_id)
+    "idx_fk_address_id" btree (address_id)
+    "idx_fk_store_id" btree (store_id)
+    "idx_last_name" btree (last_name)
+Foreign-key constraints:
+    "customer_address_id_fkey" FOREIGN KEY (address_id) REFERENCES address(address_id) ON UPDATE CASCADE ON DELETE RESTRICT
+    "customer_store_id_fkey" FOREIGN KEY (store_id) REFERENCES store(store_id) ON UPDATE CASCADE ON DELETE RESTRICT
+Referenced by:
+    TABLE "payment" CONSTRAINT "payment_customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "payment_p2007_01" CONSTRAINT "payment_p2007_01_customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+    TABLE "payment_p2007_02" CONSTRAINT "payment_p2007_02_customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+    TABLE "payment_p2007_03" CONSTRAINT "payment_p2007_03_customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+    TABLE "payment_p2007_04" CONSTRAINT "payment_p2007_04_customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+    TABLE "payment_p2007_05" CONSTRAINT "payment_p2007_05_customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+    TABLE "payment_p2007_06" CONSTRAINT "payment_p2007_06_customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+    TABLE "rental" CONSTRAINT "rental_customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON UPDATE CASCADE ON DELETE RESTRICT
+Triggers:
+    last_updated BEFORE UPDATE ON customer FOR EACH ROW EXECUTE PROCEDURE last_updated()
+
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# SELECT customer_id, first_name, last_name FROm customer
+dvdrental-# EXPLAIN SELECT customer_id, first_name, last_name FROm customer
+dvdrental-# ;
+ERROR:  syntax error at or near "SELECT"
+LINE 2: EXPLAIN SELECT customer_id, first_name, last_name FROm custo...
+                ^
+dvdrental=# EXPLAIN SELECT customer_id, first_name, last_name FROm customer;
+                         QUERY PLAN                         
+------------------------------------------------------------
+ Seq Scan on customer  (cost=0.00..14.99 rows=599 width=17)
+(1 row)
+
+dvdrental=# SELECT customer_id, first_name, last_name FROm customer;
+ customer_id | first_name  |  last_name   
+-------------+-------------+--------------
+           1 | MARY        | SMITH
+           2 | PATRICIA    | JOHNSON
+           3 | LINDA       | WILLIAMS
+           4 | BARBARA     | JONES
+           5 | ELIZABETH   | BROWN
+           6 | JENNIFER    | DAVIS
+           7 | MARIA       | MILLER
+           8 | SUSAN       | WILSON
+           9 | MARGARET    | MOORE
+          10 | DOROTHY     | TAYLOR
+          11 | LISA        | ANDERSON
+          12 | NANCY       | THOMAS
+          13 | KAREN       | JACKSON
+          14 | BETTY       | WHITE
+          15 | HELEN       | HARRIS
+          16 | SANDRA      | MARTIN
+          17 | DONNA       | THOMPSON
+          18 | CAROL       | GARCIA
+          19 | RUTH        | MARTINEZ
+          20 | SHARON      | ROBINSON
+          21 | MICHELLE    | CLARK
+          22 | LAURA       | RODRIGUEZ
+          23 | SARAH       | LEWIS
+          24 | KIMBERLY    | LEE
+          25 | DEBORAH     | WALKER
+          26 | JESSICA     | HALL
+          27 | SHIRLEY     | ALLEN
+          28 | CYNTHIA     | YOUNG
+          29 | ANGELA      | HERNANDEZ
+          30 | MELISSA     | KING
+          31 | BRENDA      | WRIGHT
+          32 | AMY         | LOPEZ
+          33 | ANNA        | HILL
+          34 | REBECCA     | SCOTT
+          35 | VIRGINIA    | GREEN
+          36 | KATHLEEN    | ADAMS
+          37 | PAMELA      | BAKER
+          38 | MARTHA      | GONZALEZ
+          39 | DEBRA       | NELSON
+          40 | AMANDA      | CARTER
+          41 | STEPHANIE   | MITCHELL
+          42 | CAROLYN     | PEREZ
+          43 | CHRISTINE   | ROBERTS
+          44 | MARIE       | TURNER
+          45 | JANET       | PHILLIPS
+          46 | CATHERINE   | CAMPBELL
+          47 | FRANCES     | PARKER
+          48 | ANN         | EVANS
+          49 | JOYCE       | EDWARDS
+          50 | DIANE       | COLLINS
+          51 | ALICE       | STEWART
+          52 | JULIE       | SANCHEZ
+          53 | HEATHER     | MORRIS
+          54 | TERESA      | ROGERS
+          55 | DORIS       | REED
+          56 | GLORIA      | COOK
+          57 | EVELYN      | MORGAN
+          58 | JEAN        | BELL
+          59 | CHERYL      | MURPHY
+          60 | MILDRED     | BAILEY
+          61 | KATHERINE   | RIVERA
+          62 | JOAN        | COOPER
+          63 | ASHLEY      | RICHARDSON
+          64 | JUDITH      | COX
+          65 | ROSE        | HOWARD
+          66 | JANICE      | WARD
+          67 | KELLY       | TORRES
+          68 | NICOLE      | PETERSON
+          69 | JUDY        | GRAY
+          70 | CHRISTINA   | RAMIREZ
+          71 | KATHY       | JAMES
+          72 | THERESA     | WATSON
+          73 | BEVERLY     | BROOKS
+          74 | DENISE      | KELLY
+          75 | TAMMY       | SANDERS
+          76 | IRENE       | PRICE
+          77 | JANE        | BENNETT
+          78 | LORI        | WOOD
+          79 | RACHEL      | BARNES
+          80 | MARILYN     | ROSS
+          81 | ANDREA      | HENDERSON
+          82 | KATHRYN     | COLEMAN
+          83 | LOUISE      | JENKINS
+          84 | SARA        | PERRY
+          85 | ANNE        | POWELL
+          86 | JACQUELINE  | LONG
+          87 | WANDA       | PATTERSON
+          88 | BONNIE      | HUGHES
+          89 | JULIA       | FLORES
+          90 | RUBY        | WASHINGTON
+          91 | LOIS        | BUTLER
+          92 | TINA        | SIMMONS
+          93 | PHYLLIS     | FOSTER
+          94 | NORMA       | GONZALES
+          95 | PAULA       | BRYANT
+          96 | DIANA       | ALEXANDER
+          97 | ANNIE       | RUSSELL
+          98 | LILLIAN     | GRIFFIN
+          99 | EMILY       | DIAZ
+         100 | ROBIN       | HAYES
+         101 | PEGGY       | MYERS
+         102 | CRYSTAL     | FORD
+         103 | GLADYS      | HAMILTON
+         104 | RITA        | GRAHAM
+         105 | DAWN        | SULLIVAN
+         106 | CONNIE      | WALLACE
+         107 | FLORENCE    | WOODS
+         108 | TRACY       | COLE
+         109 | EDNA        | WEST
+         110 | TIFFANY     | JORDAN
+         111 | CARMEN      | OWENS
+         112 | ROSA        | REYNOLDS
+         113 | CINDY       | FISHER
+         114 | GRACE       | ELLIS
+         115 | WENDY       | HARRISON
+         116 | VICTORIA    | GIBSON
+         117 | EDITH       | MCDONALD
+         118 | KIM         | CRUZ
+         119 | SHERRY      | MARSHALL
+         120 | SYLVIA      | ORTIZ
+         121 | JOSEPHINE   | GOMEZ
+         122 | THELMA      | MURRAY
+         123 | SHANNON     | FREEMAN
+         124 | SHEILA      | WELLS
+         125 | ETHEL       | WEBB
+         126 | ELLEN       | SIMPSON
+         127 | ELAINE      | STEVENS
+         128 | MARJORIE    | TUCKER
+         129 | CARRIE      | PORTER
+         130 | CHARLOTTE   | HUNTER
+         131 | MONICA      | HICKS
+         132 | ESTHER      | CRAWFORD
+         133 | PAULINE     | HENRY
+         134 | EMMA        | BOYD
+         135 | JUANITA     | MASON
+         136 | ANITA       | MORALES
+         137 | RHONDA      | KENNEDY
+         138 | HAZEL       | WARREN
+         139 | AMBER       | DIXON
+         140 | EVA         | RAMOS
+         141 | DEBBIE      | REYES
+         142 | APRIL       | BURNS
+         143 | LESLIE      | GORDON
+         144 | CLARA       | SHAW
+         145 | LUCILLE     | HOLMES
+         146 | JAMIE       | RICE
+         147 | JOANNE      | ROBERTSON
+         148 | ELEANOR     | HUNT
+         149 | VALERIE     | BLACK
+         150 | DANIELLE    | DANIELS
+         151 | MEGAN       | PALMER
+         152 | ALICIA      | MILLS
+         153 | SUZANNE     | NICHOLS
+         154 | MICHELE     | GRANT
+         155 | GAIL        | KNIGHT
+         156 | BERTHA      | FERGUSON
+         157 | DARLENE     | ROSE
+         158 | VERONICA    | STONE
+         159 | JILL        | HAWKINS
+         160 | ERIN        | DUNN
+         161 | GERALDINE   | PERKINS
+         162 | LAUREN      | HUDSON
+         163 | CATHY       | SPENCER
+         164 | JOANN       | GARDNER
+         165 | LORRAINE    | STEPHENS
+         166 | LYNN        | PAYNE
+         167 | SALLY       | PIERCE
+         168 | REGINA      | BERRY
+         169 | ERICA       | MATTHEWS
+         170 | BEATRICE    | ARNOLD
+         171 | DOLORES     | WAGNER
+         172 | BERNICE     | WILLIS
+         173 | AUDREY      | RAY
+         174 | YVONNE      | WATKINS
+         175 | ANNETTE     | OLSON
+         176 | JUNE        | CARROLL
+         177 | SAMANTHA    | DUNCAN
+         178 | MARION      | SNYDER
+         179 | DANA        | HART
+         180 | STACY       | CUNNINGHAM
+         181 | ANA         | BRADLEY
+         182 | RENEE       | LANE
+         183 | IDA         | ANDREWS
+         184 | VIVIAN      | RUIZ
+         185 | ROBERTA     | HARPER
+         186 | HOLLY       | FOX
+         187 | BRITTANY    | RILEY
+         188 | MELANIE     | ARMSTRONG
+         189 | LORETTA     | CARPENTER
+         190 | YOLANDA     | WEAVER
+         191 | JEANETTE    | GREENE
+         192 | LAURIE      | LAWRENCE
+         193 | KATIE       | ELLIOTT
+         194 | KRISTEN     | CHAVEZ
+         195 | VANESSA     | SIMS
+         196 | ALMA        | AUSTIN
+         197 | SUE         | PETERS
+         198 | ELSIE       | KELLEY
+         199 | BETH        | FRANKLIN
+         200 | JEANNE      | LAWSON
+         201 | VICKI       | FIELDS
+         202 | CARLA       | GUTIERREZ
+         203 | TARA        | RYAN
+         204 | ROSEMARY    | SCHMIDT
+         205 | EILEEN      | CARR
+         206 | TERRI       | VASQUEZ
+         207 | GERTRUDE    | CASTILLO
+         208 | LUCY        | WHEELER
+         209 | TONYA       | CHAPMAN
+         210 | ELLA        | OLIVER
+         211 | STACEY      | MONTGOMERY
+         212 | WILMA       | RICHARDS
+         213 | GINA        | WILLIAMSON
+         214 | KRISTIN     | JOHNSTON
+         215 | JESSIE      | BANKS
+         216 | NATALIE     | MEYER
+         217 | AGNES       | BISHOP
+         218 | VERA        | MCCOY
+         219 | WILLIE      | HOWELL
+         220 | CHARLENE    | ALVAREZ
+         221 | BESSIE      | MORRISON
+         222 | DELORES     | HANSEN
+         223 | MELINDA     | FERNANDEZ
+         224 | PEARL       | GARZA
+         225 | ARLENE      | HARVEY
+         226 | MAUREEN     | LITTLE
+         227 | COLLEEN     | BURTON
+         228 | ALLISON     | STANLEY
+         229 | TAMARA      | NGUYEN
+         230 | JOY         | GEORGE
+         231 | GEORGIA     | JACOBS
+         232 | CONSTANCE   | REID
+         233 | LILLIE      | KIM
+         234 | CLAUDIA     | FULLER
+         235 | JACKIE      | LYNCH
+         236 | MARCIA      | DEAN
+         237 | TANYA       | GILBERT
+         238 | NELLIE      | GARRETT
+         239 | MINNIE      | ROMERO
+         240 | MARLENE     | WELCH
+         241 | HEIDI       | LARSON
+         242 | GLENDA      | FRAZIER
+         243 | LYDIA       | BURKE
+         244 | VIOLA       | HANSON
+         245 | COURTNEY    | DAY
+         246 | MARIAN      | MENDOZA
+         247 | STELLA      | MORENO
+         248 | CAROLINE    | BOWMAN
+         249 | DORA        | MEDINA
+         250 | JO          | FOWLER
+         251 | VICKIE      | BREWER
+         252 | MATTIE      | HOFFMAN
+         253 | TERRY       | CARLSON
+         254 | MAXINE      | SILVA
+         255 | IRMA        | PEARSON
+         256 | MABEL       | HOLLAND
+         257 | MARSHA      | DOUGLAS
+         258 | MYRTLE      | FLEMING
+         259 | LENA        | JENSEN
+         260 | CHRISTY     | VARGAS
+         261 | DEANNA      | BYRD
+         262 | PATSY       | DAVIDSON
+         263 | HILDA       | HOPKINS
+         264 | GWENDOLYN   | MAY
+         265 | JENNIE      | TERRY
+         266 | NORA        | HERRERA
+         267 | MARGIE      | WADE
+         268 | NINA        | SOTO
+         269 | CASSANDRA   | WALTERS
+         270 | LEAH        | CURTIS
+         271 | PENNY       | NEAL
+         272 | KAY         | CALDWELL
+         273 | PRISCILLA   | LOWE
+         274 | NAOMI       | JENNINGS
+         275 | CAROLE      | BARNETT
+         276 | BRANDY      | GRAVES
+         277 | OLGA        | JIMENEZ
+         278 | BILLIE      | HORTON
+         279 | DIANNE      | SHELTON
+         280 | TRACEY      | BARRETT
+         281 | LEONA       | OBRIEN
+         282 | JENNY       | CASTRO
+         283 | FELICIA     | SUTTON
+         284 | SONIA       | GREGORY
+         285 | MIRIAM      | MCKINNEY
+         286 | VELMA       | LUCAS
+         287 | BECKY       | MILES
+         288 | BOBBIE      | CRAIG
+         289 | VIOLET      | RODRIQUEZ
+         290 | KRISTINA    | CHAMBERS
+         291 | TONI        | HOLT
+         292 | MISTY       | LAMBERT
+         293 | MAE         | FLETCHER
+         294 | SHELLY      | WATTS
+         295 | DAISY       | BATES
+         296 | RAMONA      | HALE
+         297 | SHERRI      | RHODES
+         298 | ERIKA       | PENA
+         299 | JAMES       | GANNON
+         300 | JOHN        | FARNSWORTH
+         301 | ROBERT      | BAUGHMAN
+         302 | MICHAEL     | SILVERMAN
+         303 | WILLIAM     | SATTERFIELD
+         304 | DAVID       | ROYAL
+         305 | RICHARD     | MCCRARY
+         306 | CHARLES     | KOWALSKI
+         307 | JOSEPH      | JOY
+         308 | THOMAS      | GRIGSBY
+         309 | CHRISTOPHER | GRECO
+         310 | DANIEL      | CABRAL
+         311 | PAUL        | TROUT
+         312 | MARK        | RINEHART
+         313 | DONALD      | MAHON
+         314 | GEORGE      | LINTON
+         315 | KENNETH     | GOODEN
+         316 | STEVEN      | CURLEY
+         317 | EDWARD      | BAUGH
+         318 | BRIAN       | WYMAN
+         319 | RONALD      | WEINER
+         320 | ANTHONY     | SCHWAB
+         321 | KEVIN       | SCHULER
+         322 | JASON       | MORRISSEY
+         323 | MATTHEW     | MAHAN
+         324 | GARY        | COY
+         325 | TIMOTHY     | BUNN
+         326 | JOSE        | ANDREW
+         327 | LARRY       | THRASHER
+         328 | JEFFREY     | SPEAR
+         329 | FRANK       | WAGGONER
+         330 | SCOTT       | SHELLEY
+         331 | ERIC        | ROBERT
+         332 | STEPHEN     | QUALLS
+         333 | ANDREW      | PURDY
+         334 | RAYMOND     | MCWHORTER
+         335 | GREGORY     | MAULDIN
+         336 | JOSHUA      | MARK
+         337 | JERRY       | JORDON
+         338 | DENNIS      | GILMAN
+         339 | WALTER      | PERRYMAN
+         340 | PATRICK     | NEWSOM
+         341 | PETER       | MENARD
+         342 | HAROLD      | MARTINO
+         343 | DOUGLAS     | GRAF
+         344 | HENRY       | BILLINGSLEY
+         345 | CARL        | ARTIS
+         346 | ARTHUR      | SIMPKINS
+         347 | RYAN        | SALISBURY
+         348 | ROGER       | QUINTANILLA
+         349 | JOE         | GILLILAND
+         350 | JUAN        | FRALEY
+         351 | JACK        | FOUST
+         352 | ALBERT      | CROUSE
+         353 | JONATHAN    | SCARBOROUGH
+         354 | JUSTIN      | NGO
+         355 | TERRY       | GRISSOM
+         356 | GERALD      | FULTZ
+         357 | KEITH       | RICO
+         358 | SAMUEL      | MARLOW
+         359 | WILLIE      | MARKHAM
+         360 | RALPH       | MADRIGAL
+         361 | LAWRENCE    | LAWTON
+         362 | NICHOLAS    | BARFIELD
+         363 | ROY         | WHITING
+         364 | BENJAMIN    | VARNEY
+         365 | BRUCE       | SCHWARZ
+         366 | BRANDON     | HUEY
+         367 | ADAM        | GOOCH
+         368 | HARRY       | ARCE
+         369 | FRED        | WHEAT
+         370 | WAYNE       | TRUONG
+         371 | BILLY       | POULIN
+         372 | STEVE       | MACKENZIE
+         373 | LOUIS       | LEONE
+         374 | JEREMY      | HURTADO
+         375 | AARON       | SELBY
+         376 | RANDY       | GAITHER
+         377 | HOWARD      | FORTNER
+         378 | EUGENE      | CULPEPPER
+         379 | CARLOS      | COUGHLIN
+         380 | RUSSELL     | BRINSON
+         381 | BOBBY       | BOUDREAU
+         382 | VICTOR      | BARKLEY
+         383 | MARTIN      | BALES
+         384 | ERNEST      | STEPP
+         385 | PHILLIP     | HOLM
+         386 | TODD        | TAN
+         387 | JESSE       | SCHILLING
+         388 | CRAIG       | MORRELL
+         389 | ALAN        | KAHN
+         390 | SHAWN       | HEATON
+         391 | CLARENCE    | GAMEZ
+         392 | SEAN        | DOUGLASS
+         393 | PHILIP      | CAUSEY
+         394 | CHRIS       | BROTHERS
+         395 | JOHNNY      | TURPIN
+         396 | EARL        | SHANKS
+         397 | JIMMY       | SCHRADER
+         398 | ANTONIO     | MEEK
+         399 | DANNY       | ISOM
+         400 | BRYAN       | HARDISON
+         401 | TONY        | CARRANZA
+         402 | LUIS        | YANEZ
+         403 | MIKE        | WAY
+         404 | STANLEY     | SCROGGINS
+         405 | LEONARD     | SCHOFIELD
+         406 | NATHAN      | RUNYON
+         407 | DALE        | RATCLIFF
+         408 | MANUEL      | MURRELL
+         409 | RODNEY      | MOELLER
+         410 | CURTIS      | IRBY
+         411 | NORMAN      | CURRIER
+         412 | ALLEN       | BUTTERFIELD
+         413 | MARVIN      | YEE
+         414 | VINCENT     | RALSTON
+         415 | GLENN       | PULLEN
+         416 | JEFFERY     | PINSON
+         417 | TRAVIS      | ESTEP
+         418 | JEFF        | EAST
+         419 | CHAD        | CARBONE
+         420 | JACOB       | LANCE
+         421 | LEE         | HAWKS
+         422 | MELVIN      | ELLINGTON
+         423 | ALFRED      | CASILLAS
+         424 | KYLE        | SPURLOCK
+         425 | FRANCIS     | SIKES
+         426 | BRADLEY     | MOTLEY
+         427 | JESUS       | MCCARTNEY
+         428 | HERBERT     | KRUGER
+         429 | FREDERICK   | ISBELL
+         430 | RAY         | HOULE
+         431 | JOEL        | FRANCISCO
+         432 | EDWIN       | BURK
+         433 | DON         | BONE
+         434 | EDDIE       | TOMLIN
+         435 | RICKY       | SHELBY
+         436 | TROY        | QUIGLEY
+         437 | RANDALL     | NEUMANN
+         438 | BARRY       | LOVELACE
+         439 | ALEXANDER   | FENNELL
+         440 | BERNARD     | COLBY
+         441 | MARIO       | CHEATHAM
+         442 | LEROY       | BUSTAMANTE
+         443 | FRANCISCO   | SKIDMORE
+         444 | MARCUS      | HIDALGO
+         445 | MICHEAL     | FORMAN
+         446 | THEODORE    | CULP
+         447 | CLIFFORD    | BOWENS
+         448 | MIGUEL      | BETANCOURT
+         449 | OSCAR       | AQUINO
+         450 | JAY         | ROBB
+         451 | JIM         | REA
+         452 | TOM         | MILNER
+         453 | CALVIN      | MARTEL
+         454 | ALEX        | GRESHAM
+         455 | JON         | WILES
+         456 | RONNIE      | RICKETTS
+         457 | BILL        | GAVIN
+         458 | LLOYD       | DOWD
+         459 | TOMMY       | COLLAZO
+         460 | LEON        | BOSTIC
+         461 | DEREK       | BLAKELY
+         462 | WARREN      | SHERROD
+         463 | DARRELL     | POWER
+         464 | JEROME      | KENYON
+         465 | FLOYD       | GANDY
+         466 | LEO         | EBERT
+         467 | ALVIN       | DELOACH
+         468 | TIM         | CARY
+         469 | WESLEY      | BULL
+         470 | GORDON      | ALLARD
+         471 | DEAN        | SAUER
+         472 | GREG        | ROBINS
+         473 | JORGE       | OLIVARES
+         474 | DUSTIN      | GILLETTE
+         475 | PEDRO       | CHESTNUT
+         476 | DERRICK     | BOURQUE
+         477 | DAN         | PAINE
+         478 | LEWIS       | LYMAN
+         479 | ZACHARY     | HITE
+         480 | COREY       | HAUSER
+         481 | HERMAN      | DEVORE
+         482 | MAURICE     | CRAWLEY
+         483 | VERNON      | CHAPA
+         484 | ROBERTO     | VU
+         485 | CLYDE       | TOBIAS
+         486 | GLEN        | TALBERT
+         487 | HECTOR      | POINDEXTER
+         488 | SHANE       | MILLARD
+         489 | RICARDO     | MEADOR
+         490 | SAM         | MCDUFFIE
+         491 | RICK        | MATTOX
+         492 | LESTER      | KRAUS
+         493 | BRENT       | HARKINS
+         494 | RAMON       | CHOATE
+         495 | CHARLIE     | BESS
+         496 | TYLER       | WREN
+         497 | GILBERT     | SLEDGE
+         498 | GENE        | SANBORN
+         499 | MARC        | OUTLAW
+         500 | REGINALD    | KINDER
+         501 | RUBEN       | GEARY
+         502 | BRETT       | CORNWELL
+         503 | ANGEL       | BARCLAY
+         504 | NATHANIEL   | ADAM
+         505 | RAFAEL      | ABNEY
+         506 | LESLIE      | SEWARD
+         507 | EDGAR       | RHOADS
+         508 | MILTON      | HOWLAND
+         509 | RAUL        | FORTIER
+         510 | BEN         | EASTER
+         511 | CHESTER     | BENNER
+         512 | CECIL       | VINES
+         513 | DUANE       | TUBBS
+         514 | FRANKLIN    | TROUTMAN
+         515 | ANDRE       | RAPP
+         516 | ELMER       | NOE
+         517 | BRAD        | MCCURDY
+         518 | GABRIEL     | HARDER
+         519 | RON         | DELUCA
+         520 | MITCHELL    | WESTMORELAND
+         521 | ROLAND      | SOUTH
+         522 | ARNOLD      | HAVENS
+         523 | HARVEY      | GUAJARDO
+         524 | JARED       | ELY
+         525 | ADRIAN      | CLARY
+         526 | KARL        | SEAL
+         527 | CORY        | MEEHAN
+         528 | CLAUDE      | HERZOG
+         529 | ERIK        | GUILLEN
+         530 | DARRYL      | ASHCRAFT
+         531 | JAMIE       | WAUGH
+         532 | NEIL        | RENNER
+         533 | JESSIE      | MILAM
+         534 | CHRISTIAN   | JUNG
+         535 | JAVIER      | ELROD
+         536 | FERNANDO    | CHURCHILL
+         537 | CLINTON     | BUFORD
+         538 | TED         | BREAUX
+         539 | MATHEW      | BOLIN
+         540 | TYRONE      | ASHER
+         541 | DARREN      | WINDHAM
+         542 | LONNIE      | TIRADO
+         543 | LANCE       | PEMBERTON
+         544 | CODY        | NOLEN
+         545 | JULIO       | NOLAND
+         546 | KELLY       | KNOTT
+         547 | KURT        | EMMONS
+         548 | ALLAN       | CORNISH
+         549 | NELSON      | CHRISTENSON
+         550 | GUY         | BROWNLEE
+         551 | CLAYTON     | BARBEE
+         552 | HUGH        | WALDROP
+         553 | MAX         | PITT
+         554 | DWAYNE      | OLVERA
+         555 | DWIGHT      | LOMBARDI
+         556 | ARMANDO     | GRUBER
+         557 | FELIX       | GAFFNEY
+         558 | JIMMIE      | EGGLESTON
+         559 | EVERETT     | BANDA
+         560 | JORDAN      | ARCHULETA
+         561 | IAN         | STILL
+         562 | WALLACE     | SLONE
+         563 | KEN         | PREWITT
+         564 | BOB         | PFEIFFER
+         565 | JAIME       | NETTLES
+         566 | CASEY       | MENA
+         567 | ALFREDO     | MCADAMS
+         568 | ALBERTO     | HENNING
+         569 | DAVE        | GARDINER
+         570 | IVAN        | CROMWELL
+         571 | JOHNNIE     | CHISHOLM
+         572 | SIDNEY      | BURLESON
+         573 | BYRON       | BOX
+         574 | JULIAN      | VEST
+         575 | ISAAC       | OGLESBY
+         576 | MORRIS      | MCCARTER
+         577 | CLIFTON     | MALCOLM
+         578 | WILLARD     | LUMPKIN
+         579 | DARYL       | LARUE
+         580 | ROSS        | GREY
+         581 | VIRGIL      | WOFFORD
+         582 | ANDY        | VANHORN
+         583 | MARSHALL    | THORN
+         584 | SALVADOR    | TEEL
+         585 | PERRY       | SWAFFORD
+         586 | KIRK        | STCLAIR
+         587 | SERGIO      | STANFIELD
+         588 | MARION      | OCAMPO
+         589 | TRACY       | HERRMANN
+         590 | SETH        | HANNON
+         591 | KENT        | ARSENAULT
+         592 | TERRANCE    | ROUSH
+         593 | RENE        | MCALISTER
+         594 | EDUARDO     | HIATT
+         595 | TERRENCE    | GUNDERSON
+         596 | ENRIQUE     | FORSYTHE
+         597 | FREDDIE     | DUGGAN
+         598 | WADE        | DELVALLE
+         599 | AUSTIN      | CINTRON
+(599 rows)
+
+dvdrental=# SELECT customer_id, first_name, last_name FROM customer LIMIT 20;
+ customer_id | first_name | last_name 
+-------------+------------+-----------
+           1 | MARY       | SMITH
+           2 | PATRICIA   | JOHNSON
+           3 | LINDA      | WILLIAMS
+           4 | BARBARA    | JONES
+           5 | ELIZABETH  | BROWN
+           6 | JENNIFER   | DAVIS
+           7 | MARIA      | MILLER
+           8 | SUSAN      | WILSON
+           9 | MARGARET   | MOORE
+          10 | DOROTHY    | TAYLOR
+          11 | LISA       | ANDERSON
+          12 | NANCY      | THOMAS
+          13 | KAREN      | JACKSON
+          14 | BETTY      | WHITE
+          15 | HELEN      | HARRIS
+          16 | SANDRA     | MARTIN
+          17 | DONNA      | THOMPSON
+          18 | CAROL      | GARCIA
+          19 | RUTH       | MARTINEZ
+          20 | SHARON     | ROBINSON
+(20 rows)
+
+dvdrental=# EXPLAIN SELECT customer_id, first_name, last_name FROm customer;
+                         QUERY PLAN                         
+------------------------------------------------------------
+ Seq Scan on customer  (cost=0.00..14.99 rows=599 width=17)
+(1 row)
+
+dvdrental=# SELECT customer_id, amount, payment_date FROM payment WHERE amount <=1 OR amount >=8 LIMIT 20;
+ customer_id | amount |        payment_date        
+-------------+--------+----------------------------
+         269 |   0.99 | 2007-01-25 15:16:50.996577
+         269 |   0.99 | 2007-01-29 00:58:02.996577
+         271 |   8.99 | 2007-01-31 11:59:15.996577
+         272 |   0.99 | 2007-01-25 02:47:17.996577
+         272 |   0.99 | 2007-01-31 08:21:16.996577
+         273 |   0.99 | 2007-01-30 20:13:45.996577
+         276 |  10.99 | 2007-01-30 01:13:42.996577
+         279 |   0.99 | 2007-01-31 01:33:33.996577
+         282 |   0.99 | 2007-01-28 07:40:35.996577
+         284 |   0.99 | 2007-01-27 14:01:23.996577
+         284 |   0.99 | 2007-01-29 14:59:08.996577
+         287 |   0.99 | 2007-01-27 23:29:47.996577
+         292 |   0.99 | 2007-01-26 23:28:30.996577
+         293 |   0.99 | 2007-01-27 17:11:23.996577
+         293 |   8.99 | 2007-01-31 03:22:06.996577
+         297 |   0.99 | 2007-01-25 22:14:18.996577
+         299 |   8.99 | 2007-01-28 13:17:05.996577
+         300 |   0.99 | 2007-01-27 18:20:55.996577
+         301 |   0.99 | 2007-01-30 15:27:29.996577
+         303 |   0.99 | 2007-01-26 14:36:04.996577
+(20 rows)
+
+dvdrental=# SELECT count(*) FROM payment WHERE amount <=1 OR amount >=8 LIMIT 20;
+ count 
+-------
+  3860
+(1 row)
+
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# SELECT customer_id, payment_id, amount FROM payment WHERE amount BETWEEN 5 AND 9 LIMIT 20;
+ customer_id | payment_id | amount 
+-------------+------------+--------
+         269 |      16052 |   6.99
+         271 |      16058 |   8.99
+         272 |      16060 |   6.99
+         272 |      16061 |   6.99
+         274 |      16068 |   5.99
+         277 |      16074 |   6.99
+         282 |      16082 |   6.99
+         284 |      16086 |   6.99
+         286 |      16087 |   6.99
+         288 |      16092 |   6.99
+         288 |      16094 |   5.99
+         293 |      16102 |   8.99
+         296 |      16106 |   5.99
+         299 |      16112 |   5.99
+         299 |      16113 |   8.99
+         301 |      16118 |   5.99
+         302 |      16121 |   5.99
+         306 |      16130 |   6.99
+         307 |      16134 |   6.99
+         309 |      16136 |   6.99
+(20 rows)
+
+dvdrental=# SELECT count(*)  FROM payment WHERE amount BETWEEN 5 AND 9 LIMIT 20;
+ count 
+-------
+  3586
+(1 row)
+
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# EXPLAIN SELECT customer_id, payment_id, amount FROM payment WHERE amount BETWEEN 5 AND 9 LIMIT 20;
+                                           QUERY PLAN                                           
+------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..2.34 rows=20 width=14)
+   ->  Result  (cost=0.00..420.63 rows=3600 width=14)
+         ->  Append  (cost=0.00..420.63 rows=3600 width=14)
+               ->  Seq Scan on payment  (cost=0.00..29.95 rows=7 width=17)
+                     Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+               ->  Seq Scan on payment_p2007_01 payment  (cost=0.00..26.36 rows=242 width=14)
+                     Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+               ->  Seq Scan on payment_p2007_02 payment  (cost=0.00..51.68 rows=506 width=14)
+                     Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+               ->  Seq Scan on payment_p2007_03 payment  (cost=0.00..126.66 rows=1290 width=14)
+                     Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+               ->  Seq Scan on payment_p2007_04 payment  (cost=0.00..151.31 rows=1535 width=14)
+                     Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+               ->  Seq Scan on payment_p2007_05 payment  (cost=0.00..4.73 rows=13 width=13)
+                     Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+               ->  Seq Scan on payment_p2007_06 payment  (cost=0.00..29.95 rows=7 width=17)
+                     Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+(17 rows)
+
+dvdrental=# EXPLAIN SELECT customer_id, payment_id, amount FROM payment WHERE amount BETWEEN 5 AND 9;         
+                                        QUERY PLAN                                        
+------------------------------------------------------------------------------------------
+ Result  (cost=0.00..420.63 rows=3600 width=14)
+   ->  Append  (cost=0.00..420.63 rows=3600 width=14)
+         ->  Seq Scan on payment  (cost=0.00..29.95 rows=7 width=17)
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+         ->  Seq Scan on payment_p2007_01 payment  (cost=0.00..26.36 rows=242 width=14)
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+         ->  Seq Scan on payment_p2007_02 payment  (cost=0.00..51.68 rows=506 width=14)
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+         ->  Seq Scan on payment_p2007_03 payment  (cost=0.00..126.66 rows=1290 width=14)
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+         ->  Seq Scan on payment_p2007_04 payment  (cost=0.00..151.31 rows=1535 width=14)
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+         ->  Seq Scan on payment_p2007_05 payment  (cost=0.00..4.73 rows=13 width=13)
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+         ->  Seq Scan on payment_p2007_06 payment  (cost=0.00..29.95 rows=7 width=17)
+               Filter: ((amount >= 5::numeric) AND (amount <= 9::numeric))
+(16 rows)
+
+dvdrental=# EXPLAIN SELECT count(*) FROM payment WHERE amount <=1 OR amount >=8 LIMIT 20;
+                                          QUERY PLAN                                           
+-----------------------------------------------------------------------------------------------
+ Limit  (cost=433.58..433.59 rows=1 width=0)
+   ->  Aggregate  (cost=433.58..433.59 rows=1 width=0)
+         ->  Append  (cost=0.00..420.63 rows=5178 width=0)
+               ->  Seq Scan on payment  (cost=0.00..29.95 rows=739 width=0)
+                     Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+               ->  Seq Scan on payment_p2007_01 payment  (cost=0.00..26.36 rows=266 width=0)
+                     Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+               ->  Seq Scan on payment_p2007_02 payment  (cost=0.00..51.68 rows=531 width=0)
+                     Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+               ->  Seq Scan on payment_p2007_03 payment  (cost=0.00..126.66 rows=1268 width=0)
+                     Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+               ->  Seq Scan on payment_p2007_04 payment  (cost=0.00..151.31 rows=1557 width=0)
+                     Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+               ->  Seq Scan on payment_p2007_05 payment  (cost=0.00..4.73 rows=78 width=0)
+                     Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+               ->  Seq Scan on payment_p2007_06 payment  (cost=0.00..29.95 rows=739 width=0)
+                     Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+(17 rows)
+
+dvdrental=# EXPLAIN SELECT count(*) FROM payment WHERE amount <=1 OR amount >=8;         
+                                       QUERY PLAN                                        
+-----------------------------------------------------------------------------------------
+ Aggregate  (cost=433.58..433.59 rows=1 width=0)
+   ->  Append  (cost=0.00..420.63 rows=5178 width=0)
+         ->  Seq Scan on payment  (cost=0.00..29.95 rows=739 width=0)
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+         ->  Seq Scan on payment_p2007_01 payment  (cost=0.00..26.36 rows=266 width=0)
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+         ->  Seq Scan on payment_p2007_02 payment  (cost=0.00..51.68 rows=531 width=0)
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+         ->  Seq Scan on payment_p2007_03 payment  (cost=0.00..126.66 rows=1268 width=0)
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+         ->  Seq Scan on payment_p2007_04 payment  (cost=0.00..151.31 rows=1557 width=0)
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+         ->  Seq Scan on payment_p2007_05 payment  (cost=0.00..4.73 rows=78 width=0)
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+         ->  Seq Scan on payment_p2007_06 payment  (cost=0.00..29.95 rows=739 width=0)
+               Filter: ((amount <= 1::numeric) OR (amount >= 8::numeric))
+(16 rows)
+
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# SELECT u.customer_id, sum(u.amount) FROM (
+dvdrental(# SELECT * 
+dvdrental(# FROM
+dvdrental(# payment_p2007_01
+dvdrental(# UNION
+dvdrental(# SELECT *
+dvdrental(# FROM
+dvdrental(# payment_p2007_02
+dvdrental(# )u
+dvdrental-# WHERE payment_date <= '2007-02-01 00:00:00'::timestamp WITHOUT time zone
+dvdrental-# GROUP BY u.customer_id
+dvdrental-# LIMIT 20;
+ customer_id |  sum  
+-------------+-------
+         251 | 19.94
+         106 |  4.98
+         120 |  8.98
+         497 |  7.99
+         305 |  2.99
+         551 | 20.95
+         318 |  9.99
+         312 | 17.96
+         452 |  7.97
+         179 | 12.97
+         496 |  5.98
+         455 |  1.98
+         470 |  2.99
+         542 |  9.98
+         571 | 13.98
+         209 | 13.97
+         276 | 14.98
+         577 |  6.98
+         110 |  9.98
+         550 |  7.99
+(20 rows)
+
+dvdrental=# SELECT u.customer_id, sum(u.amount) FROM (
+SELECT * 
+FROM
+payment_p2007_01
+UNION
+SELECT *
+FROM
+payment_p2007_02
+)u
+WHERE payment_date <= '2007-02-01 00:00:00'::timestamp WITHOUT time zone
+GROUP BY u.customer_id
+;
+ customer_id |  sum  
+-------------+-------
+         251 | 19.94
+         106 |  4.98
+         120 |  8.98
+         497 |  7.99
+         305 |  2.99
+         551 | 20.95
+         318 |  9.99
+         312 | 17.96
+         452 |  7.97
+         179 | 12.97
+         496 |  5.98
+         455 |  1.98
+         470 |  2.99
+         542 |  9.98
+         571 | 13.98
+         209 | 13.97
+         276 | 14.98
+         577 |  6.98
+         110 |  9.98
+         550 |  7.99
+         599 |  4.99
+          99 |  0.99
+          48 |  8.97
+          28 |  5.98
+         313 |  9.96
+          94 |  7.98
+         262 |  4.99
+         204 | 12.96
+         362 |  4.99
+         151 | 10.98
+         384 | 11.96
+         162 | 11.97
+         253 | 10.97
+         399 | 17.97
+         119 | 13.97
+         356 |  4.99
+         299 | 14.98
+         270 |  6.98
+          95 |  4.99
+         122 |  5.98
+         437 | 13.97
+          62 |  5.98
+         514 |  4.99
+         518 |  2.99
+         549 | 14.96
+         531 |  7.98
+         214 | 12.95
+         310 |  0.99
+         454 |  7.99
+         180 |  2.99
+         397 |  0.99
+         390 |  9.98
+         127 |  1.98
+         101 |  9.99
+          20 | 11.97
+         339 |  5.99
+         486 | 12.97
+         330 | 11.98
+          82 | 11.98
+         439 | 13.97
+          25 | 10.98
+         359 | 15.97
+         213 |  0.99
+          26 |  5.98
+         137 |  2.99
+         560 |  2.99
+         117 |  1.98
+         438 | 12.97
+         185 |  4.97
+         265 |  0.99
+         379 |  9.98
+         405 |  7.98
+         545 |  4.98
+         292 |  0.99
+         168 |  5.98
+         136 |  2.99
+         196 | 22.96
+         553 |  4.99
+         309 |  7.98
+         373 |  4.99
+         349 |  4.99
+         363 |  3.99
+         238 |  7.98
+          27 |  2.99
+         286 |  6.99
+         230 |  5.98
+         409 |  6.99
+         414 |  8.98
+         449 | 18.97
+         446 |  6.97
+         155 |  2.99
+         417 | 18.97
+         434 |  5.99
+         587 |  5.98
+         149 |  4.99
+          93 | 14.97
+         389 |  4.99
+         307 | 18.96
+         382 |  5.98
+         197 | 20.92
+         447 |  3.98
+         187 |  7.99
+         541 | 12.98
+         114 | 12.97
+         554 |  5.98
+         351 |  1.99
+         191 |  7.98
+         156 | 11.98
+         295 |  3.99
+          11 |  6.99
+         302 | 10.98
+         386 |  7.99
+         249 | 18.96
+         269 | 18.94
+         534 |  6.98
+         135 |  9.98
+         194 | 12.98
+         228 |  5.98
+         126 | 14.97
+         511 |  6.98
+         252 |  5.98
+         523 |  5.98
+         430 |  7.98
+         506 | 28.93
+         537 |  4.99
+         316 | 15.97
+         526 | 12.97
+         520 |  6.99
+         508 |  5.98
+         489 |  7.98
+         378 |  0.99
+         131 | 15.97
+         369 | 18.96
+          67 | 12.98
+         457 |  7.99
+         471 |  2.99
+         464 |  5.98
+         357 |  8.97
+         241 | 11.98
+         465 |  0.99
+         352 |  2.99
+          17 | 10.97
+         325 |  5.99
+         142 | 19.97
+          66 |  4.99
+         563 | 10.98
+         479 | 11.98
+         477 |  2.99
+          89 |  9.97
+         284 |  8.97
+         504 | 15.97
+          50 | 24.95
+          33 |  2.99
+         586 | 13.98
+         513 |  4.99
+         442 | 13.97
+         109 | 27.93
+          57 | 14.98
+          51 | 14.97
+         239 | 33.94
+         288 | 21.96
+         406 |  0.99
+         524 |  5.98
+          76 |  2.98
+         460 | 11.96
+          69 |  6.98
+         334 | 15.98
+         203 |  0.99
+         529 |  2.99
+         385 |  7.98
+         441 |  4.99
+         505 |  5.98
+         552 |  0.99
+         393 |  5.98
+         219 |  0.99
+          81 |  0.99
+         557 |  9.98
+         296 | 18.96
+          12 |  9.98
+         273 |  4.98
+         282 |  9.97
+         428 |  4.99
+         321 | 15.97
+          79 | 10.97
+          10 |  4.99
+          42 |  5.99
+         324 |  3.99
+         502 |  7.96
+         450 |  3.99
+         481 |  5.99
+          18 | 12.97
+         134 | 16.96
+          59 | 13.97
+         146 | 12.98
+         143 |  5.98
+         192 |  1.99
+         338 |  0.99
+         424 |  0.99
+          98 |  3.99
+         594 | 21.96
+         193 |  3.98
+         381 |  6.97
+         271 |  8.99
+         408 | 12.97
+         466 |  2.99
+         243 |  4.99
+         167 | 10.97
+         250 | 18.95
+         116 |  4.99
+         350 |  9.98
+          64 |  8.97
+         235 |  3.98
+         394 |  6.98
+         387 | 21.96
+         248 | 12.98
+          84 | 12.97
+         501 |  2.98
+         145 |  0.99
+         582 |  0.99
+         207 | 17.94
+         198 | 16.95
+         104 | 14.98
+          74 |  6.99
+         413 |  9.98
+           6 |  8.97
+         102 |  7.97
+         509 | 13.98
+         315 | 13.98
+         463 |  1.99
+         246 | 30.95
+          71 | 12.98
+         533 |  8.97
+         588 |  7.98
+          29 |  1.99
+         159 |  9.96
+           2 |  4.99
+         354 |  3.97
+         267 | 16.97
+          72 | 10.97
+         343 |  7.98
+         186 |  2.98
+         516 |  5.98
+         234 |  4.99
+         141 |  2.99
+         580 |  0.99
+         564 |  8.98
+         539 |  5.98
+         346 |  9.98
+         467 |  4.99
+         402 |  1.99
+         171 |  9.99
+         480 | 17.97
+         337 | 20.97
+         227 |  8.98
+         247 | 15.97
+         380 |  3.99
+         280 |  4.99
+         311 | 26.95
+         517 |  4.99
+         242 | 11.97
+         138 |  3.98
+         297 |  4.98
+         419 |  2.99
+         459 |  2.99
+         314 | 10.98
+         190 |  7.98
+          16 | 10.96
+         444 |  9.98
+         391 | 24.95
+          54 | 13.97
+         400 | 18.96
+         274 | 24.94
+         473 | 11.97
+         574 |  0.99
+         595 |  6.99
+         426 |  0.99
+         103 | 17.98
+          47 | 15.97
+         412 | 10.96
+         115 |  4.97
+         525 |  5.99
+         236 |  8.97
+         148 |  4.99
+         208 |  4.99
+         323 | 13.97
+         322 |  5.98
+         211 |  4.99
+          46 | 10.97
+         368 | 17.96
+         294 |  1.99
+          83 |  4.97
+          36 |  1.98
+         304 | 14.97
+         174 | 10.98
+         361 | 10.98
+          77 | 14.95
+         125 |  3.99
+         451 |  6.97
+         474 |  7.99
+         407 |  7.99
+         257 |  8.97
+         200 |  9.99
+          73 |  7.98
+          40 |  4.99
+         182 |  4.98
+          56 | 19.96
+         355 |  3.99
+          53 | 26.94
+         590 |  3.99
+         222 | 19.95
+         277 |  6.99
+         261 | 16.96
+         123 |  2.99
+         275 |  2.99
+          92 | 10.98
+         528 | 17.95
+          23 | 12.97
+         348 |  1.98
+          44 | 12.95
+         371 | 25.94
+         332 | 10.98
+         468 | 20.95
+         575 | 16.95
+         333 |  4.99
+         544 |  5.98
+          58 |  9.97
+           1 |  3.98
+         484 | 10.97
+         189 |  5.99
+         290 |  2.99
+         569 | 20.95
+         404 |  5.99
+         507 |  5.98
+         596 | 22.94
+         547 | 11.97
+         485 |  2.99
+         562 | 11.97
+         111 |  2.99
+         578 |  0.99
+         237 |  5.98
+         364 |  5.99
+         372 |  5.98
+         556 | 10.97
+         376 |  0.99
+          86 |  1.99
+         500 | 18.97
+          49 | 13.96
+         572 |  7.99
+          22 | 18.97
+         566 | 10.98
+         360 |  5.98
+         515 | 15.98
+          91 |  5.99
+          70 |  4.99
+          45 |  2.99
+         225 |  8.98
+         199 |  7.99
+         433 | 19.98
+         303 |  8.97
+         293 | 14.97
+         495 |  9.98
+         543 |  8.98
+          60 |  9.97
+         365 | 10.98
+         532 |  2.99
+         287 |  6.97
+         165 |  4.99
+         422 |  0.99
+         105 | 26.96
+         327 |  6.99
+          21 |  8.97
+         152 |  9.98
+          75 |  5.98
+         469 | 18.95
+         475 |  5.98
+         536 |  7.98
+         124 | 15.96
+         401 | 11.97
+         570 |  7.99
+           5 |  9.97
+         561 |  9.98
+         281 |  5.98
+         462 |  6.98
+         301 | 11.97
+         510 | 19.97
+         245 | 28.94
+         461 |  6.99
+         181 |  6.99
+         425 |  5.99
+         415 |  4.99
+         499 |  2.99
+          43 |  9.98
+         593 | 11.98
+         498 | 14.97
+         220 |  4.98
+         367 |  3.98
+         482 | 12.97
+         259 | 15.97
+         166 |  1.99
+         573 |  2.99
+         298 |  3.99
+         429 | 26.95
+         519 |  3.99
+         522 |  5.99
+         432 | 22.97
+         291 | 12.97
+         254 |  8.98
+         112 |  3.98
+           3 |  4.98
+         431 |  2.99
+         201 | 16.97
+         597 | 11.98
+          61 |  0.99
+         176 | 21.95
+         581 |  9.98
+          87 |  7.98
+         169 |  8.98
+         388 |  9.98
+          14 | 20.95
+         396 |  5.99
+         344 |  8.98
+         107 | 11.98
+         476 |  7.98
+         493 |  7.99
+         472 |  9.96
+         319 | 16.97
+         530 |  0.99
+         147 |  1.98
+         221 |  4.99
+         435 | 12.98
+         121 |  4.99
+         576 |  3.98
+         210 |  2.99
+         161 | 17.94
+          19 | 26.94
+         589 | 10.97
+         108 |  5.98
+         157 |  5.98
+         398 |  4.99
+         154 | 19.97
+         584 | 14.97
+         215 |  9.98
+          65 |  5.98
+          35 | 10.98
+          52 |  0.99
+         366 |  6.99
+         317 |  6.99
+         440 |  4.99
+         503 | 15.96
+          37 |  3.98
+         173 |  7.98
+          85 | 14.98
+         421 |  1.98
+          32 | 14.97
+         375 | 21.96
+         546 | 12.98
+         358 |  4.99
+         448 |  7.98
+         164 |  1.99
+         491 |  3.98
+         326 | 15.97
+         306 | 10.98
+         278 |  4.99
+         345 |  1.98
+         133 |  9.98
+         436 | 17.97
+         279 |  3.98
+         308 |  3.99
+         150 | 10.97
+         100 |  0.99
+         420 |  4.99
+         443 |  4.99
+         416 |  7.97
+         490 | 11.98
+         492 |  2.99
+         232 |  8.98
+         331 |  3.98
+         427 |  6.99
+         158 | 10.98
+         172 | 11.97
+         113 |  1.98
+         183 |  0.99
+           9 | 10.97
+          24 |  9.98
+         445 |  5.98
+         411 |  6.98
+         260 |  8.99
+         184 |  9.97
+         170 |  9.97
+         403 |  3.98
+         494 |  4.99
+          55 | 15.97
+         374 |  4.97
+         535 | 12.96
+         244 |  6.98
+          88 |  2.99
+         118 |  5.99
+         130 |  5.98
+         565 |  7.98
+         272 | 15.96
+         128 |  8.98
+         223 |  2.99
+         456 |  4.99
+         240 | 10.97
+         300 |  9.97
+         231 | 21.97
+         548 | 15.97
+         217 | 11.98
+         538 |  7.98
+         383 |  9.98
+         353 |  6.99
+         328 |  2.99
+         256 | 14.95
+         216 |  4.99
+         263 |  5.98
+         266 |  4.98
+         144 |  5.98
+           7 | 20.95
+           8 |  6.99
+         483 |  6.99
+(520 rows)
+
+dvdrental=#  
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# EXPLAIN SELECT u.customer_id, sum(u.amount) FROM (
+SELECT * 
+FROM
+payment_p2007_01
+UNION
+SELECT *
+FROM
+payment_p2007_02
+)u
+WHERE payment_date <= '2007-02-01 00:00:00'::timestamp WITHOUT time zone
+GROUP BY u.customer_id
+;
+                                            QUERY PLAN                                            
+--------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=127.26..129.76 rows=200 width=13)
+   ->  HashAggregate  (cost=98.31..109.89 rows=1158 width=28)
+         ->  Append  (cost=0.00..80.94 rows=1158 width=28)
+               ->  Seq Scan on payment_p2007_01  (cost=0.00..23.46 rows=1157 width=28)
+                     Filter: (payment_date <= '2007-02-01 00:00:00'::timestamp without time zone)
+               ->  Seq Scan on payment_p2007_02  (cost=0.00..45.90 rows=1 width=28)
+                     Filter: (payment_date <= '2007-02-01 00:00:00'::timestamp without time zone)
+(7 rows)
+
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# SELECT customer_id, sum(amount) FROM payment 
+dvdrental-# WHERE payment_date <= '2007-02-01 00:00:00'::timestamp WITHOUT time zone
+dvdrental-# GROUP BY customer_id LIMIT 20;
+ customer_id |  sum  
+-------------+-------
+         251 | 19.94
+         106 |  4.98
+         120 |  8.98
+         305 |  2.99
+         497 |  7.99
+         551 | 20.95
+         318 |  9.99
+         312 | 17.96
+         452 |  7.97
+         179 | 12.97
+         496 |  5.98
+         455 |  1.98
+         470 |  2.99
+         542 |  9.98
+         571 | 13.98
+         209 | 13.97
+         276 | 14.98
+         577 |  6.98
+         110 |  9.98
+         550 |  7.99
+(20 rows)
+
+dvdrental=# SELECT customer_id, sum(amount) FROM payment 
+WHERE payment_date <= '2007-02-01 00:00:00'::timestamp WITHOUT time zone
+GROUP BY customer_id;         
+ customer_id |  sum  
+-------------+-------
+         251 | 19.94
+         106 |  4.98
+         120 |  8.98
+         305 |  2.99
+         497 |  7.99
+         551 | 20.95
+         318 |  9.99
+         312 | 17.96
+         452 |  7.97
+         179 | 12.97
+         496 |  5.98
+         455 |  1.98
+         470 |  2.99
+         542 |  9.98
+         571 | 13.98
+         209 | 13.97
+         276 | 14.98
+         577 |  6.98
+         110 |  9.98
+         550 |  7.99
+         599 |  4.99
+          99 |  0.99
+          48 |  8.97
+          28 |  5.98
+         313 |  9.96
+          94 |  7.98
+         262 |  4.99
+         362 |  4.99
+         204 | 12.96
+         151 | 10.98
+         384 | 11.96
+         162 | 11.97
+         253 | 10.97
+         399 | 17.97
+         119 | 13.97
+         356 |  4.99
+         299 | 14.98
+         270 |  6.98
+          95 |  4.99
+         122 |  5.98
+         437 | 13.97
+         514 |  4.99
+          62 |  5.98
+         518 |  2.99
+         549 | 14.96
+         531 |  7.98
+         310 |  0.99
+         454 |  7.99
+         214 | 12.95
+         180 |  2.99
+         397 |  0.99
+         390 |  9.98
+         127 |  1.98
+         101 |  9.99
+         339 |  5.99
+          20 | 11.97
+         486 | 12.97
+         330 | 11.98
+          82 | 11.98
+         439 | 13.97
+          25 | 10.98
+         359 | 15.97
+          26 |  5.98
+         213 |  0.99
+         137 |  2.99
+         560 |  2.99
+         117 |  1.98
+         438 | 12.97
+         185 |  4.97
+         265 |  0.99
+         379 |  9.98
+         405 |  7.98
+         545 |  4.98
+         292 |  0.99
+         168 |  5.98
+         136 |  2.99
+         196 | 22.96
+         553 |  4.99
+         309 |  7.98
+         373 |  4.99
+         349 |  4.99
+         363 |  3.99
+         238 |  7.98
+          27 |  2.99
+         286 |  6.99
+         230 |  5.98
+         409 |  6.99
+         414 |  8.98
+         449 | 18.97
+         446 |  6.97
+         155 |  2.99
+         417 | 18.97
+         434 |  5.99
+         587 |  5.98
+         149 |  4.99
+         389 |  4.99
+          93 | 14.97
+         307 | 18.96
+         382 |  5.98
+         197 | 20.92
+         447 |  3.98
+         187 |  7.99
+         541 | 12.98
+         114 | 12.97
+         554 |  5.98
+         351 |  1.99
+         191 |  7.98
+         156 | 11.98
+         295 |  3.99
+          11 |  6.99
+         302 | 10.98
+         386 |  7.99
+         269 | 18.94
+         249 | 18.96
+         511 |  6.98
+         534 |  6.98
+         126 | 14.97
+         135 |  9.98
+         194 | 12.98
+         228 |  5.98
+         430 |  7.98
+         523 |  5.98
+         252 |  5.98
+         506 | 28.93
+         537 |  4.99
+         316 | 15.97
+         508 |  5.98
+         520 |  6.99
+         526 | 12.97
+         489 |  7.98
+         378 |  0.99
+         131 | 15.97
+         369 | 18.96
+         457 |  7.99
+          67 | 12.98
+         471 |  2.99
+         357 |  8.97
+         464 |  5.98
+         241 | 11.98
+         352 |  2.99
+         465 |  0.99
+         325 |  5.99
+          17 | 10.97
+         563 | 10.98
+          66 |  4.99
+         142 | 19.97
+         477 |  2.99
+         479 | 11.98
+          89 |  9.97
+         284 |  8.97
+         504 | 15.97
+          50 | 24.95
+          33 |  2.99
+         513 |  4.99
+         586 | 13.98
+         442 | 13.97
+          57 | 14.98
+         109 | 27.93
+          51 | 14.97
+         239 | 33.94
+         288 | 21.96
+         406 |  0.99
+         524 |  5.98
+          76 |  2.98
+         460 | 11.96
+          69 |  6.98
+         334 | 15.98
+         529 |  2.99
+         203 |  0.99
+         385 |  7.98
+         441 |  4.99
+         393 |  5.98
+         505 |  5.98
+         552 |  0.99
+          81 |  0.99
+         219 |  0.99
+         557 |  9.98
+         273 |  4.98
+         296 | 18.96
+          12 |  9.98
+         282 |  9.97
+         321 | 15.97
+         428 |  4.99
+          10 |  4.99
+          79 | 10.97
+         324 |  3.99
+         450 |  3.99
+         502 |  7.96
+          42 |  5.99
+         481 |  5.99
+          18 | 12.97
+         134 | 16.96
+          59 | 13.97
+         146 | 12.98
+         143 |  5.98
+         192 |  1.99
+         338 |  0.99
+         424 |  0.99
+         594 | 21.96
+          98 |  3.99
+         381 |  6.97
+         193 |  3.98
+         271 |  8.99
+         408 | 12.97
+         466 |  2.99
+         243 |  4.99
+         167 | 10.97
+         250 | 18.95
+         350 |  9.98
+         116 |  4.99
+          64 |  8.97
+         235 |  3.98
+         394 |  6.98
+         387 | 21.96
+         248 | 12.98
+          84 | 12.97
+         501 |  2.98
+         145 |  0.99
+         582 |  0.99
+         207 | 17.94
+         198 | 16.95
+          74 |  6.99
+         104 | 14.98
+         413 |  9.98
+         509 | 13.98
+           6 |  8.97
+         102 |  7.97
+         315 | 13.98
+         463 |  1.99
+         533 |  8.97
+          71 | 12.98
+         246 | 30.95
+         588 |  7.98
+          29 |  1.99
+           2 |  4.99
+         159 |  9.96
+         343 |  7.98
+         354 |  3.97
+          72 | 10.97
+         267 | 16.97
+         516 |  5.98
+         186 |  2.98
+         234 |  4.99
+         580 |  0.99
+         141 |  2.99
+         564 |  8.98
+         539 |  5.98
+         346 |  9.98
+         402 |  1.99
+         467 |  4.99
+         480 | 17.97
+         171 |  9.99
+         337 | 20.97
+         227 |  8.98
+         380 |  3.99
+         247 | 15.97
+         280 |  4.99
+         311 | 26.95
+         517 |  4.99
+         138 |  3.98
+         242 | 11.97
+         297 |  4.98
+         419 |  2.99
+         459 |  2.99
+         314 | 10.98
+         190 |  7.98
+          16 | 10.96
+         391 | 24.95
+         444 |  9.98
+         274 | 24.94
+         400 | 18.96
+          54 | 13.97
+         473 | 11.97
+         574 |  0.99
+         426 |  0.99
+         595 |  6.99
+         412 | 10.96
+          47 | 15.97
+         103 | 17.98
+         525 |  5.99
+         115 |  4.97
+         148 |  4.99
+         236 |  8.97
+         208 |  4.99
+         323 | 13.97
+         322 |  5.98
+         211 |  4.99
+          46 | 10.97
+         294 |  1.99
+         368 | 17.96
+          83 |  4.97
+          36 |  1.98
+         304 | 14.97
+         174 | 10.98
+         361 | 10.98
+          77 | 14.95
+         125 |  3.99
+         451 |  6.97
+         474 |  7.99
+         407 |  7.99
+         200 |  9.99
+         257 |  8.97
+          73 |  7.98
+          40 |  4.99
+          56 | 19.96
+         182 |  4.98
+         355 |  3.99
+          53 | 26.94
+         590 |  3.99
+         277 |  6.99
+         222 | 19.95
+         275 |  2.99
+         123 |  2.99
+         261 | 16.96
+          92 | 10.98
+         528 | 17.95
+          23 | 12.97
+         348 |  1.98
+          44 | 12.95
+         371 | 25.94
+         332 | 10.98
+         468 | 20.95
+         333 |  4.99
+         544 |  5.98
+         575 | 16.95
+          58 |  9.97
+         484 | 10.97
+           1 |  3.98
+         189 |  5.99
+         290 |  2.99
+         569 | 20.95
+         404 |  5.99
+         507 |  5.98
+         596 | 22.94
+         547 | 11.97
+         485 |  2.99
+         562 | 11.97
+         111 |  2.99
+         578 |  0.99
+         364 |  5.99
+         237 |  5.98
+         372 |  5.98
+         556 | 10.97
+         376 |  0.99
+          86 |  1.99
+         500 | 18.97
+         572 |  7.99
+          49 | 13.96
+          22 | 18.97
+         360 |  5.98
+         515 | 15.98
+         566 | 10.98
+          91 |  5.99
+          70 |  4.99
+          45 |  2.99
+         225 |  8.98
+         199 |  7.99
+         433 | 19.98
+         303 |  8.97
+         293 | 14.97
+         495 |  9.98
+         543 |  8.98
+          60 |  9.97
+         365 | 10.98
+         532 |  2.99
+         287 |  6.97
+         165 |  4.99
+         422 |  0.99
+         327 |  6.99
+         105 | 26.96
+          21 |  8.97
+         152 |  9.98
+         469 | 18.95
+          75 |  5.98
+         475 |  5.98
+         536 |  7.98
+         401 | 11.97
+         570 |  7.99
+         124 | 15.96
+         281 |  5.98
+         462 |  6.98
+         561 |  9.98
+           5 |  9.97
+         301 | 11.97
+         510 | 19.97
+         461 |  6.99
+         245 | 28.94
+         415 |  4.99
+         425 |  5.99
+         499 |  2.99
+         181 |  6.99
+         593 | 11.98
+          43 |  9.98
+         498 | 14.97
+         220 |  4.98
+         367 |  3.98
+         482 | 12.97
+         259 | 15.97
+         573 |  2.99
+         166 |  1.99
+         298 |  3.99
+         429 | 26.95
+         519 |  3.99
+         432 | 22.97
+         522 |  5.99
+         291 | 12.97
+         112 |  3.98
+         254 |  8.98
+         431 |  2.99
+           3 |  4.98
+         597 | 11.98
+         201 | 16.97
+          61 |  0.99
+         176 | 21.95
+         581 |  9.98
+          87 |  7.98
+         388 |  9.98
+         169 |  8.98
+         396 |  5.99
+          14 | 20.95
+         344 |  8.98
+         476 |  7.98
+         107 | 11.98
+         493 |  7.99
+         319 | 16.97
+         472 |  9.96
+         530 |  0.99
+         147 |  1.98
+         221 |  4.99
+         435 | 12.98
+         121 |  4.99
+         576 |  3.98
+         210 |  2.99
+         161 | 17.94
+         398 |  4.99
+         589 | 10.97
+          19 | 26.94
+         108 |  5.98
+         157 |  5.98
+         584 | 14.97
+         154 | 19.97
+         215 |  9.98
+          35 | 10.98
+          65 |  5.98
+          52 |  0.99
+         317 |  6.99
+         366 |  6.99
+         440 |  4.99
+         503 | 15.96
+          37 |  3.98
+          85 | 14.98
+         173 |  7.98
+         421 |  1.98
+          32 | 14.97
+         375 | 21.96
+         546 | 12.98
+         358 |  4.99
+         448 |  7.98
+         164 |  1.99
+         491 |  3.98
+         326 | 15.97
+         306 | 10.98
+         278 |  4.99
+         345 |  1.98
+         436 | 17.97
+         133 |  9.98
+         279 |  3.98
+         308 |  3.99
+         150 | 10.97
+         420 |  4.99
+         100 |  0.99
+         443 |  4.99
+         416 |  7.97
+         490 | 11.98
+         492 |  2.99
+         331 |  3.98
+         232 |  8.98
+         427 |  6.99
+         158 | 10.98
+         113 |  1.98
+         172 | 11.97
+           9 | 10.97
+         183 |  0.99
+         411 |  6.98
+         445 |  5.98
+          24 |  9.98
+         184 |  9.97
+         260 |  8.99
+         403 |  3.98
+         170 |  9.97
+         494 |  4.99
+          55 | 15.97
+         374 |  4.97
+         535 | 12.96
+          88 |  2.99
+         118 |  5.99
+         244 |  6.98
+         272 | 15.96
+         565 |  7.98
+         130 |  5.98
+         456 |  4.99
+         128 |  8.98
+         223 |  2.99
+         240 | 10.97
+         300 |  9.97
+         548 | 15.97
+         217 | 11.98
+         231 | 21.97
+         538 |  7.98
+         353 |  6.99
+         383 |  9.98
+         328 |  2.99
+         256 | 14.95
+         216 |  4.99
+         263 |  5.98
+         266 |  4.98
+         144 |  5.98
+           7 | 20.95
+           8 |  6.99
+         483 |  6.99
+(520 rows)
+
+dvdrental=# EXPLAIN SELECT customer_id, sum(amount) FROM payment 
+WHERE payment_date <= '2007-02-01 00:00:00'::timestamp WITHOUT time zone
+GROUP BY customer_id;
+                                         QUERY PLAN                                         
+--------------------------------------------------------------------------------------------
+ HashAggregate  (cost=103.99..106.49 rows=200 width=11)
+   ->  Append  (cost=0.00..95.99 rows=1601 width=11)
+         ->  Seq Scan on payment  (cost=0.00..26.62 rows=443 width=13)
+               Filter: (payment_date <= '2007-02-01 00:00:00'::timestamp without time zone)
+         ->  Seq Scan on payment_p2007_01 payment  (cost=0.00..23.46 rows=1157 width=10)
+               Filter: (payment_date <= '2007-02-01 00:00:00'::timestamp without time zone)
+         ->  Seq Scan on payment_p2007_02 payment  (cost=0.00..45.90 rows=1 width=10)
+               Filter: (payment_date <= '2007-02-01 00:00:00'::timestamp without time zone)
+(8 rows)
+
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# 
+dvdrental=# SELECT customer.customer_id, first_name, last_name, email, amount, payment_date FROM customer
+dvdrental-# INNER JOIN payment ON payment.customer_id = customer.customer_id LIMIT 20;
+ customer_id | first_name | last_name |             email             | amount |        payment_date        
+-------------+------------+-----------+-------------------------------+--------+----------------------------
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   0.99 | 2007-01-28 09:03:49.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   2.99 | 2007-01-25 09:59:03.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   3.99 | 2007-02-21 04:53:11.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   0.99 | 2007-02-18 12:02:25.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   4.99 | 2007-02-18 07:10:14.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   4.99 | 2007-02-16 13:47:23.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   9.99 | 2007-02-15 19:37:12.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   0.99 | 2007-02-15 16:31:19.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   5.99 | 2007-02-14 23:22:38.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   5.99 | 2007-03-22 18:32:12.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   2.99 | 2007-03-22 18:10:03.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   1.99 | 2007-03-21 23:56:23.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   0.99 | 2007-03-21 22:02:23.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   2.99 | 2007-03-19 12:25:20.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   0.99 | 2007-03-19 08:23:42.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   0.99 | 2007-03-18 02:25:55.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   4.99 | 2007-03-17 11:06:20.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   0.99 | 2007-03-02 16:30:04.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   3.99 | 2007-03-02 14:05:18.996577
+           1 | MARY       | SMITH     | MARY.SMITH@sakilacustomer.org |   4.99 | 2007-03-01 07:19:30.996577
+(20 rows)
+
+dvdrental=# EXPLAIN SELECT customer.customer_id, first_name, last_name, email, amount, payment_date FROM customer
+INNER JOIN payment ON payment.customer_id = customer.customer_id LIMIT 20;
+                                                               QUERY PLAN                                                               
+----------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..2.85 rows=20 width=65)
+   ->  Nested Loop  (cost=0.00..2661.81 rows=18709 width=65)
+         Join Filter: (customer.customer_id = public.payment.customer_id)
+         ->  Seq Scan on customer  (cost=0.00..14.99 rows=599 width=49)
+         ->  Append  (cost=0.00..3.91 rows=41 width=19)
+               ->  Index Scan using idx_fk_customer_id on payment  (cost=0.00..0.45 rows=7 width=21)
+                     Index Cond: (public.payment.customer_id = customer.customer_id)
+               ->  Index Scan using idx_fk_payment_p2007_01_customer_id on payment_p2007_01 payment  (cost=0.00..0.39 rows=2 width=18)
+                     Index Cond: (public.payment.customer_id = customer.customer_id)
+               ->  Index Scan using idx_fk_payment_p2007_02_customer_id on payment_p2007_02 payment  (cost=0.00..0.51 rows=4 width=18)
+                     Index Cond: (public.payment.customer_id = customer.customer_id)
+               ->  Index Scan using idx_fk_payment_p2007_03_customer_id on payment_p2007_03 payment  (cost=0.00..0.85 rows=9 width=18)
+                     Index Cond: (public.payment.customer_id = customer.customer_id)
+               ->  Index Scan using idx_fk_payment_p2007_04_customer_id on payment_p2007_04 payment  (cost=0.00..0.96 rows=11 width=18)
+                     Index Cond: (public.payment.customer_id = customer.customer_id)
+               ->  Index Scan using idx_fk_payment_p2007_05_customer_id on payment_p2007_05 payment  (cost=0.00..0.29 rows=1 width=17)
+                     Index Cond: (public.payment.customer_id = customer.customer_id)
+               ->  Index Scan using idx_fk_payment_p2007_06_customer_id on payment_p2007_06 payment  (cost=0.00..0.45 rows=7 width=21)
+                     Index Cond: (public.payment.customer_id = customer.customer_id)
+(19 rows)
+
+dvdrental=# EXPLAIN SELECT customer.customer_id, first_name, last_name, email, amount, payment_date FROM customer
+INNER JOIN payment ON payment.customer_id = customer.customer_id;         
+                                        QUERY PLAN                                        
+------------------------------------------------------------------------------------------
+ Hash Join  (cost=22.48..606.82 rows=18709 width=65)
+   Hash Cond: (public.payment.customer_id = customer.customer_id)
+   ->  Append  (cost=0.00..327.09 rows=18709 width=18)
+         ->  Seq Scan on payment  (cost=0.00..23.30 rows=1330 width=21)
+         ->  Seq Scan on payment_p2007_01 payment  (cost=0.00..20.57 rows=1157 width=18)
+         ->  Seq Scan on payment_p2007_02 payment  (cost=0.00..40.12 rows=2312 width=18)
+         ->  Seq Scan on payment_p2007_03 payment  (cost=0.00..98.44 rows=5644 width=18)
+         ->  Seq Scan on payment_p2007_04 payment  (cost=0.00..117.54 rows=6754 width=18)
+         ->  Seq Scan on payment_p2007_05 payment  (cost=0.00..3.82 rows=182 width=17)
+         ->  Seq Scan on payment_p2007_06 payment  (cost=0.00..23.30 rows=1330 width=21)
+   ->  Hash  (cost=14.99..14.99 rows=599 width=49)
+         ->  Seq Scan on customer  (cost=0.00..14.99 rows=599 width=49)
+(12 rows)
+
+dvdrental=# SELECT customer.customer_id, first_name, last_name, email, amount, payment_date FROM customer
+INNER JOIN payment ON payment.customer_id = customer.customer_id;
+ customer_id | first_name  |  last_name   |                  email                   | amount |        payment_date        
+-------------+-------------+--------------+------------------------------------------+--------+----------------------------
+         269 | CASSANDRA   | WALTERS      | CASSANDRA.WALTERS@sakilacustomer.org     |   1.99 | 2007-01-24 21:40:19.996577
+         269 | CASSANDRA   | WALTERS      | CASSANDRA.WALTERS@sakilacustomer.org     |   0.99 | 2007-01-25 15:16:50.996577
+         269 | CASSANDRA   | WALTERS      | CASSANDRA.WALTERS@sakilacustomer.org     |   6.99 | 2007-01-28 21:44:14.996577
+         269 | CASSANDRA   | WALTERS      | CASSANDRA.WALTERS@sakilacustomer.org     |   0.99 | 2007-01-29 00:58:02.996577
+         269 | CASSANDRA   | WALTERS      | CASSANDRA.WALTERS@sakilacustomer.org     |   4.99 | 2007-01-29 08:10:06.996577
+         269 | CASSANDRA   | WALTERS      | CASSANDRA.WALTERS@sakilacustomer.org     |   2.99 | 2007-01-31 12:23:14.996577
+         270 | LEAH        | CURTIS       | LEAH.CURTIS@sakilacustomer.org           |   1.99 | 2007-01-26 05:10:14.996577
+         270 | LEAH        | CURTIS       | LEAH.CURTIS@sakilacustomer.org           |   4.99 | 2007-01-31 04:03:42.996577
+         271 | PENNY       | NEAL         | PENNY.NEAL@sakilacustomer.org            |   8.99 | 2007-01-31 11:59:15.996577
+         272 | KAY         | CALDWELL     | KAY.CALDWELL@sakilacustomer.org          |   0.99 | 2007-01-25 02:47:17.996577
+         272 | KAY         | CALDWELL     | KAY.CALDWELL@sakilacustomer.org          |   6.99 | 2007-01-27 12:01:05.996577
+         272 | KAY         | CALDWELL     | KAY.CALDWELL@sakilacustomer.org          |   6.99 | 2007-01-31 04:14:49.996577
+         272 | KAY         | CALDWELL     | KAY.CALDWELL@sakilacustomer.org          |   0.99 | 2007-01-31 08:21:16.996577
+         273 | PRISCILLA   | LOWE         | PRISCILLA.LOWE@sakilacustomer.org        |   3.99 | 2007-01-25 18:14:47.996577
+         273 | PRISCILLA   | LOWE         | PRISCILLA.LOWE@sakilacustomer.org        |   0.99 | 2007-01-30 20:13:45.996577
+         274 | NAOMI       | JENNINGS     | NAOMI.JENNINGS@sakilacustomer.org        |   2.99 | 2007-01-25 22:46:16.996577
+         274 | NAOMI       | JENNINGS     | NAOMI.JENNINGS@sakilacustomer.org        |   4.99 | 2007-01-26 06:38:48.996577
+         274 | NAOMI       | JENNINGS     | NAOMI.JENNINGS@sakilacustomer.org        |   2.99 | 2007-01-26 19:34:40.996577
+         274 | NAOMI       | JENNINGS     | NAOMI.JENNINGS@sakilacustomer.org        |   5.99 | 2007-01-27 09:54:37.996577
+         274 | NAOMI       | JENNINGS     | NAOMI.JENNINGS@sakilacustomer.org        |   2.99 | 2007-01-27 20:40:22.996577
+         274 | NAOMI       | JENNINGS     | NAOMI.JENNINGS@sakilacustomer.org        |   4.99 | 2007-01-30 06:31:22.996577
+         275 | CAROLE      | BARNETT      | CAROLE.BARNETT@sakilacustomer.org        |   2.99 | 2007-01-27 01:43:49.996577
+         276 | BRANDY      | GRAVES       | BRANDY.GRAVES@sakilacustomer.org         |   3.99 | 2007-01-29 06:38:33.996577
+         276 | BRANDY      | GRAVES       | BRANDY.GRAVES@sakilacustomer.org         |  10.99 | 2007-01-30 01:13:42.996577
+         277 | OLGA        | JIMENEZ      | OLGA.JIMENEZ@sakilacustomer.org          |   6.99 | 2007-01-26 20:30:05.996577
+         278 | BILLIE      | HORTON       | BILLIE.HORTON@sakilacustomer.org         |   4.99 | 2007-01-31 10:44:23.996577
+         279 | DIANNE      | SHELTON      | DIANNE.SHELTON@sakilacustomer.org        |   2.99 | 2007-01-30 20:05:37.996577
+         279 | DIANNE      | SHELTON      | DIANNE.SHELTON@sakilacustomer.org        |   0.99 | 2007-01-31 01:33:33.996577
+         280 | TRACEY      | BARRETT      | TRACEY.BARRETT@sakilacustomer.org        |   4.99 | 2007-01-31 01:07:42.996577
+         281 | LEONA       | OBRIEN       | LEONA.OBRIEN@sakilacustomer.org          |   2.99 | 2007-01-28 18:14:06.996577
+         281 | LEONA       | OBRIEN       | LEONA.OBRIEN@sakilacustomer.org          |   2.99 | 2007-01-29 08:47:25.996577
+         282 | JENNY       | CASTRO       | JENNY.CASTRO@sakilacustomer.org          |   1.99 | 2007-01-25 04:49:12.996577
+         282 | JENNY       | CASTRO       | JENNY.CASTRO@sakilacustomer.org          |   6.99 | 2007-01-26 17:24:52.996577
+         282 | JENNY       | CASTRO       | JENNY.CASTRO@sakilacustomer.org          |   0.99 | 2007-01-28 07:40:35.996577
+         284 | SONIA       | GREGORY      | SONIA.GREGORY@sakilacustomer.org         |   0.99 | 2007-01-27 14:01:23.996577
+         284 | SONIA       | GREGORY      | SONIA.GREGORY@sakilacustomer.org         |   0.99 | 2007-01-29 14:59:08.996577
+         284 | SONIA       | GREGORY      | SONIA.GREGORY@sakilacustomer.org         |   6.99 | 2007-01-31 18:42:11.996577
+         286 | VELMA       | LUCAS        | VELMA.LUCAS@sakilacustomer.org           |   6.99 | 2007-01-25 10:43:45.996577
+         287 | BECKY       | MILES        | BECKY.MILES@sakilacustomer.org           |   0.99 | 2007-01-27 23:29:47.996577
+         287 | BECKY       | MILES        | BECKY.MILES@sakilacustomer.org           |   2.99 | 2007-01-28 18:44:46.996577
+         287 | BECKY       | MILES        | BECKY.MILES@sakilacustomer.org           |   2.99 | 2007-01-30 17:21:47.996577
+         288 | BOBBIE      | CRAIG        | BOBBIE.CRAIG@sakilacustomer.org          |   3.99 | 2007-01-25 14:22:42.996577
+         288 | BOBBIE      | CRAIG        | BOBBIE.CRAIG@sakilacustomer.org          |   6.99 | 2007-01-27 14:38:30.996577
+         288 | BOBBIE      | CRAIG        | BOBBIE.CRAIG@sakilacustomer.org          |   4.99 | 2007-01-28 00:03:51.996577
+         288 | BOBBIE      | CRAIG        | BOBBIE.CRAIG@sakilacustomer.org          |   5.99 | 2007-01-28 07:54:57.996577
+         290 | KRISTINA    | CHAMBERS     | KRISTINA.CHAMBERS@sakilacustomer.org     |   2.99 | 2007-01-26 00:14:46.996577
+         291 | TONI        | HOLT         | TONI.HOLT@sakilacustomer.org             |   4.99 | 2007-01-25 05:51:51.996577
+         291 | TONI        | HOLT         | TONI.HOLT@sakilacustomer.org             |   4.99 | 2007-01-29 07:55:00.996577
+         291 | TONI        | HOLT         | TONI.HOLT@sakilacustomer.org             |   2.99 | 2007-01-31 00:46:31.996577
+         292 | MISTY       | LAMBERT      | MISTY.LAMBERT@sakilacustomer.org         |   0.99 | 2007-01-26 23:28:30.996577
+         293 | MAE         | FLETCHER     | MAE.FLETCHER@sakilacustomer.org          |   0.99 | 2007-01-27 17:11:23.996577
+         293 | MAE         | FLETCHER     | MAE.FLETCHER@sakilacustomer.org          |   4.99 | 2007-01-30 10:39:25.996577
+         293 | MAE         | FLETCHER     | MAE.FLETCHER@sakilacustomer.org          |   8.99 | 2007-01-31 03:22:06.996577
+         294 | SHELLY      | WATTS        | SHELLY.WATTS@sakilacustomer.org          |   1.99 | 2007-01-28 12:28:20.996577
+         295 | DAISY       | BATES        | DAISY.BATES@sakilacustomer.org           |   3.99 | 2007-01-27 06:36:44.996577
+         296 | RAMONA      | HALE         | RAMONA.HALE@sakilacustomer.org           |   4.99 | 2007-01-26 00:30:31.996577
+         296 | RAMONA      | HALE         | RAMONA.HALE@sakilacustomer.org           |   5.99 | 2007-01-28 01:32:30.996577
+         296 | RAMONA      | HALE         | RAMONA.HALE@sakilacustomer.org           |   4.99 | 2007-01-30 02:50:32.996577
+         296 | RAMONA      | HALE         | RAMONA.HALE@sakilacustomer.org           |   2.99 | 2007-01-30 15:58:54.996577
+         297 | SHERRI      | RHODES       | SHERRI.RHODES@sakilacustomer.org         |   0.99 | 2007-01-25 22:14:18.996577
+         297 | SHERRI      | RHODES       | SHERRI.RHODES@sakilacustomer.org         |   3.99 | 2007-01-30 15:25:55.996577
+         298 | ERIKA       | PENA         | ERIKA.PENA@sakilacustomer.org            |   3.99 | 2007-01-27 08:40:46.996577
+         299 | JAMES       | GANNON       | JAMES.GANNON@sakilacustomer.org          |   5.99 | 2007-01-27 00:55:36.996577
+         299 | JAMES       | GANNON       | JAMES.GANNON@sakilacustomer.org          |   8.99 | 2007-01-28 13:17:05.996577
+         300 | JOHN        | FARNSWORTH   | JOHN.FARNSWORTH@sakilacustomer.org       |   0.99 | 2007-01-27 18:20:55.996577
+         300 | JOHN        | FARNSWORTH   | JOHN.FARNSWORTH@sakilacustomer.org       |   3.99 | 2007-01-29 12:46:58.996577
+         300 | JOHN        | FARNSWORTH   | JOHN.FARNSWORTH@sakilacustomer.org       |   4.99 | 2007-01-31 13:52:45.996577
+         301 | ROBERT      | BAUGHMAN     | ROBERT.BAUGHMAN@sakilacustomer.org       |   4.99 | 2007-01-25 02:10:16.996577
+         301 | ROBERT      | BAUGHMAN     | ROBERT.BAUGHMAN@sakilacustomer.org       |   5.99 | 2007-01-26 09:20:12.996577
+         301 | ROBERT      | BAUGHMAN     | ROBERT.BAUGHMAN@sakilacustomer.org       |   0.99 | 2007-01-30 15:27:29.996577
+         302 | MICHAEL     | SILVERMAN    | MICHAEL.SILVERMAN@sakilacustomer.org     |   4.99 | 2007-01-25 03:16:10.996577
+         302 | MICHAEL     | SILVERMAN    | MICHAEL.SILVERMAN@sakilacustomer.org     |   5.99 | 2007-01-25 14:07:12.996577
