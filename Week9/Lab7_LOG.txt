@@ -1,0 +1,165 @@
+Started Hadoop historyserver:                              [  OK  ]
+[root@ip-172-31-6-204 data]# pwd
+/data
+[root@ip-172-31-6-204 data]# ./start_postgres.sh
+server starting
+[root@ip-172-31-6-204 data]# sudo -u w205 /data/start_metastore.sh
+[root@ip-172-31-6-204 data]# Starting Hive Metastore Server
+
+[root@ip-172-31-6-204 data]# 
+[root@ip-172-31-6-204 data]# 
+[root@ip-172-31-6-204 data]# hdfs dfs -ls /user/w205/lab_3/user_data
+Found 1 items
+-rw-r--r--   1 w205 supergroup     166205 2016-10-20 05:08 /user/w205/lab_3/user_data/userdata_lab.csv
+[root@ip-172-31-6-204 data]# hive
+ls: cannot access /root/spark15/lib/spark-assembly-*.jar: No such file or directory
+
+Logging initialized using configuration in jar:file:/usr/lib/hive/lib/hive-common-1.1.0-cdh5.4.5.jar!/hive-log4j.properties
+WARNING: Hive CLI is deprecated and migration to Beeline is recommended.
+hive> CREATE TABLE Web_Session_Log (
+    > DATETIME varchar(500),
+    > USERID varchar(500),
+    > SESSIONID varchar(500),
+    > PRODUCTID varchar(500),
+    > REFERERURL varchar(500)
+    > )
+    > ROW FORMAT DELIMITED FIELDS TERMINATED BY "\t"
+    > STORED AS textfile
+    > tblproperties("skip.header.line.count"="1");
+OK
+Time taken: 0.756 seconds
+hive> LOAD DATA LOCAL INPATH '/mnt/weblog/weblog.csv'
+    > INTO TABLE Web_Session_Log;
+FAILED: SemanticException Line 1:23 Invalid path ''/mnt/weblog/weblog.csv'': No files matching path file:/mnt/weblog/weblog.csv
+hive> exit()
+    > ;
+
+
+
+
+
+
+hive> exit;
+[root@ip-172-31-6-204 data]# wget https://s3.amazonaws.com/ucbdatasciencew205/lab_datasets/weblog_lab.csv
+--2016-11-01 01:40:59--  https://s3.amazonaws.com/ucbdatasciencew205/lab_datasets/weblog_lab.csv
+Resolving s3.amazonaws.com... 54.231.115.26
+Connecting to s3.amazonaws.com|54.231.115.26|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 5192992 (5.0M) [application/octet-stream]
+Saving to: “weblog_lab.csv”
+
+100%[=============================================================================================================>] 5,192,992   --.-K/s   in 0.07s   
+
+2016-11-01 01:40:59 (75.9 MB/s) - “weblog_lab.csv” saved [5192992/5192992]
+
+[root@ip-172-31-6-204 data]# ls -l
+total 5768
+-rw-r--r--  1 w205     w205       653 Nov  1 01:25 derby.log
+drwxr-xr-x  3 hadoop   hadoop    4096 Oct 15 14:33 hadoop
+drwxr-xr-x  3 hdfs     hdfs      4096 Oct 15 14:29 hadoop-hdfs
+drwxr-xr-x  4 yarn     yarn      4096 Oct 15 14:30 hadoop-yarn
+drwx------  2 root     root     16384 Oct 15 14:29 lost+found
+drwxr-xr-x  2 w205     w205      4096 Mar 23  2008 pagila-0.10.1
+-rw-rw-r--  1 w205     w205    633143 Oct 15 14:37 pagila-0.10.1.zip
+-rw-rw-r--  1 w205     w205      1378 Oct 15 14:37 pagila.zip
+drwxr-xr-x  4 postgres root      4096 Oct 15 14:33 pgsql
+-rw-r--r--  1 root     root       535 Oct 15 14:33 setup_hive_for_postgres.sql
+-rwxr-xr-x  1 root     root       732 Oct 15 14:33 setup_zeppelin.sh
+drwxr-xr-x 11 w205     w205      4096 Oct 20 05:28 spark15
+-rwxrwxr-x  1 w205     w205        27 Oct 20 05:28 start_metastore.sh
+-rwxr-xr-x  1 root     root        93 Oct 15 14:33 start_postgres.sh
+-rwxrwxr-x  1 w205     w205        94 Oct 20 05:28 stop_metastore.sh
+-rwxr-xr-x  1 root     root        92 Oct 15 14:33 stop_postgres.sh
+drwxr-xr-x  3 w205     w205      4096 Nov  1 01:25 w205
+-rw-r--r--  1 root     root   5192992 Sep 17  2015 weblog_lab.csv
+
+
+
+
+
+
+[w205@ip-172-31-6-204 ~]$ hdfs dfs -ls /user/w205/lab_7
+Found 2 items
+drwxr-xr-x   - w205 supergroup          0 2016-11-01 01:53 /user/w205/lab_7/weblog
+-rw-r--r--   1 w205 supergroup    5192992 2016-11-01 01:54 /user/w205/lab_7/weblog.csv
+[w205@ip-172-31-6-204 ~]$ hive
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/w205/spark15/lib/spark-assembly-1.5.0-hadoop2.6.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/lib/zookeeper/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/w205/spark15/lib/spark-assembly-1.5.0-hadoop2.6.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+
+Logging initialized using configuration in jar:file:/usr/lib/hive/lib/hive-common-1.1.0-cdh5.4.5.jar!/hive-log4j.properties
+WARNING: Hive CLI is deprecated and migration to Beeline is recommended.
+hive> LOAD DATA INPATH '/user/w205/lab_7/weblog.csv' INTO TABLE Web_Session_Log;
+Loading data to table default.web_session_log
+Table default.web_session_log stats: [numFiles=1, totalSize=5192992]
+OK
+Time taken: 0.914 seconds
+hive> SELECT * from web_session_log LIMIT 20;
+OK
+2008-01-31 15:54:25 __RequestVerificationToken_Lw__=2ADB2   ;+.ASPXAUTH=C31HDWD05KU00943S   /product/YJ29IOCVQ  http://www.abc.com
+2005-12-08 02:36:30 __RequestVerificationToken_Lw__=13233   ;+.ASPXAUTH=H7HTS9Q9CC8ZXSERD   /product/MVI9HHP8A  http://www.ebay.com
+2015-06-07 23:27:58 __RequestVerificationToken_Lw__=B322B   ;+.ASPXAUTH=58SZL3FPGFUS8KLNA   /search/P5XKO3AC9   http://www.abc.com
+2009-03-12 03:16:27 __RequestVerificationToken_Lw__=1A1C2   ;+.ASPXAUTH=VBWZJJR6CG85YSOM3   /product/A13025WBT  http://www.shophealthy.com
+2014-07-23 08:36:03 __RequestVerificationToken_Lw__=2B1C2   ;+.ASPXAUTH=VXBLEXUC177T4S7AA   /search/5PI9XD6LZ   http://www.facebook.com
+2002-12-30 08:42:09 __RequestVerificationToken_Lw__=B11A2   ;+.ASPXAUTH=YABJBNQ7HQWYST1CV   /product/WS80XJFW2  http://www.xyz.com
+2004-11-03 20:29:10 __RequestVerificationToken_Lw__=11C2C   ;+.ASPXAUTH=2F90NTSZM9LJH7IGU   /product/OJ201IBUN  http://www.homeshop18.com
+2012-01-26 12:39:57 __RequestVerificationToken_Lw__=DD1BC   ;+.ASPXAUTH=SEWRRGGBHGP2G6H2J   /product/OA3QGXF1U  http://www.xyz.com
+2008-04-30 02:01:34 __RequestVerificationToken_Lw__=C3CDA   ;+.ASPXAUTH=6OB103SJY0RGI3UXM   /search/K1IRBE1DU   http://www.abc.com
+2003-08-23 09:44:43 __RequestVerificationToken_Lw__=1BB2D   ;+.ASPXAUTH=1NRGS0EVQ46Q1D5E2   /product/ANGEKDMKM  http://www.shophealthy.com
+2008-04-09 01:24:24 __RequestVerificationToken_Lw__=B31D2   ;+.ASPXAUTH=2Y8NAFB6UWDYOUCZ2   /product/LC94NBS9A  http://www.facebook.com
+2000-08-07 06:45:19 __RequestVerificationToken_Lw__=C1D11   ;+.ASPXAUTH=KS9LLE60QE17CUW0B   /search/HDKWJ5ORV   http://www.facebook.com
+2013-10-09 05:22:31 __RequestVerificationToken_Lw__=C3DBA   ;+.ASPXAUTH=UA1WHDDUX1ZG14WHN   /search/5LPS3BTJI   http://www.facebook.com
+2006-07-31 08:12:44 __RequestVerificationToken_Lw__=BAADC   ;+.ASPXAUTH=GDVM0C9QP7QXGM3F8   /search/BW80TIDQP   http://www.xyz.com
+2014-07-27 13:23:18 __RequestVerificationToken_Lw__=D3C1C   ;+.ASPXAUTH=OY5S5N9H3X0M0WGFM   /search/D5S8HFH9D   http://www.facebook.com
+2001-01-10 18:23:03 __RequestVerificationToken_Lw__=D1BB1   ;+.ASPXAUTH=VMOYI5QBMSSK578LB   /product/I8VLXARNQ  http://www.xyz.com
+2011-09-24 21:28:13 __RequestVerificationToken_Lw__=A2AAB   ;+.ASPXAUTH=SDVEAKJ6XKHLCCQSP   /search/S44PIHRYX   http://www.shophealthy.com
+2008-09-19 02:52:53 __RequestVerificationToken_Lw__=C2AB3   ;+.ASPXAUTH=7NEBV9BBDLM9HLVA9   /search/CX28DBZYW   http://www.shophealthy.com
+2006-03-01 20:10:27 __RequestVerificationToken_Lw__=C2121   ;+.ASPXAUTH=K58W1T1JHUXLSR5CM   /product/GG8EXER8K  http://www.amazon.com
+2012-12-13 00:44:01 __RequestVerificationToken_Lw__=B3CDC   ;+.ASPXAUTH=CN6T19FYPE4SPR8D2   /product/7677LCRAC  http://www.google.com
+Time taken: 0.416 seconds, Fetched: 20 row(s)
+hive> select REFERERURL, count(*)
+    > from web_session_log
+    > group by refererurl;
+Query ID = w205_20161101021919_dfd53b2f-0eac-49fd-b009-ce2f2f33c215
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1477963107116_0002, Tracking URL = http://ip-172-31-6-204.ec2.internal:8088/proxy/application_1477963107116_0002/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1477963107116_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2016-11-01 02:20:04,515 Stage-1 map = 0%,  reduce = 0%
+2016-11-01 02:20:12,167 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.66 sec
+2016-11-01 02:20:18,565 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.52 sec
+MapReduce Total cumulative CPU time: 4 seconds 520 msec
+Ended Job = job_1477963107116_0002
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 4.52 sec   HDFS Read: 5200627 HDFS Write: 286 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 520 msec
+OK
+http://www.abc.com  3951
+http://www.amazon.com   4065
+http://www.ebay.com 3943
+http://www.facebook.com 4035
+http://www.google.com   3878
+http://www.homeshop18.com   4026
+http://www.shophealthy.com  4050
+http://www.twitter.com  4073
+http://www.xyz.com  3992
+http://www.yahoo.com    3987
+refererurl  1
+Time taken: 23.686 seconds, Fetched: 11 row(s)
+hive> 
+
