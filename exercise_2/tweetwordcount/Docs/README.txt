@@ -1,5 +1,12 @@
+NOTE:
+
+1. Scripts are in Scripts directory
+2. Documents are in Docs directory
+3. Plot.png is in Plot directory
+4. Screenshots are in screenshots directory
 
 To run tweetwordcount application:
+==================================
 
 
 STEP 1: Log into AWS and go to appropriate (EX2) directory
@@ -11,10 +18,13 @@ STEP 1: Log into AWS and go to appropriate (EX2) directory
 STEP 2: Clone the directory from git
 ====================================
 
-[EX2]# git init
-[EX2]# git remote add origin https://github.com/shankar2016/Berkeley-W205.git
-[EX2]# echo "exercise_2/tweetwordcount/*" > .git/info/sparse-checkout
-[EX2]# git pull origin master
+git init
+git remote add origin https://github.com/shankar2016/Berkeley-W205.git
+git config core.sparseCheckout true
+echo "exercise_2/" >> .git/info/sparse-checkout
+echo "exercise_2/tweetwordcount/" >> .git/info/sparse-checkout
+echo "exercise_2/tweetwordcount/*" >> .git/info/sparse-checkout
+git pull origin master
 
 
 STEP 3: cd to the application directory
@@ -54,3 +64,9 @@ Expected output should be something like this, a continuous stream
 	18028 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:31339, name:count-bolt different: 1
 	18030 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:31339, name:count-bolt and: 1
 	18040 [Thread-27] INFO  backtype.storm.task.ShellBolt - ShellLog pid:31339, name:count-bolt fluffy: 1
+	
+
+
+
+
+
