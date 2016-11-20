@@ -1,22 +1,23 @@
 NOTE:
+1. Scripts are in Scripts directory : Go to Scripts directory to run test scripts
+2. Documents are in Docs directory : Architecture and other dics are here
+3. Plot.png is in Plot directory : Bar chart is here
+4. Screenshots are in screenshots directory: S
 
-1. Scripts are in Scripts directory
-2. Documents are in Docs directory
-3. Plot.png is in Plot directory
-4. Screenshots are in screenshots directory
+To run tweetwordcount application run the following steps
+========================================================
 
-To run tweetwordcount application:
-==================================
+STEP 1: Log into AWS and go to appropriate home directory
+=========================================================
 
+Run the two commands below
 
-STEP 1: Log into AWS and go to appropriate (EX2) directory
-==========================================================
-
-[home]# mkdir EX2
-[home]# cd EX2
+mkdir EX2
+cd EX2
 
 STEP 2: Clone the directory from git
 ====================================
+ut and paste and run these commands:
 
 git init
 git remote add origin https://github.com/shankar2016/Berkeley-W205.git
