@@ -31,13 +31,6 @@ class TweetStreamListener(tweepy.StreamListener):
 	def __init__(self, listener):
 		self.listener = listener
 		super(self.__class__, self).__init__(listener.tweepy_api())
-		self.conn = psycopg2.connect(database="tcount", user="postgres", password="postgres", host="127.0.0.1", port="5432")
-		self.cur = self.conn.cursor()
-		#self.cur.execute('''DROP TABLE tweetwordcount;''')
-		#self.cur.execute('''CREATE TABLE Tweetwordcount (word TEXT PRIMARY KEY, count INT);''')
-		self.cur.execute('''DELETE FROM tweetwordcount WHERE count > 0;''')
-		self.cur.close()
-		self.conn.close()
 
 	def on_status(self, status):
 		self.listener.queue().put(status.text, timeout = 0.01)

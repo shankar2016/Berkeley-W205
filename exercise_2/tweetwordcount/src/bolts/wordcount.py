@@ -10,13 +10,6 @@ class WordCounter(Bolt):
 
 	def initialize(self, conf, ctx):
 		self.counts = Counter()
-		self.conn = psycopg2.connect(database="tcount", user="postgres", password="postgres", host="127.0.0.1", port="5432")
-		cur = self.conn.cursor()
-
-		# DOES NOT WORK because Postgres version is 8.4.20. Need at least version 9.1 to make it work
-		#cur.execute('''DROP TABLE IF EXISTS tweetwordcount''')
-		#cur.execute('''CREATE TABLE IF NOT EXISTS Tweetwordcount (word TEXT PRIMARY KEY, count INT)''') 
-	
 
 	# Write to Postgres
 	def pg_write(self, word, count):
