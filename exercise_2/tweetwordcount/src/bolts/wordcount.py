@@ -10,6 +10,7 @@ class WordCounter(Bolt):
 
 	def initialize(self, conf, ctx):
 		self.counts = Counter()
+		self.conn = psycopg2.connect(database="tcount", user="postgres", password="postgres", host="127.0.0.1", port="5432")
 
 	# Write to Postgres
 	def pg_write(self, word, count):
